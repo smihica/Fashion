@@ -3,7 +3,8 @@ __!!! NOW WORK IN PROGRESS !!!__
 # Fashion
 
 Fashion is an Graphics Library, that provides same interface in Javascript SVG,VML,Canvas,WebGL and C/C++ OpenGL.
-a lot of inspired from RaphaelJS and PaperJS.
+
+A lot of inspired from RaphaelJS and PaperJS.
 
 ## How to build
 
@@ -13,5 +14,7 @@ a lot of inspired from RaphaelJS and PaperJS.
 ## License
 
 This software is copyright (c) Shin Aoyama 2012.
+
 Permission to use it is granted under the MIT License.
+
 show COPYING to get more detail.
