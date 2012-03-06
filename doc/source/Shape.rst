@@ -119,17 +119,30 @@
 
       シェイプのサイズ情報を取得／設定します。
 
-   .. method:: display_position()
+   .. method:: displayPosition()
 
       :return: ディスプレイ上でのポジション情報 (PositionObject)
 
       シェイプのディスプレイ上でのポジション情報を取得します。
 
-   .. method:: display_size()
+   .. method:: displaySize()
 
       :return: ディスプレイ上でのサイズ情報 (SizeObject)
 
       シェイプのディスプレイ上でのサイズ情報を取得します。
+
+   .. method:: hitTest(d)
+
+      :param PositionObject d: ポジション情報 (オプション)
+      :return: テストの成功／失敗の真偽値
+
+      指定されたポジション情報の位置に図形が存在するかテストします。
+
+   .. method:: gravityPosition()
+
+      :return: 図形の重心
+
+      図形の重心を算出します。
 
    .. method:: transform([d])
 
@@ -137,6 +150,12 @@
       :return: 適用されているトランスフォーム情報
 
       シェイプのトランスフォーム情報を取得／設定します。
+
+   .. method:: reset()
+
+      :return: (void)
+
+      シェイプのトランスフォーム情報を削除し無効化します。
 
    .. method:: style([d])
 
