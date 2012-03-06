@@ -1,0 +1,11 @@
+TODO
+memo/
+*/**/memo
+*/**/tmp
+doc/build
+doc/source/_*
+build/
+
+*.o
+\#*
+~*
