@@ -5,6 +5,7 @@ memo/
 doc/build
 doc/source/_*
 build/
+lib/js/fashion.js
 
 *.o
 \#*
