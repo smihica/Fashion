@@ -1,12 +1,15 @@
 var Path = _class("Path", {
+
+  mixins: [Base],
+
   props : {
     _elem: null
   },
 
   methods: {
-    init: function(id)
+    init: function()
     {
-      this._elem = Util.createSvgElement(id, 'path');
+      this._elem = Util.createSvgElement('path');
     },
 
     points: function(points)
@@ -17,16 +20,6 @@ var Path = _class("Path", {
       }
 
       return this._points;
-    },
-
-    transform: function(matrix)
-    {
-      this._elem.setAttribute('transform', Util.matrixString(matrix));
-    },
-
-    reset: function()
-    {
-      this._elem.removeAttribute('transform');
     }
   }
 });

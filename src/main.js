@@ -11,9 +11,9 @@ var Fashion = (function() {
   include("util/util.js");
   include("util/util.test.js");
 
-  include("svg/svg.js");
-  include("vml/vml.js");
-  include("canvas/canvas.js");
+  include("../backends/svg/svg.js");
+  include("../backends/vml/vml.js");
+  include("../backends/canvas/canvas.js");
 
   var not_bounded = _class("NotBounded", {
     methods: {
@@ -31,6 +31,7 @@ var Fashion = (function() {
   Fashion.Circle   = not_bounded;
   Fashion.Rect     = not_bounded;
   Fashion.Path     = not_bounded;
+  Fashion.Text     = not_bounded;
   Fashion.Drawable = not_bounded;
 
   Fashion.init = function(priority) {
@@ -59,11 +60,13 @@ var Fashion = (function() {
     include("Rect.js");
     include("Path.js");
     include("Drawable.js");
+    include("Text.js");
 
     Fashion.Shape    = Shape;
     Fashion.Circle   = Circle;
     Fashion.Rect     = Rect;
     Fashion.Path     = Path;
+    Fashion.Text     = Text;
     Fashion.Drawable = Drawable;
 
   };

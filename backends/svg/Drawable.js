@@ -20,11 +20,10 @@ var Drawable = _class("DrawableSVG", {
       this._vg.appendChild(shape._elem);
     },
 
-    remove: function(id) {
-      var child = this._vg.getElementById(id);
-      if (child) {
-        this._vg.removeChild(child);
-      }
+    remove: function(shape) {
+      var child = shape._elem;
+      this._vg.removeChild(child);
     }
+
   }
 });

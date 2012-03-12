@@ -153,6 +153,17 @@ var Style = (function() {
   var _Style = _class("Util.Style", {
 
     class_methods: {
+      convertStyleStringTest: function() {
+      },
+
+      convertStyleString: function() {
+      },
+
+      convertFillStringTest: function() {
+      },
+
+      convertFillString: function() {
+      },
 
       convertStrokeStringTest: function() {
         var source = ["",

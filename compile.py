@@ -35,8 +35,11 @@ def main():
         sys.stdout.write('content-type: application/x-javascript; charset=UTF-8\r\n')
         sys.stdout.write('\r\n')
 
+    file_name_b = re.findall(r'^(.+/)*(.*)$', root)
+    route = file_name_b[0][0]
+
     included_files.add(root)
-    compose_source(root, sys.stdout, "")
+    compose_source(root, sys.stdout, route)
 
 main()
 

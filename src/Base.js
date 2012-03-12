@@ -4,7 +4,8 @@ var Base = _class("Base", {
     impl: null,
     _position: {x:0, y:0},
     _size: {width:0, height:0},
-    _transform: {}
+    _transform: {},
+    _style: {}
   },
 
   methods: {
@@ -48,26 +49,30 @@ var Base = _class("Base", {
 
           for (i in tr) {
             if (tr.hasOwnProperty(i)) {
-              if (i === 'scale') {
+              switch(i) {
+              case 'scale':
                 scale = tr[i];
                 if (scale.x === undefined || scale.y === undefined) _error("Less parameters Error.", "transform() scale needs x, y parameters at least.");
                 if (scale.cx === undefined) scale.cx = x;
                 if (scale.cy === undefined) scale.cy = y;
                 this._transform.scale = scale;
+                break;
 
-              } else if (i === 'rotate') {
+              case 'rotate':
                 rotate = tr[i];
                 if (rotate.angle === undefined) _error("Less parameters Error.", "transform() rotate needs angle parameter at least.");
                 if (rotate.x === undefined) rotate.x = x;
                 if (rotate.y === undefined) rotate.y = y;
                 this._transform.rotate = rotate;
+                break;
 
-              } else if (i === 'translate') {
+              case 'translate':
                 translate = tr[i];
                 if (translate.x === undefined || translate.y === undefined) _error("Less parameters Error.", "transform() translate needs x, y parameters at least.");
                 this._transform.translate = translate;
+                break;
 
-              } else {
+              default:
                 _error('Invalid property Error.', "transform() expects 'tranlate', 'scale', 'rotate', but given '" + i + "'.");
 
               }
@@ -87,47 +92,67 @@ var Base = _class("Base", {
 
     },
 
-    reset: function()
+    addTransform: function()
     {
-      this._transform = {};
-      this.impl.reset();
     },
 
-    /*
-     * style
-     * stroke - set stroke-property-string or none. 'none' or 'color [, width, dash]' default is 'none'
-     * * color - set RGBA-color-string #FFFF or #FFFFFFFF default is #0000
-     * * width - set line-width-string /\d*?/. default is 1
-     * * dash  - set dash-pattern-string '' or '-' or '.' or '-.' or '-..' or '. ' or '- ' or '--' or '- .' or '--.' or '--..'
-     */
+    resetTransform: function()
+    {
+      this._transform = {};
+      this.impl.resetTransform();
+    },
+
     style: function(st)
     {
+      if (st !== undefined) {
+        var i;
+        var stroke={ none: true },
+        visibility=true,
+        fill={ color: [0,0,0,255], rule: 'nonzero' },
+        cursor='default';
 
-      element.style({
-        stroke: "#FF0AF000 10 ..---"
-      });
-
-      element.style({
-        stroke: {
-          color: "#0000",
-          width: 10,
-          dash:  ".-"
+        for (i in st) {
+          if (st.hasOwnProperty(i)) {
+            switch(i) {
+            case 'stroke':
+              stroke = _clone(st[i]);
+              break;
+            case 'visibility':
+              visibility = st[i];
+              break;
+            case 'fill':
+              fill = _clone(st[i]);
+              break;
+            case 'cursor':
+              cursor = st[i];
+              break;
+            }
+          }
         }
-      });
 
-      element.style({
-        stroke: {
-          color: {
-            R: 255,
-            G: 10,
-            B: 180,
-            A: 0
-          },
-          width: 10,
-          dash: [ 10, 20 ]
-        }
-      });
 
+        this._style = {
+          stroke: stroke,
+          visibility: visibility,
+          fill: fill,
+          cursor: cursor
+        };
+
+        this.impl.style(this._style);
+
+      }
+
+      return this._style;
+    },
+
+    addStyle: function()
+    {
+    },
+
+    resetStyle: function()
+    {
+      this._style = {};
+      this.impl.resetStyle();
     }
   }
 });

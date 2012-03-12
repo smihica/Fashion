@@ -5,15 +5,13 @@ var Path = _class("Path", {
   interfaces: [Shape],
 
   props: {
-    id: '',
-    _position: {x: 0, y: 0},
+    _points: [],
   },
 
   methods: {
-    init: function (id, points)
+    init: function (points)
     {
-      this.id = id;
-      this.impl = new IMPL.Path(id);
+      this.impl = new IMPL.Path();
       this.points(points);
     },
 
@@ -37,20 +35,10 @@ var Path = _class("Path", {
 
       if (points !== undefined) {
 
-        if (typeof points === 'string') {
-          this._points = this._convertPointString(points);
-          this.impl.points(this._points);
-
-        } else if (points instanceof Array) {
-          this._points = (copyless) ? points : _clone(points);
-          this.impl.points(this._points);
-
-        } else {
-          _error('Argument Error', 'points() expects an Array or a String as an argument.');
-
-        }
-
+        this._points = (copyless) ? points : _clone(points);
+        this.impl.points(this._points);
         this._updateState();
+
       }
 
       return this._points;
@@ -59,25 +47,17 @@ var Path = _class("Path", {
     pointAt: function(i, point, copyless)
     {
       if (i < this._points.length) {
+
         if (point !== undefined) {
-          if (typeof point === 'string') {
-            point = this._convertPointString(point)[0];
-            copyless = true;
-          }
-          if (point instanceof Array) {
-            this._points[i] = (copyless) ? point : _clone(point);
-            this.points(this._points, true);
-
-          } else {
-            _error();
-
-          }
+          this._points[i] = (copyless) ? point : _clone(point);
+          this.points(this._points, true);
         }
-      } else {
-        _error();
-      }
 
-      return this._points[i];
+        return this._points[i];
+
+      } else {
+        _error(null, "Point-range Error", "There are only "+ this._points.length + " points. but you gave " + i + " .");
+      }
     },
 
     position: function(d)
@@ -90,9 +70,7 @@ var Path = _class("Path", {
         var points = this._points;
 
         var mat = (new Util.Matrix()).translate(xm, ym);
-        this._applyMatrixToPoints(mat);
-
-        this.points(this._points, true);
+        this.applyMatrix(mat);
       }
 
       return { x: this._position.x, y: this._position.y };
@@ -100,6 +78,7 @@ var Path = _class("Path", {
 
     size: function(d)
     {
+
       if (d) {
         var lw = this._size.width;
         var lh = this._size.height;
@@ -108,11 +87,18 @@ var Path = _class("Path", {
         var pos = this._position;
 
         var mat = (new Util.Matrix()).scale(wm, hm, pos.x, pos.y);
-        this._applyMatrixToPoints(mat);
-
-        this.points(this._points, true);
+        this.applyMatrix(mat);
       }
+
       return {width: this._size.width, height: this._size.height};
+    },
+
+    applyMatrix: function(d)
+    {
+      if (d === undefined) _error(null, "Argument Error", "applyMatrix expects 1 argument at least.");
+      this._applyMatrixToPoints(d);
+      this.points(this._points, true);
+      return this;
     },
 
     displayPosition: function()
@@ -141,46 +127,46 @@ var Path = _class("Path", {
 
       for (var i=0, l=points.length, ll = l-1; i<l; i++) {
         var item = points[i];
-        var idt = (item[0]).charCodeAt(0);
+        var idt = item[0];
 
         switch (idt) {
 
-        case 77: // M
+        case 'M':
           if (i < ll) {
-            next_idt = points[i+1][0];
+            var next_idt = points[i+1][0];
             if (next_idt !== 'M') {
               x = item[1]; y = item[2];
             }
           }
           break;
 
-        case 76: // L
-        case 84: // T // TODO: consider curving line.
-        case 82: // R // TODO: consider curving line.
+        case 'L':
+        case 'T': // TODO: consider curving line.
+        case 'R': // TODO: consider curving line.
           x = item[1]; y = item[2];
           break;
 
-        case 67: // C // TODO: consider curving line.
+        case 'C': // TODO: consider curving line.
           x = item[5]; y = item[6];
           break;
 
-        case 90: // Z
+        case 'Z':
           break;
 
-        case 72: // H
+        case 'H':
           x = item[0];
           break;
 
-        case 86: // V
+        case 'V':
           y = item[0];
           break;
 
-        case 83: // S // TODO: consider curving line.
-        case 81: // Q // TODO: consider curving line.
+        case 'S': // TODO: consider curving line.
+        case 'Q': // TODO: consider curving line.
           x = item[3]; y = item[4];
           break;
 
-        case 65: // A // TODO: consider curving line.
+        case 'A': // TODO: consider curving line.
           x = item[6]; y = item[7];
           break;
         }
@@ -211,45 +197,45 @@ var Path = _class("Path", {
       for (var i=0, l=points.length; i<l; i++) {
 
         p = points[i];
-        idt = (p[0]).charCodeAt(0);
+        idt = p[0];
 
         switch (idt) {
 
-        case 77: // M
-        case 76: // L
-        case 84: // T
-        case 82: // R
+        case 'M':
+        case 'L':
+        case 'T':
+        case 'R':
           x = [1]; y = [2];
           last_x = p[1]; last_y = p[2];
           break;
 
-        case 67: // C
+        case 'C':
           x = [1, 3, 5];
           y = [2, 4, 6];
           last_x = p[5]; last_y = p[6];
           break;
 
-        case 90: // Z
+        case 'Z':
           continue loop;
 
-        case 72: // H
+        case 'H':
           x = [1]; y = [0];
           last_x = p[1];
           break;
 
-        case 86: // V
+        case 'V':
           x = [0]; y = [1];
           last_y = p[1];
           break;
 
-        case 83: // S
-        case 81: // Q
+        case 'S':
+        case 'Q':
           x = [1, 3];
           y = [2, 4];
           last_x = p[3]; last_y = p[4];
           break;
 
-        case 65: // A
+        case 'A':
           x = [1, 6];
           y = [2, 7];
           last_x = p[6]; last_y = p[7];

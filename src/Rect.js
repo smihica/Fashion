@@ -4,15 +4,12 @@ var Rect = _class("Rect", {
 
   interfaces: [Shape],
 
-  props: {
-    id: ''
-  },
+  props: {},
 
   methods: {
-    init: function (id, x, y, width, height)
+    init: function (x, y, width, height)
     {
-      this.id = id;
-      this.impl = new IMPL.Rect(id);
+      this.impl = new IMPL.Rect();
       this.size({width: width, height: height});
       this.position({x: x, y: y});
     },

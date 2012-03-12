@@ -1,12 +1,15 @@
 var Circle = _class("CircleSVG", {
+
+  mixins: [Base],
+
   props : {
     _elem: null
   },
 
   methods: {
-    init: function(id)
+    init: function()
     {
-      this._elem = Util.createSvgElement(id, 'ellipse');
+      this._elem = Util.createSvgElement('ellipse');
     },
 
     position: function(x, y, width, height)
@@ -19,16 +22,6 @@ var Circle = _class("CircleSVG", {
     {
       this._elem.setAttribute('rx', (width/2)+'px');
       this._elem.setAttribute('ry', (height/2)+'px');
-    },
-
-    transform: function(matrix)
-    {
-      this._elem.setAttribute('transform', Util.matrixString(matrix));
-    },
-
-    reset: function()
-    {
-      this._elem.removeAttribute('transform');
     }
   }
 });
