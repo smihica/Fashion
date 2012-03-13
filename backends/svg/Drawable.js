@@ -16,11 +16,13 @@ var Drawable = _class("DrawableSVG", {
       node.appendChild(vg);
     },
 
-    append: function(shape) {
+    append: function(shape)
+    {
       this._vg.appendChild(shape._elem);
     },
 
-    remove: function(shape) {
+    remove: function(shape)
+    {
       var child = shape._elem;
       this._vg.removeChild(child);
     }

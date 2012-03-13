@@ -1,10 +1,9 @@
 Fashion.SVG = (function() {
 
-  var SVG = {};
+  // checking browser.
+  if ((BROWSER.identifier === 'ie' && BROWSER.version < 9 )) return null;
 
-  if (!(!!document.createElementNS && !!document.createElementNS( "http://www.w3.org/2000/svg", "svg").createSVGRect)) {
-    return null;
-  }
+  var SVG = {};
 
   include("Util.js");
 

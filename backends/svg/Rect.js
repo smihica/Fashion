@@ -1,4 +1,4 @@
-var Rect = _class("Rect", {
+var Rect = _class("RectSVG", {
 
   mixins: [Base],
 

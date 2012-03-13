@@ -127,12 +127,6 @@ var Matrix = (function() {
         return [this.get(0), this.get(2), this.get(1), this.get(3), 0, 0].join();
       },
 
-      toFilter: function () {
-        return "progid:DXImageTransform.Microsoft.Matrix(M11=" + this.get(0) +
-          ", M12=" + this.get(2) + ", M21=" + this.get(1) + ", M22=" + this.get(3) +
-          ", Dx=" + this.get(4) + ", Dy=" + this.get(5) + ", sizingmethod='auto expand')";
-      },
-
       offset: function () {
         return [this.e.toFixed(FLOAT_ACCURACY), this.f.toFixed(FLOAT_ACCURACY)];
       },

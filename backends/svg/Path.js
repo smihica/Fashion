@@ -1,4 +1,4 @@
-var Path = _class("Path", {
+var Path = _class("PathSVG", {
 
   mixins: [Base],
 

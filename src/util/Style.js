@@ -230,7 +230,7 @@ var Style = (function() {
         return ({
           color: color,
           size:  size,
-          dash: dash,
+          dash: dash
         });
 
       },

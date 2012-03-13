@@ -114,6 +114,6 @@ var Drawable = _class("Drawable", {
         rt[i] = this.erase(elems[rt[i]])
       }
       return rt;
-    },
+    }
   }
 });

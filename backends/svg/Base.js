@@ -51,7 +51,7 @@ var Base = _class("BaseSVG", {
 
     resetStyle: function()
     {
-      // TODO
+      this.style(DEFAULT_STYLE);
     }
   }
 });

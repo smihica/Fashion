@@ -26,11 +26,11 @@ var test = function() {
 
   p2.style({
     fill: {
-      none: true,
+      none: true
     },
     stroke: {
       width: 10,
-      color: Fashion.Util.Style.convertColorString('#F00F'),
+      color: Fashion.Util.Style.convertColorString('#F00F')
     }
   });
 
@@ -38,13 +38,14 @@ var test = function() {
     fill: { none: true },
     stroke: {
       width: 4,
-      color: [0, 255, 0, 255],
+      color: [0, 255, 0, 255]
     }
   });
 
+
   drawable.erase(p1);
 
-  function stylize(n) {
+  var stylize = function(n) {
     n.style({
       fill: {
         color: [+((Math.random()*255).toFixed(0)),
@@ -59,10 +60,11 @@ var test = function() {
             +((Math.random()*255).toFixed(0)),
             +((Math.random()*255).toFixed(0)),
             +((Math.random()*255).toFixed(0)) ],
-        size: 2
+        width: 2
       }
     });
-  }
+  };
+
 
   for(var i=0,l=100; i<l; i++) {
 
@@ -76,16 +78,19 @@ var test = function() {
         Fashion.Util.Path.convertPathString(
           'M 0 -10 L 5.88 8.09 -9.51 -3.09 9.51 -3.09 -5.88 8.09 Z')));
     p.position({x: Math.random()*1000, y: Math.random()*1000});
-    p.size({width: Math.random()*150, height: Math.random()*150});
+    p.size({width: Math.random()*300, height: Math.random()*300});
     stylize(p);
 
     var c = drawable.draw(
       new Fashion.Circle(Math.random()*1000, Math.random()*1000, 30, 30));
     stylize(c);
 
+
     var r = drawable.draw(
       new Fashion.Rect(Math.random()*1000, Math.random()*1000, 50, 50));
     stylize(r);
 
   }
+
+
 };

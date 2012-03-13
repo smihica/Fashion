@@ -5,7 +5,7 @@ var Path = _class("Path", {
   interfaces: [Shape],
 
   props: {
-    _points: [],
+    _points: []
   },
 
   methods: {
@@ -36,7 +36,7 @@ var Path = _class("Path", {
       if (points !== undefined) {
 
         this._points = (copyless) ? points : _clone(points);
-        this.impl.points(this._points);
+        this.impl.points(this._points, this);
         this._updateState();
 
       }
