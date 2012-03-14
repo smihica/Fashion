@@ -2,14 +2,16 @@ __!!! NOW WORK IN PROGRESS !!!__
 
 # Fashion
 
-Fashion is an Graphics Library, that provides same interface in Javascript SVG,VML,Canvas,WebGL and C/C++ OpenGL.
+Fashion is an Graphics Library, that provides same interface in Javascript SVG,VML,Canvas,WebGL.
 
 A lot of inspired from RaphaelJS and PaperJS.
 
 ## How to build
 
-    $ cd lib/js
     $ make
+
+    -> fashion.js is the Script.
+
 
 ## License
 
