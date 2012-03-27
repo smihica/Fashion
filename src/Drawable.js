@@ -5,15 +5,33 @@ var Drawable = _class("Drawable", {
     _id_acc: 0,
     _target: null,
     _elements: {},
+    _content_size: {},
+    _viewport_size: {},
     _anchor: 'left-top'
   },
 
   methods: {
 
-    init: function(target, width, height)
+    init: function(target, content_size, viewport_size)
     {
       this.target = target;
-      this.impl = new IMPL.Drawable(target, width, height);
+
+      this._content_size = _clone(content_size);
+      this._viewport_size = _clone(viewport_size);
+
+      this.impl = new IMPL.Drawable(target, content_size, viewport_size);
+    },
+
+    viewPortPosition: function()
+    {
+    },
+
+    viewPortSize: function()
+    {
+    },
+
+    contentSize: function()
+    {
     },
 
     gensym: function()
