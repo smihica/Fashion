@@ -40,7 +40,7 @@ var Base = _class("Base", {
         var scale, rotate, translate, tr, j, i;
         var pos = this.position();
         var x = pos.x, y = pos.y;
-        console.log(x, y);
+        // console.log(x, y);
         var m = new Util.Matrix();
 
         for (j=0; j<l; j++) {
@@ -73,7 +73,7 @@ var Base = _class("Base", {
                 break;
 
               default:
-                _error('Invalid property Error.', "transform() expects 'tranlate', 'scale', 'rotate', but given '" + i + "'.");
+                _error('Invalid property Error.', "transform() expects 'translate', 'scale', 'rotate', but given '" + i + "'.");
 
               }
             }
@@ -109,7 +109,8 @@ var Base = _class("Base", {
         var stroke={ none: true },
         visibility=true,
         fill={ color: [0,0,0,255], rule: 'nonzero' },
-        cursor='default';
+        cursor='default',
+        zIndex=0;
 
         for (i in st) {
           if (st.hasOwnProperty(i)) {
@@ -126,6 +127,9 @@ var Base = _class("Base", {
             case 'cursor':
               cursor = st[i];
               break;
+            case 'zIndex':
+              zIndex = st[i];
+              break;
             }
           }
         }
@@ -135,7 +139,8 @@ var Base = _class("Base", {
           stroke: stroke,
           visibility: visibility,
           fill: fill,
-          cursor: cursor
+          cursor: cursor,
+          zIndex: zIndex
         };
 
         this.impl.style(this._style);
@@ -153,6 +158,15 @@ var Base = _class("Base", {
     {
       this._style = {};
       this.impl.resetStyle();
+    },
+
+    addEvent: function(evt)
+    {
+      this.impl.addEvent(evt);
+    },
+    removeEvent: function(evt)
+    {
+      this.impl.removeEvent(evt);
     }
   }
 });

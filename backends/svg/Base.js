@@ -42,6 +42,11 @@ var Base = _class("BaseSVG", {
       var visibility = st.visibility;
       var cursor = st.cursor;
 
+      if (st.zIndex) {
+        this._elem.setAttribute('z-index', st.zIndex);
+      } else {
+        this._elem.setAttribute('z-index', 0);
+      }
 
       //this._elem.setAttribute('stroke-dasharray', stroke.dasharray);
       this._elem.style.display = visibility ? 'block' : 'none';
@@ -52,6 +57,30 @@ var Base = _class("BaseSVG", {
     resetStyle: function()
     {
       this.style(DEFAULT_STYLE);
+    },
+
+
+    // !!!!!!!!!! TEMP implement. !!!!!!!!!!
+    addEvent: function(evt)
+    {
+      for (i in evt) {
+        if (evt.hasOwnProperty(i)) {
+          if (i === 'mouseover' || i === 'mouseout' || i === 'click' ) {
+            this._elem.addEventListener(i, evt[i], false);
+          }
+        }
+      }
+    },
+    removeEvent: function(evt)
+    {
+      for (i in evt) {
+        if (evt.hasOwnProperty(i))
+          if (i === 'mouseover' || i === 'mouseout' || i === 'click' )
+            this._elem.removeEventListener(i, evt[i], false);
+      }
     }
+    //////////////////////////////////////////
+
+
   }
 });

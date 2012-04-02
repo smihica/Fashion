@@ -37,17 +37,17 @@ var Matrix = (function() {
           if (tr.hasOwnProperty(i)) {
             if (i === 'scale') {
               var s = tr.scale;
-              console.log("scale:"+s.x+","+s.y+","+s.cx+","+s.cy);
+              // console.log("scale:"+s.x+","+s.y+","+s.cx+","+s.cy);
               this.scale(s.x, s.y, s.cx, s.cy);
 
             } else if (i === 'rotate') {
               var r = tr.rotate;
-              console.log("rotate:"+r.angle+","+r.x+","+r.y);
+              // console.log("rotate:"+r.angle+","+r.x+","+r.y);
               this.rotate(r.angle, r.x, r.y);
 
             } else if (i === 'translate') {
               var t = tr.translate;
-              console.log("translate:"+t.x+","+t.y);
+              // console.log("translate:"+t.x+","+t.y);
               this.translate(t.x, t.y);
 
             } else {

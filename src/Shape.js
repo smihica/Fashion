@@ -13,6 +13,7 @@ var Shape = _class("Shape", {
     resetTransform:   function()  {},
     style:            function(d) {},
     addStyle:         function()  {},
+    addEvent:         function(e) {},
     resetStyle:       function()  {}
   }
 });

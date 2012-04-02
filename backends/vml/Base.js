@@ -77,6 +77,13 @@ var Base = _class("BaseVML", {
     resetStyle: function()
     {
       this.style(DEFAULT_STYLE);
+    },
+
+    addEvent: function(evt)
+    {
+    },
+    removeEvent: function(evt)
+    {
     }
   }
 });
