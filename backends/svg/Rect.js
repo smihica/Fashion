@@ -20,8 +20,8 @@ var Rect = _class("RectSVG", {
 
     size: function(width, height)
     {
-      this._elem.setAttribute('width', (width/2)+'px');
-      this._elem.setAttribute('height', (height/2)+'px');
+      this._elem.setAttribute('width', width+'px');
+      this._elem.setAttribute('height', height+'px');
     }
   }
 });
