@@ -33,7 +33,7 @@ var Path = _class("Path", {
     points: function(points, copyless)
     {
 
-      if (points !== undefined) {
+      if (points !== void(0)) {
 
         this._points = (copyless) ? points : _clone(points);
         this.impl.points(this._points, this);
@@ -48,7 +48,7 @@ var Path = _class("Path", {
     {
       if (i < this._points.length) {
 
-        if (point !== undefined) {
+        if (point !== void(0)) {
           this._points[i] = (copyless) ? point : _clone(point);
           this.points(this._points, true);
         }
@@ -95,7 +95,7 @@ var Path = _class("Path", {
 
     applyMatrix: function(d)
     {
-      if (d === undefined) _error(null, "Argument Error", "applyMatrix expects 1 argument at least.");
+      if (d === void(0)) _error(null, "Argument Error", "applyMatrix expects 1 argument at least.");
       this._applyMatrixToPoints(d);
       this.points(this._points, true);
       return this;

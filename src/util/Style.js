@@ -251,7 +251,7 @@ var Style = (function() {
       convertColorString:  function(str) {
         var rt = [], l = str.length, accurate_p, low, high, code;
 
-        if ((code = color_code_table[str]) !== undefined) return code;
+        if ((code = color_code_table[str]) !== void(0)) return code;
 
         if (l === 0 || str.charAt(0) !== '#' || !(l === 5 || (accurate_p = (l === 9)))) _error();
 

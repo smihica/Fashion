@@ -12,7 +12,7 @@ var _class = (function() {
 
   var __super__ = function() {
     var pro = this.__proto__;
-    return ((pro !== undefined) ?
+    return ((pro !== void(0)) ?
             ((this.constructor.prototype === this) ? pro : pro.__proto__ ) :
             get_parent(this.constructor).prototype);
   };

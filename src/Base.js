@@ -52,23 +52,23 @@ var Base = _class("Base", {
               switch(i) {
               case 'scale':
                 scale = tr[i];
-                if (scale.x === undefined || scale.y === undefined) _error("Less parameters Error.", "transform() scale needs x, y parameters at least.");
-                if (scale.cx === undefined) scale.cx = x;
-                if (scale.cy === undefined) scale.cy = y;
+                if (scale.x === void(0) || scale.y === void(0)) _error("Less parameters Error.", "transform() scale needs x, y parameters at least.");
+                if (scale.cx === void(0)) scale.cx = x;
+                if (scale.cy === void(0)) scale.cy = y;
                 this._transform.scale = scale;
                 break;
 
               case 'rotate':
                 rotate = tr[i];
-                if (rotate.angle === undefined) _error("Less parameters Error.", "transform() rotate needs angle parameter at least.");
-                if (rotate.x === undefined) rotate.x = x;
-                if (rotate.y === undefined) rotate.y = y;
+                if (rotate.angle === void(0)) _error("Less parameters Error.", "transform() rotate needs angle parameter at least.");
+                if (rotate.x === void(0)) rotate.x = x;
+                if (rotate.y === void(0)) rotate.y = y;
                 this._transform.rotate = rotate;
                 break;
 
               case 'translate':
                 translate = tr[i];
-                if (translate.x === undefined || translate.y === undefined) _error("Less parameters Error.", "transform() translate needs x, y parameters at least.");
+                if (translate.x === void(0) || translate.y === void(0)) _error("Less parameters Error.", "transform() translate needs x, y parameters at least.");
                 this._transform.translate = translate;
                 break;
 
@@ -104,7 +104,7 @@ var Base = _class("Base", {
 
     style: function(st)
     {
-      if (st !== undefined) {
+      if (st !== void(0)) {
         var i;
         var stroke={ none: true },
         visibility=true,

@@ -49,7 +49,7 @@ var Path = (function() {
         set = [atom];
         last_idt = atom;
         arglen = identifierArglen[atom];
-        if ( arglen === undefined ) throw notfound_such_identifier(atom);
+        if ( arglen === void(0) ) throw notfound_such_identifier(atom);
         arglen_now = 0;
 
         for (var i=1, l=arr.length; i<l; i++) {
@@ -65,7 +65,7 @@ var Path = (function() {
               set = [atom];
               last_idt = atom;
               arglen = identifierArglen[atom];
-              if ( arglen === undefined ) throw notfound_such_identifier(atom);
+              if ( arglen === void(0) ) throw notfound_such_identifier(atom);
 
             } else {
               throw argument_length_is_not_accurate(last_idt, arglen, arglen_now);

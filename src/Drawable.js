@@ -45,7 +45,7 @@ var Drawable = _class("Drawable", {
       var elems = this._elements, elem, i;
       for (i in elems) {
         elem = elems[i];
-        if (elem !== undefined) {
+        if (elem !== void(0)) {
           if (func(elem)) return elem;
         }
       }
@@ -56,7 +56,7 @@ var Drawable = _class("Drawable", {
       var rt = [], elems = this._elements, elem, i;
       for (i in elems) {
         elem = elems[i];
-        if (elem !== undefined && func(elem))
+        if (elem !== void(0) && func(elem))
           rt.push(elem);
       }
       return rt;
@@ -66,7 +66,7 @@ var Drawable = _class("Drawable", {
       var elems = this._elements, elem, i;
       for (i in elems) {
         elem = elems[i];
-        if (elem !== undefined && func(elem))
+        if (elem !== void(0) && func(elem))
           return true;
       }
       return false;
@@ -98,8 +98,8 @@ var Drawable = _class("Drawable", {
 
     erase: function(shape) {
       var id = shape.__id;
-      if (id !== undefined) {
-        this._elements[id] = undefined;
+      if (id !== void(0)) {
+        this._elements[id] = void(0);
         delete this._elements[id];
         this.impl.remove(shape.impl);
       }
@@ -110,7 +110,7 @@ var Drawable = _class("Drawable", {
       var elems = this._elements;
       for (var i in elems) {
         var elem = elems[i];
-        if (elem !== undefined) {
+        if (elem !== void(0)) {
           if (func(elem)) {
             return this.erase(elem);
           }
@@ -123,7 +123,7 @@ var Drawable = _class("Drawable", {
       var elems = this._elements;
       for (var i in elems) {
         var elem = elems[i];
-        if (elem !== undefined) {
+        if (elem !== void(0)) {
           if (func(elem)) {
             rt.push(i);
           }

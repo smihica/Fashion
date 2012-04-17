@@ -10,7 +10,7 @@ var JS_CANVAS = {
 (function(prefix) {
   var Set = function(that) {
     this.items = {};
-    if (typeof that !== 'undefined')
+    if (that !== void(0))
       this.update(that);
   };
 
@@ -32,7 +32,7 @@ var JS_CANVAS = {
   };
 
   Set.prototype.contains = function(item) {
-    return typeof this.items[item.id] !== 'undefined';
+    return this.items[item.id] !== void(0);
   };
 
   Set.prototype.each = function(f) {
@@ -122,7 +122,7 @@ var JS_CANVAS = {
         tileY = (y / this.tileHeight | 0) * this.tileHeight;
     var key = this.buildTileKey(tileX, tileY);
     var tile = this.tiles[key];
-    if (typeof tile === 'undefined')
+    if (tile === void(0))
       tile = this.tiles[key] = new Tile(this, key, tileX, tileY);
     return tile;
   };

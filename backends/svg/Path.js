@@ -14,7 +14,7 @@ var Path = _class("PathSVG", {
 
     points: function(points)
     {
-      if (points !== undefined) {
+      if (points !== void(0)) {
         this._points = points;
         this._elem.setAttribute('d', points.join().replace(/,/g, ' '));
       }

@@ -16,7 +16,7 @@ var Path = _class("PathVML", {
 
     points: function(points, parent)
     {
-      if (points !== undefined) {
+      if (points !== void(0)) {
         var s = parent.size();
         var p = parent.position();
 

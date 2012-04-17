@@ -1,7 +1,7 @@
 // detect atomic or not
 var _atomic_p = function(obj) {
   var t = typeof obj;
-  return ( obj === null || obj === undefined ||
+  return ( obj === null || obj === void(0) ||
            t === 'boolean' || t === 'number' || t === 'string' );
 };
 
