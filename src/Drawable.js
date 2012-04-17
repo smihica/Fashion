@@ -49,6 +49,7 @@ var Drawable = _class("Drawable", {
           if (func(elem)) return elem;
         }
       }
+      return null;
     },
 
     collectIf: function(func) {
