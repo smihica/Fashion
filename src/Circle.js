@@ -9,7 +9,7 @@ var Circle = _class("Circle", {
   methods: {
     init: function (x, y, width, height)
     {
-      this.impl = new IMPL.Circle();
+      this.impl = new Fashion.IMPL.Circle();
       this.size({width: width, height: height});
       this.position({x: x, y: y});
     },

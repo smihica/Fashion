@@ -7,7 +7,7 @@ var Text = _class("Text", {
   methods: {
     init: function (x, y, font_size, str)
     {
-      this.impl = new IMPL.Text(str);
+      this.impl = new Fashion.IMPL.Text(str);
       this.size({font: font_size});
       this.position({x: x, y: y});
     },

@@ -11,7 +11,7 @@ var Path = _class("Path", {
   methods: {
     init: function (points)
     {
-      this.impl = new IMPL.Path();
+      this.impl = new Fashion.IMPL.Path();
       this.points(points);
     },
 

@@ -1,8 +1,9 @@
-var Fashion = (function() {
-
-  var Fashion = {};
-
+var Fashion = (function(Fashion) {
   include("conf.js");
+
+  include("util.browser.js");
+
+  var BROWSER = detectBrowser(typeof window == 'undefined' ? void(0): window);
 
   include("util.misc.js");
   include("util.error.js");
@@ -15,62 +16,53 @@ var Fashion = (function() {
   include("../backends/vml/vml.js");
   include("../backends/canvas/canvas.js");
 
-  var not_bounded = _class("NotBounded", {
-    methods: {
-      init: function()
-      {
-        _error(null,
-               'Fashion is not initialized Error',
-               'Please call Fashion.init() first. Fashion is not initialized yet.');
-      }
-    }
-  });
-
   Fashion.Util     = Util;
-  Fashion.Shape    = not_bounded;
-  Fashion.Circle   = not_bounded;
-  Fashion.Rect     = not_bounded;
-  Fashion.Path     = not_bounded;
-  Fashion.Text     = not_bounded;
-  Fashion.Drawable = not_bounded;
 
-  Fashion.init = function(priority) {
+  function unsupported() {
+    _error(null, 'Invalid Browser', 'Fashion wasn\'t supported this browser.');
+  }
 
-    var IMPL = null;
+  var dummyImpl = {
+    Shape    : unsupported,
+    Circle   : unsupported,
+    Rect     : unsupported,
+    Path     : unsupported,
+    Text     : unsupported,
+    Drawable : unsupported
+  };
 
+  Fashion.determineImplementation = function determineImplementation(priority) {
     for (var i=0, l=priority.length; i<l; i++) {
-      var target = priority[i];
-      if (target === 'SVG' && (Fashion.SVG !== null)) {
-        IMPL = Fashion.SVG;
-      } else if (target === 'VML' && (Fashion.VML !== null)) {
-        IMPL = Fashion.VML;
-      } else if (target === 'Canvas' && (Fashion.Canvas !== null)) {
-        IMPL = Fashion.Canvas;
+      var target = priority[i].toLowerCase();
+      if (target === 'svg' && (Fashion.SVG !== null)) {
+        return Fashion.SVG;
+      } else if (target === 'vml' && (Fashion.VML !== null)) {
+        return Fashion.VML;
+      } else if (target === 'canvas' && (Fashion.Canvas !== null)) {
+        return Fashion.Canvas;
       }
     }
+    return dummyImpl;
+  }
 
-    if (IMPL === null) {
-      _error(null, 'Invalid Browser', 'Fashion wasn\'t supported this browser.');
-    }
+  Fashion.IMPL = Fashion.determineImplementation(DEFAULT_PRIORITY);
 
-    include("Shape.js");
-    include("Base.js");
-
-    include("Circle.js");
-    include("Rect.js");
-    include("Path.js");
-    include("Drawable.js");
-    include("Text.js");
-
-    Fashion.Shape    = Shape;
-    Fashion.Circle   = Circle;
-    Fashion.Rect     = Rect;
-    Fashion.Path     = Path;
-    Fashion.Text     = Text;
-    Fashion.Drawable = Drawable;
-
-  };
+  include("Shape.js");
+  include("Base.js");
+ 
+  include("Circle.js");
+  include("Rect.js");
+  include("Path.js");
+  include("Drawable.js");
+  include("Text.js");
+ 
+  Fashion.Shape    = Shape;
+  Fashion.Circle   = Circle;
+  Fashion.Rect     = Rect;
+  Fashion.Path     = Path;
+  Fashion.Text     = Text;
+  Fashion.Drawable = Drawable;
 
   return Fashion;
 
-})();
+})(typeof exports === 'undefined' ? {}: exports);

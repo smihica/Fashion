@@ -19,7 +19,7 @@ var Drawable = _class("Drawable", {
       this._content_size = _clone(content_size);
       this._viewport_size = _clone(viewport_size);
 
-      this.impl = new IMPL.Drawable(target, content_size, viewport_size);
+      this.impl = new Fashion.IMPL.Drawable(target, content_size, viewport_size);
     },
 
     viewPortPosition: function()
@@ -36,40 +36,30 @@ var Drawable = _class("Drawable", {
 
     gensym: function()
     {
-      var sym = "G"+this._id_acc;
-      this._id_acc++;
+      var sym = "G" + (++this._id_acc);
       return sym;
     },
 
-    findIf: function(func) {
-      var elems = this._elements, elem, i;
-      for (i in elems) {
-        elem = elems[i];
-        if (elem !== void(0)) {
-          if (func(elem)) return elem;
-        }
+    find: function(func)
+    {
+      var elems = this._elements;
+      for (var i in elems) {
+        var elem = elems[i];
+        if (func(elem))
+          return elem;
       }
       return null;
     },
 
-    collectIf: function(func) {
-      var rt = [], elems = this._elements, elem, i;
-      for (i in elems) {
-        elem = elems[i];
-        if (elem !== void(0) && func(elem))
+    map: function(func)
+    {
+      var rt = [], elems = this._elements;
+      for (var i in elems) {
+        var elem = func(elems[o]);
+        if (elem !== void(0))
           rt.push(elem);
       }
       return rt;
-    },
-
-    exists: function(func) {
-      var elems = this._elements, elem, i;
-      for (i in elems) {
-        elem = elems[i];
-        if (elem !== void(0) && func(elem))
-          return true;
-      }
-      return false;
     },
 
     anchor: function(d)

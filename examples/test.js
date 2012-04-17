@@ -1,7 +1,6 @@
 var drawable = null;
 
 var test_init = function() {
-  Fashion.init([ 'SVG', 'Canvas', 'VML' ]);
   var c = document.getElementById('STAGE');
   drawable = new Fashion.Drawable(c, 1000, 1000);
 
