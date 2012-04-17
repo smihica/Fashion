@@ -61,7 +61,7 @@ var Drawable = _class("Drawable", {
       return rt;
     },
 
-    isExist: function(func) {
+    exists: function(func) {
       var elems = this._elements, elem, i;
       for (i in elems) {
         elem = elems[i];
