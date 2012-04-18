@@ -12,7 +12,6 @@ var Drawable = _class("Drawable", {
   },
 
   methods: {
-
     init: function(target, content_size, viewport_size)
     {
       this.target = target;
@@ -104,35 +103,6 @@ var Drawable = _class("Drawable", {
         this._numElements--;
       }
       return shape;
-    },
-
-    eraseIf: function(func) {
-      var elems = this._elements;
-      for (var i in elems) {
-        var elem = elems[i];
-        if (elem !== void(0)) {
-          if (func(elem)) {
-            return this.erase(elem);
-          }
-        }
-      }
-    },
-
-    eraseAllIf: function(func) {
-      var rt = [];
-      var elems = this._elements;
-      for (var i in elems) {
-        var elem = elems[i];
-        if (elem !== void(0)) {
-          if (func(elem)) {
-            rt.push(i);
-          }
-        }
-      }
-      for (var i=0,l=rt.length; i<l; i++) {
-        rt[i] = this.erase(elems[rt[i]])
-      }
-      return rt;
     }
   }
 });
