@@ -95,9 +95,12 @@ var Drawable = _class("Drawable", {
 
     erase: function(shape) {
       var id = shape.__id;
-      if (id !== void(0)) {
+      if (!id)
+        throw "Shape " + shape + " is not added yet"; 
+      if (id in this._elements) {
         this.impl.remove(shape.impl);
         delete this._elements[id];
+        this._elements.__id = null;
         this._numElements--;
       }
       return shape;

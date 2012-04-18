@@ -8,7 +8,7 @@ exports.group = {
     IMPL_old = Fashion.IMPL;
     Fashion.IMPL = {
       Drawable: function() {
-        this.append = function(shape) {
+        this.append = this.remove = function(shape) {
           // do nothing;
         };
       }
@@ -64,6 +64,22 @@ exports.group = {
     var shapes = [ d.draw({ a:0 }), d.draw({ a:1 }), d.draw({ a:2 }) ];
     var _shapes = d.map(function(shape) { return shape.a != 1 ? shape.a: void(0); });
     test.deepEqual(_shapes, [ 0, 2 ]);
+    test.done();
+  },
+
+  testErase: function(test) {
+    test.expect(5);
+    var d = new Fashion.Drawable();
+    var a = d.draw({ a:0 }), b = d.draw({ a:1 }), c = d.draw({ a:2 });
+    test.equals(d.numElements(), 3);
+    d.erase(a);
+    test.equals(d.numElements(), 2);
+    d.erase(a);
+    test.equals(d.numElements(), 2);
+    d.erase(b);
+    test.equals(d.numElements(), 1);
+    d.erase(c);
+    test.equals(d.numElements(), 0);
     test.done();
   }
 };
