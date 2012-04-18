@@ -5,6 +5,7 @@ var Drawable = _class("Drawable", {
     _id_acc: 0,
     _target: null,
     _elements: {},
+    _numElements: 0,
     _content_size: {},
     _viewport_size: {},
     _anchor: 'left-top'
@@ -40,6 +41,11 @@ var Drawable = _class("Drawable", {
       return sym;
     },
 
+    numElements: function()
+    {
+      return this._numElements;
+    },
+
     find: function(func)
     {
       var elems = this._elements;
@@ -72,10 +78,11 @@ var Drawable = _class("Drawable", {
     },
 
     draw: function(shape) {
+      this.impl.append(shape.impl);
       var id = this.gensym();
       this._elements[id] = shape;
       shape.__id = id;
-      this.impl.append(shape.impl);
+      this._numElements++;
       return shape;
     },
 
@@ -89,9 +96,9 @@ var Drawable = _class("Drawable", {
     erase: function(shape) {
       var id = shape.__id;
       if (id !== void(0)) {
-        this._elements[id] = void(0);
-        delete this._elements[id];
         this.impl.remove(shape.impl);
+        delete this._elements[id];
+        this._numElements--;
       }
       return shape;
     },

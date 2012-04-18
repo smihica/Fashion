@@ -27,6 +27,19 @@ exports.group = {
     test.done();
   },
 
+  testNumElements: function(test) {
+    test.expect(4);
+    var d = new Fashion.Drawable();
+    test.equals(0, d.numElements());
+    d.draw({});
+    test.equals(1, d.numElements());
+    d.draw({});
+    test.equals(2, d.numElements());
+    d.draw({});
+    test.equals(3, d.numElements());
+    test.done();
+  },
+
   testDraw: function(test) {
     test.expect(3);
     var d = new Fashion.Drawable();
