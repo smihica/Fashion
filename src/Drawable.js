@@ -55,7 +55,7 @@ var Drawable = _class("Drawable", {
     {
       var rt = [], elems = this._elements;
       for (var i in elems) {
-        var elem = func(elems[o]);
+        var elem = func(elems[i]);
         if (elem !== void(0))
           rt.push(elem);
       }
