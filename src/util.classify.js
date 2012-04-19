@@ -73,10 +73,10 @@ var _class = (function() {
     for (var i in impl.prototype) {
       if (impl.prototype.hasOwnProperty(i)) {
         if (!_class.prototype.hasOwnProperty(i)) {
-          _error(null, 'Not implemented interface Error',
-                 'The class \'' + _class['%%CLASSNAME%%'] +
-                 '\' must provide property or method \'' + i +
-                 '\' imposed from \'' + impl['%%CLASSNAME%%'] +'".');
+          throw new DeclarationError(
+              'The class \'' + _class['%%CLASSNAME%%'] +
+              '\' must provide property or method \'' + i +
+              '\' imposed by \'' + impl['%%CLASSNAME%%'] +'".');
         }
       }
     }
@@ -121,9 +121,9 @@ var _class = (function() {
           mixins = definition[i];
 
         } else {
-          _error(null, 'Invalid class definition Error',
-                 'You gave \'' + i + '\' as definition, but the _class() excepts' +
-                 ' only \'props\',\'class_props\',\'methods\',\'class_methods\',\'parent\',\'interfaces\',\'mixins\'.');
+          throw new ArgumentError(
+              'You gave \'' + i + '\' as definition, but the _class() excepts' +
+              ' only \'props\',\'class_props\',\'methods\',\'class_methods\',\'parent\',\'interfaces\',\'mixins\'.');
 
         }
       }

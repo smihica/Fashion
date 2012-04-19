@@ -1,4 +1,5 @@
-var Fashion = (function(Fashion) {
+var Fashion = (function() {
+  var Fashion = this;
   include("conf.js");
 
   include("util.browser.js");
@@ -6,6 +7,7 @@ var Fashion = (function(Fashion) {
   var BROWSER = detectBrowser(typeof window == 'undefined' ? void(0): window);
 
   include("util.misc.js");
+
   include("util.error.js");
 
   include("util.classify.js");
@@ -21,7 +23,7 @@ var Fashion = (function(Fashion) {
   Fashion.Util     = Util;
 
   function unsupported() {
-    _error(null, 'Invalid Browser', 'Fashion wasn\'t supported this browser.');
+    throw new NotSupported('Browser is not supported');
   }
 
   var dummyImpl = {
@@ -64,7 +66,5 @@ var Fashion = (function(Fashion) {
   Fashion.Path     = Path;
   Fashion.Text     = Text;
   Fashion.Drawable = Drawable;
-
-  return Fashion;
-
-})(typeof exports === 'undefined' ? {}: exports);
+  return this;
+}).call(typeof exports !== 'undefined' ? exports: {});

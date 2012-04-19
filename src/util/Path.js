@@ -4,35 +4,6 @@ var Path = (function() {
     Z:0, H:1, V:1, M:2, L:2, T:2, R:2, S:4, Q:4, C:6, A:7
   };
 
-  var first_item_was_not_an_identifier = function() {
-    return _error(null,
-                  'Invalid pointString format Error',
-                  'First item must be an identifier M,L,H,V,C,Z,T,R,S,Q,A.',
-                  true);
-  };
-
-  var notfound_such_identifier = function(atom) {
-    return _error(null,
-                  'Invalid pointString identifier Error',
-                  'Expected identifiers are M,L,H,V,C,Z,T,R,S,Q,A. but you gave "' + atom + '".',
-                  true);
-  };
-
-  var argument_length_is_not_accurate = function(last_idt, arglen, arglen_now) {
-    return _error(null,
-                  'Invalid pointString format Error',
-                  'The arguments length of the identifier \''+ last_idt +'\' is not accurate. ' +
-                  'Expected ' + arglen + ' or multiple of it,  but you gave ' + arglen_now + ' unnecessary arguments.',
-                  true);
-  };
-
-  var invalid_character_in_point_string = function() {
-    return _error(null,
-                  'Invalid pointString format Error',
-                  'Point string is not allowed except for identifier-string M,L,H,V,C,Z,T,R,S,Q,A or a Number.',
-                  true);
-  };
-
   var _Path = _class("Util.Path", {
 
     class_methods: {
@@ -44,12 +15,17 @@ var Path = (function() {
         atom = arr[0];
 
         if (!( atom.length === 1 && (x = atom.charCodeAt(0)) && 64 < x && x < 91 ))
-          throw first_item_was_not_an_identifier();
+          throw new ValueError(
+              'First item must be an identifier M,L,H,V,C,Z,T,R,S,Q,A.');
 
         set = [atom];
         last_idt = atom;
         arglen = identifierArglen[atom];
-        if ( arglen === void(0) ) throw notfound_such_identifier(atom);
+        if (arglen === void(0)) {
+          throw new NotFound(
+              'Expected identifiers are M,L,H,V,C,Z,T,R,S,Q,A. but you gave "' + atom + '".');
+        }
+        
         arglen_now = 0;
 
         for (var i=1, l=arr.length; i<l; i++) {
@@ -65,10 +41,14 @@ var Path = (function() {
               set = [atom];
               last_idt = atom;
               arglen = identifierArglen[atom];
-              if ( arglen === void(0) ) throw notfound_such_identifier(atom);
-
+              if (arglen === void(0)) {
+                throw new NotFound(
+                    'Expected identifiers are M,L,H,V,C,Z,T,R,S,Q,A. but you gave "' + atom + '".');
+              }
             } else {
-              throw argument_length_is_not_accurate(last_idt, arglen, arglen_now);
+              throw new ValueError(
+                  'The arguments length of the identifier \''+ last_idt +'\' is not accurate. ' +
+                  'Expected ' + arglen + ' or multiple of it,  but you gave ' + arglen_now + ' unnecessary arguments.');
             }
 
           } else if ((47 < x && x < 58) || x === 43 || x === 45 || x === 46) {
@@ -82,16 +62,18 @@ var Path = (function() {
 
             }
           } else {
-            throw invalid_character_in_point_string();
-
+            throw new ValueError(
+                'Point string is not allowed except for identifier-string M,L,H,V,C,Z,T,R,S,Q,A or a Number.');
           }
 
           arglen_now = set.length - 1;
-
         }
 
-        if (arglen !== arglen_now)
-          throw argument_length_is_not_accurate(last_idt, arglen, arglen_now);
+        if (arglen !== arglen_now) {
+          throw new ValueError(
+              'The arguments length of the identifier \''+ last_idt +'\' is not accurate. ' +
+              'Expected ' + arglen + ' or multiple of it,  but you gave ' + arglen_now + ' unnecessary arguments.');
+        }
 
         rt.push(set);
 

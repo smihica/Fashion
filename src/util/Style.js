@@ -153,31 +153,10 @@ var Style = (function() {
   var _Style = _class("Util.Style", {
 
     class_methods: {
-      convertStyleStringTest: function() {
-      },
-
       convertStyleString: function() {
       },
 
-      convertFillStringTest: function() {
-      },
-
       convertFillString: function() {
-      },
-
-      convertStrokeStringTest: function() {
-        var source = ["",
-                      "#CCC",
-                      " #CCC ",
-                      " #CCC 10",
-                      " #CCC 10 ",
-                      " #CCC  10 .. -..",
-                      " #CCC    100 .. -.. ---  "];
-
-        for(var i=0,l=source.length; i<l; i++) {
-          this.convertStrokeString(source[i]);
-        }
-
       },
 
       convertStrokeString: function(str) {
@@ -235,29 +214,18 @@ var Style = (function() {
 
       },
 
-      convertColorStringTest: function(str) {
-        var source = ["#CCCD",
-                      "#FFFF",
-                      "#7F7F7F00",
-                      "white",
-                      "aqua"];
-
-        for(var i=0,l=source.length; i<l; i++) {
-          console.log(this.convertColorString(source[i]));
-        }
-
-      },
-
       convertColorString:  function(str) {
         var rt = [], l = str.length, accurate_p, low, high, code;
 
         if ((code = color_code_table[str]) !== void(0)) return code;
 
-        if (l === 0 || str.charAt(0) !== '#' || !(l === 5 || (accurate_p = (l === 9)))) _error();
+        if (l === 0 || str.charAt(0) !== '#' || !(l === 5 || (accurate_p = (l === 9))))
+          throw new ValueError("Invalid color specifier: " + str);
 
         for (var i=1; i<l; i++) {
 
-          if (str.charAt(i).match(/^[0-9A-Fa-f]$/) === null) _error();
+          if (str.charAt(i).match(/^[0-9A-Fa-f]$/) === null)
+            throw new ValueError("Invalid color specifier: " + str);
 
           if (accurate_p) {
             if (i % 2 !== 0) continue;
@@ -274,14 +242,11 @@ var Style = (function() {
         return rt;
       },
 
-      checkDashString:   function(str) {
+      checkDashString: function(str) {
         var mtc = str.match(/^[\.\-\ ]+$/);
         if (mtc === null)
-          throw _error( null,
-                        'Invalid dash string format Error',
-                        "Dash string must be constructed by '.' or '-' or 'space'. but you gave " + str + ".",
-                        true );
-
+          throw new ValueError(
+              "Dash string must be constructed by '.' or '-' or 'space'. but you gave " + str + ".");
         return str;
       }
     }
