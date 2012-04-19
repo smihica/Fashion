@@ -1,9 +1,9 @@
-Fashion.SVG = (function() {
+var SVG = (function() {
 
   // checking browser.
   if ((BROWSER.identifier === 'ie' && BROWSER.version < 9 )) return null;
 
-  var SVG = {};
+  var _ = {};
 
   include("Util.js");
 
@@ -14,13 +14,13 @@ Fashion.SVG = (function() {
   include("Text.js");
   include("Drawable.js");
 
-  SVG.Util     = Util;
-  SVG.Circle   = Circle;
-  SVG.Rect     = Rect;
-  SVG.Path     = Path;
-  SVG.Text     = Text;
-  SVG.Drawable = Drawable;
+  _.Util     = Util;
+  _.Circle   = Circle;
+  _.Rect     = Rect;
+  _.Path     = Path;
+  _.Text     = Text;
+  _.Drawable = Drawable;
 
-  return SVG;
+  return _;
 
 })();

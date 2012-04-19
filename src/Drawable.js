@@ -5,6 +5,7 @@ var Drawable = _class("Drawable", {
     _id_acc: 0,
     _target: null,
     _elements: {},
+    _capturing_elements: {},
     _numElements: 0,
     _content_size: {},
     _viewport_size: {},
@@ -95,6 +96,7 @@ var Drawable = _class("Drawable", {
       var id = this.gensym();
       this._elements[id] = shape;
       shape.__id = id;
+      shape.drawable = this;
       this._numElements++;
       return shape;
     },
@@ -108,14 +110,25 @@ var Drawable = _class("Drawable", {
 
     erase: function(shape) {
       var id = shape.__id;
-      if (!id) _error("Shape NotFound", "Shape " + shape + " is not added yet");
-      if (id in this._elements) {
+      if (id && (id in this._elements)) {
+        shape.drawable = null;
+        delete shape.__id;
         this.impl.remove(shape.impl);
         delete this._elements[id];
-        this._elements.__id = null;
         this._numElements--;
+
+      } else {
+        _error("Shape NotFound", "Shape id:" + id + " is not added yet");
       }
       return shape;
+    },
+
+    captureMouse: function(shape) {
+      this.impl.captureMouse(shape.impl);
+    },
+
+    releaseMouse: function(shape) {
+      this.impl.releaseMouse(shape.impl);
     }
   }
 });

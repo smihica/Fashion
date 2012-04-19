@@ -103,12 +103,10 @@ exports.Drawable = {
   },
 
   testErase: function(test) {
-    test.expect(5);
+    test.expect(4);
     var d = new Fashion.Drawable();
     var a = d.draw({ a:0 }), b = d.draw({ a:1 }), c = d.draw({ a:2 });
     test.equals(d.numElements(), 3);
-    d.erase(a);
-    test.equals(d.numElements(), 2);
     d.erase(a);
     test.equals(d.numElements(), 2);
     d.erase(b);

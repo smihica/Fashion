@@ -1,5 +1,7 @@
 var Rect = _class("RectSVG", {
 
+  interfaces: [ShapeImpl],
+
   mixins: [Base],
 
   props : {

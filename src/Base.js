@@ -2,6 +2,7 @@ var Base = _class("Base", {
 
   props: {
     impl: null,
+    drawable: null,
     _position: {x:0, y:0},
     _size: {width:0, height:0},
     _transform: {},
@@ -160,10 +161,31 @@ var Base = _class("Base", {
       this.impl.resetStyle();
     },
 
+    captureMouse: function() {
+
+      if (!this.drawable)
+        _error("Shape is not Attached Error.",
+               "This Shape is not attached any Drawable yet.");
+
+      this.drawable.captureMouse(this);
+
+    },
+
+    releaseMouse: function() {
+
+      if (!this.drawable)
+        _error("Shape is not Attached Error.",
+               "This Shape is not attached any Drawable yet.");
+
+      this.drawable.releaseMouse(this);
+
+    },
+
     addEvent: function(evt)
     {
       this.impl.addEvent(evt);
     },
+
     removeEvent: function(evt)
     {
       this.impl.removeEvent(evt);

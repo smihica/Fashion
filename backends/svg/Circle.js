@@ -1,5 +1,7 @@
 var Circle = _class("CircleSVG", {
 
+  interfaces: [ShapeImpl],
+
   mixins: [Base],
 
   props : {

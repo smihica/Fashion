@@ -1,4 +1,4 @@
-Fashion.Canvas = null;
+var Canvas = null;
 
 /** /
 var JS_CANVAS = {

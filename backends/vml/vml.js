@@ -1,9 +1,9 @@
-Fashion.VML = (function() {
+var VML = (function() {
 
   // checking browser.
   if ((BROWSER.identifier !== 'ie' || BROWSER.version > 8 )) return null;
 
-  var VML = {};
+  var _ = {};
   var prefix = 'v';
 
   if (!window.console && DEBUG_MODE) {
@@ -29,14 +29,14 @@ Fashion.VML = (function() {
   include("Text.js");
   include("Drawable.js");
 
-  VML.Util     = Util;
-  VML.Circle   = Circle;
-  VML.Rect     = Rect;
-  VML.Path     = Path;
-  VML.Text     = Text;
-  VML.Drawable = Drawable;
-  VML.Drawable.setup();
+  _.Util     = Util;
+  _.Circle   = Circle;
+  _.Rect     = Rect;
+  _.Path     = Path;
+  _.Text     = Text;
+  _.Drawable = Drawable;
+  _.Drawable.setup();
 
-  return VML;
+  return _;
 
 })();

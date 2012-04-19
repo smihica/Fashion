@@ -1,5 +1,7 @@
 var Text = _class("TextSVG", {
 
+  interfaces: [TextImpl],
+
   mixins: [Base],
 
   props : {
@@ -24,7 +26,7 @@ var Text = _class("TextSVG", {
       this._elem.setAttribute('font-size', font_size+'px');
     },
 
-    family: function(font_family)
+    fontFamily: function(font_family)
     {
       this._elem.setAttribute('font-family', font_family);
     }

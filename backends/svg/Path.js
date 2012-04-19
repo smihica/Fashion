@@ -1,5 +1,7 @@
 var Path = _class("PathSVG", {
 
+  interfaces: [PathImpl],
+
   mixins: [Base],
 
   props : {
