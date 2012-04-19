@@ -49,21 +49,56 @@ exports.group = {
     test.done();
   },
 
-  testMap1: function(test) {
+  testEach: function(test) {
     test.expect(1);
     var d = new Fashion.Drawable();
-    var shapes = [ d.draw({}), d.draw({}), d.draw({}) ];
-    var _shapes = d.map(function(shape) { return shape; });
-    test.deepEqual(_shapes, shapes);
+    var shapes = [ d.draw({ a:0, b:'a' }), d.draw({ a:1, b:'b' }), d.draw({ a:2, b:'c' }) ];
+    var rt = '';
+    d.each(function(shape) { if (shape.a >= 1) rt += shape.b; });
+    test.equals(rt, 'bc');
     test.done();
   },
 
-  testMap2: function(test) {
-    test.expect(1);
+  testFind:  function(test) {
+    test.expect(3);
     var d = new Fashion.Drawable();
-    var shapes = [ d.draw({ a:0 }), d.draw({ a:1 }), d.draw({ a:2 }) ];
-    var _shapes = d.map(function(shape) { return shape.a != 1 ? shape.a: void(0); });
-    test.deepEqual(_shapes, [ 0, 2 ]);
+    var s1 = d.draw({ a:0, b:'a' });
+    var s2 = d.draw({ a:1, b:'b' });
+    var s3 = d.draw({ a:2, b:'c' });
+    // found
+    var _s = d.find(function(shape) { return shape.b === 'c'; });
+    test.deepEqual(s3, _s);
+    // returns first
+    _s = d.find(function(shape) { return 1 <= shape.a; });
+    test.deepEqual(s2, _s);
+    // notfound == null
+    _s = d.find(function(shape) { return 10 <= shape.a; });
+    test.equals(null, _s);
+    test.done();
+  },
+
+  testCollect: function(test) {
+    test.expect(2);
+    var d = new Fashion.Drawable();
+    var s0 = d.draw({a:0}), s1 = d.draw({a:1}), s2 = d.draw({a:2}), s3 = d.draw({a:3});
+    // get even
+    var even_shapes = d.collect(function(shape) { return (shape.a % 2) == 0; });
+    test.deepEqual(even_shapes, [s0, s2]);
+    // notfound == []
+    var shapes = d.collect(function(shape) { return (shape.a > 10); });
+    test.deepEqual(shapes, []);
+
+    test.done();
+  },
+
+  testMap:function(test) {
+    test.expect(2);
+    var d = new Fashion.Drawable();
+    var s0 = d.draw({a:0,b:'a'}), s1 = d.draw({a:1,b:'b'});
+    var s2 = d.draw({a:2,b:'c'}), s3 = d.draw({a:3,b:'d'});
+    d = d.map(function(s) { s.a += 1; return s } ).map(function(s) { s.a *= 10; s.b += "\n"; return s } );
+    test.equals(s2.a, 30);
+    test.equals(s3.b, "d\n");
     test.done();
   },
 

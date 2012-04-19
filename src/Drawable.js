@@ -45,26 +45,40 @@ var Drawable = _class("Drawable", {
       return this._numElements;
     },
 
-    find: function(func)
+    each: function(func)
     {
       var elems = this._elements;
       for (var i in elems) {
-        var elem = elems[i];
-        if (func(elem))
-          return elem;
+        if (elems.hasOwnProperty(i)) {
+          func.call(this, elems[i], i);
+        }
       }
-      return null;
+    },
+
+    find: function(func)
+    {
+      var rt = null;
+      this.each(function(elem, i) {
+        if (rt || !func.call(this, elem, i)) return;
+        rt = elem;
+      });
+      return rt;
+    },
+
+    collect: function(func)
+    {
+      var rt = [];
+      this.each(function(elem, i) {
+        if (func.call(this, elem, i)) rt.push(elem);
+      });
+      return rt;
     },
 
     map: function(func)
     {
-      var rt = [], elems = this._elements;
-      for (var i in elems) {
-        var elem = func(elems[i]);
-        if (elem !== void(0))
-          rt.push(elem);
-      }
-      return rt;
+      var elems = this._elements;
+      this.each(function(elem, i) { elems[i] = func.call(this, elem); });
+      return this;
     },
 
     anchor: function(d)
@@ -94,8 +108,7 @@ var Drawable = _class("Drawable", {
 
     erase: function(shape) {
       var id = shape.__id;
-      if (!id)
-        throw "Shape " + shape + " is not added yet"; 
+      if (!id) _error("Shape NotFound", "Shape " + shape + " is not added yet");
       if (id in this._elements) {
         this.impl.remove(shape.impl);
         delete this._elements[id];
