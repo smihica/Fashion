@@ -85,7 +85,6 @@ var _class = (function() {
   return function _class(name, definition) {
     var __class__, i, j, l, c, def, type;
 
-    var props_shared = {};
     var props = {};
     var class_props = {};
     var methods = {};
@@ -99,14 +98,8 @@ var _class = (function() {
         if (i === "props") {
           def = definition[i];
           for (j in def) {
-            if (def.hasOwnProperty(j)) {
-              // object and function are copied for each instance.
-              if (_atomic_p(def[j])) {
-                props_shared[j] = def[j];
-              } else {
-                props[j] = def[j];
-              }
-            }
+            if (def.hasOwnProperty(j))
+              props[j] = def[j];
           }
 
         } else if (i === "class_props") {
@@ -174,12 +167,6 @@ var _class = (function() {
     for (i in methods) {
       if (methods.hasOwnProperty(i)) {
         method(__class__, i, methods[i]);
-      }
-    }
-
-    for(i in props_shared) {
-      if (props_shared.hasOwnProperty(i)) {
-        __class__.prototype[i] = props_shared[i];
       }
     }
 
