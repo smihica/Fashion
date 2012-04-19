@@ -7,7 +7,9 @@ var Fashion = (function(Fashion) {
 
   include("util.misc.js");
   include("util.error.js");
+
   include("util.classify.js");
+  Fashion._class = _class;
 
   include("util/util.js");
   include("util/util.test.js");
