@@ -3,7 +3,7 @@ var Fashion = require('../fashion.js');
 (function(exports) {
 var IMPL_old = null;
 
-exports.group = {
+exports.Drawable = {
   setUp: function(callback) {
     IMPL_old = Fashion.IMPL;
     Fashion.IMPL = {
