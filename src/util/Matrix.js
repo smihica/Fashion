@@ -51,7 +51,7 @@ var Matrix = (function() {
               this.translate(t.x, t.y);
 
             } else {
-              _error('Invalid property Error.', "transform() expects 'tranlate', 'scale', 'rotate'.");
+              throw new ArgumentError("transform() expects 'tranlate', 'scale', 'rotate'.");
 
             }
           }

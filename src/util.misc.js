@@ -20,3 +20,10 @@ var _clone = function(obj) {
     return clone;
   }
 };
+
+function xparseInt(str, radix) {
+  var retval = parseInt(str, radix);
+  if (isNaN(retval))
+    throw new ValueError("Invalid numeric string: " + str);
+  return retval;
+}

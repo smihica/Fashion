@@ -56,7 +56,7 @@ var Path = _class("Path", {
         return this._points[i];
 
       } else {
-        _error(null, "Point-range Error", "There are only "+ this._points.length + " points. but you gave " + i + " .");
+        throw new RangeError("There are only "+ this._points.length + " points, " + i + "given.");
       }
     },
 
@@ -95,7 +95,8 @@ var Path = _class("Path", {
 
     applyMatrix: function(d)
     {
-      if (d === void(0)) _error(null, "Argument Error", "applyMatrix expects 1 argument at least.");
+      if (d === void(0))
+        throw new ArgumentError("applyMatrix expects 1 argument at least.");
       this._applyMatrixToPoints(d);
       this.points(this._points, true);
       return this;

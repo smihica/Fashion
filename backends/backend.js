@@ -24,7 +24,7 @@ var Backend = (function() {
   _.Canvas = Canvas;
 
   var unsupported = function () {
-    _error(null, 'Invalid Browser', 'Fashion wasn\'t supported this browser.');
+    throw new NotSupported('Browser is not supported');
   }
 
   var Dummy = {

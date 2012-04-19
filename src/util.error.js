@@ -1,28 +1,22 @@
-var _error = function(type, name, message, throwlessp) {
-  var error;
-  if (type === 'eval') {
-    error = new EvalError()
-  } else if (type === 'range') {
-    error = new RangeError()
-  } else if (type === 'reference') {
-    error = new ReferenceError()
-  } else if (type === 'syntax') {
-    error = new SyntaxError()
-  } else if (type === 'type') {
-    error = new TypeError()
-  } else if (type === 'uri') {
-    error = new URIError()
-  } else if (type === 'native') {
-    error = new NativeError()
-  } else {
-    error = new Error();
-  }
-  error.name    = name;
-  error.message = message;
-
-  if (throwlessp) {
-    return error;
-  }
-
-  throw error;
+var FashionError = this.Error = function(message) {
+  Error.apply(this, arguments);
+  if (typeof Error.captureStackTrace !== 'undefined')
+    Error.captureStackTrace(this, this.constructor);
+  this.message = message;
 };
+FashionError.prototype = new Error();
+
+function createExceptionClass(exceptionClassName) {
+  var exceptionClass = function() { FashionError.apply(this, arguments); };
+  exceptionClass.prototype = new FashionError();
+  exceptionClass.prototype.name = exceptionClassName;
+  this[exceptionClassName] = exceptionClass;
+  return exceptionClass;
+}
+var NotImplemented = createExceptionClass.call(this, 'NotImplemented');
+var ValueError = createExceptionClass.call(this, 'ValueError');
+var PropertyError = createExceptionClass.call(this, 'PropertyError');
+var NotSupported = createExceptionClass.call(this, 'NotSupported');
+var ArgumentError = createExceptionClass.call(this, 'ArgumentError');
+var NotSupported = createExceptionClass.call(this, 'NotSupported');
+var NotAttached = createExceptionClass.call(this, 'NotAttached');

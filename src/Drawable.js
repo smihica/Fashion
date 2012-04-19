@@ -110,6 +110,7 @@ var Drawable = _class("Drawable", {
 
     erase: function(shape) {
       var id = shape.__id;
+
       if (id && (id in this._elements)) {
         shape.drawable = null;
         delete shape.__id;
@@ -118,7 +119,8 @@ var Drawable = _class("Drawable", {
         this._numElements--;
 
       } else {
-        _error("Shape NotFound", "Shape id:" + id + " is not added yet");
+        throw new NotFound("Shape " + shape + " is not added yet");
+
       }
       return shape;
     },
