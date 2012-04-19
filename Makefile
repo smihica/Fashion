@@ -23,3 +23,6 @@ clean:
 
 cmp:	$(MYSRCS)
 	export REQUEST_METHOD="GET" QUERY_STRING="file=$(ROOTSRC)"; ./compile.py -c > fashion.js
+
+test:	$(MYSRCS)
+	node_modules/nodeunit/bin/nodeunit tests
