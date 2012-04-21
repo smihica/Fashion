@@ -49,6 +49,7 @@ var Stroke;
         case 2:
         case 3:
           this.initWithArguments.apply(this, arguments);
+          break;
         default:
           throw new ArgumentError("constructor expects 0, 1, 2 or 3 arguments, got " + arguments.length);
         }
