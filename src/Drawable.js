@@ -8,31 +8,33 @@ var Drawable = _class("Drawable", {
     _capturing_elements: {},
     _numElements: 0,
     _content_size: {},
-    _viewport_size: {},
     _anchor: 'left-top'
   },
 
   methods: {
-    init: function(target, content_size, viewport_size)
+    init: function(target, content_size)
     {
       this.target = target;
 
-      this._content_size = _clone(content_size);
-      this._viewport_size = _clone(viewport_size);
-
-      this.impl = new Fashion.IMPL.Drawable(target, content_size, viewport_size);
+      this._content_size = content_size ? _clone(content_size):
+                           { width: target.clientWidth,
+                             height: target.clientHeight };
+      this.impl = new Fashion.IMPL.Drawable(target, this._content_size);
     },
 
     viewPortPosition: function()
     {
+      return { x: target.scrollLeft, y: target.scrollTop };
     },
 
     viewPortSize: function()
     {
+      return { width: target.clientWidth, height: target.clientHeight };
     },
 
     contentSize: function()
     {
+      return this.impl.contentSize();
     },
 
     gensym: function()

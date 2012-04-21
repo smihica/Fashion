@@ -1,20 +1,4 @@
 var Util = _class("UtilVML", {
-
-  class_props: {
-    dashTbl : {
-      "-": "shortdash",
-      ".": "shortdot",
-      "-.": "shortdashdot",
-      "-..": "shortdashdotdot",
-      ". ": "dot",
-      "- ": "dash",
-      "--": "longdash",
-      "- .": "dashdot",
-      "--.": "longdashdot",
-      "--..": "longdashdotdot"
-    }
-  },
-
   class_methods: {
     createVmlElement: function(type, attrp) {
       var elem = document.createElement(prefix + ':' + type);
@@ -28,8 +12,8 @@ var Util = _class("UtilVML", {
         ", Dx=" + m.get(4) + ", Dy=" + m.get(5) + ", sizingmethod='auto expand')";
     },
 
-    convertStrokeDash: function(x) {
-      return (this.dashTbl[x]) || 'solid';
+    convertStrokePattern: function(pattern) {
+      return pattern.join(' ');
     },
 
     convertColorArray: function(arr) {

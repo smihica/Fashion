@@ -6,6 +6,9 @@ var Util = _class("UtilSVG", {
     createTextElement: function(str) {
       return document.createTextNode(str);
     },
+    convertStrokePattern: function(pattern) {
+      return pattern.join(' ');
+    },
     convertColorArray: function(color) {
       var r = color.r.toString(16);
       if (r.length < 2) r = '0' + r;

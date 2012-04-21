@@ -110,9 +110,9 @@ var Base = _class("Base", {
     {
       if (st !== void(0)) {
         var i;
-        var stroke={ none: true },
+        var stroke = null;
         visibility=true,
-        fill = { color: new Color(), rule: 'nonzero' },
+        fill = null;
         cursor='default',
         zIndex=0;
 

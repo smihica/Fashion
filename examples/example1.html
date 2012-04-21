@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+  <title>Fashion example 1</title>
+  <script type="text/javascript" src="../fashion.js"></script>
+  <style type="text/css">
+.stage {
+  width: 64px;
+  height: 64px;
+  border: 1px solid #888;
+}
+  </style>
+  <script type="text/javascript">
+function last(items) {
+  return items[items.length - 1];
+}
+  </script>
+</head>
+<body>
+  <div class="page">
+    <table>
+      <tbody>
+        <tr>
+          <td>Text</td>
+          <td>
+            <div class="stage"></div>
+            <script type="text/javascript">
+              var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
+              drawable.draw(new Fashion.Text(0, 12, 12, "Text"));
+            </script>
+          </td>
+        </tr>
+        <tr>
+          <td>Path - Fill</td>
+          <td>
+            <div class="stage"></div>
+            <script type="text/javascript">
+              var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
+              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 0 -10 L 5.88 8.09 -9.51 -3.09 9.51 -3.09 -5.88 8.09 Z")));
+              path.style({ stroke: null, fill: { color: new Fashion.Color("#000") } }); 
+              path.position({x: 0, y: 0});
+              path.size({width: 64, height: 64});
+            </script>
+          </td>
+        </tr>
+        <tr>
+          <td>Path - Stroke</td>
+          <td>
+            <div class="stage"></div>
+            <script type="text/javascript">
+              var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
+              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 0 -10 L 5.88 8.09 -9.51 -3.09 9.51 -3.09 -5.88 8.09 Z")));
+              path.style({ stroke: new Fashion.Stroke(new Fashion.Color("#000"), 1), fill: null }); 
+              path.position({x: 0, y: 0});
+              path.size({width: 64, height: 64});
+            </script>
+          </td>
+        </tr>
+        <tr>
+          <td>Path - Stroke Pattern</td>
+          <td>
+            <div class="stage"></div>
+            <script type="text/javascript">
+              var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
+              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 0 -10 L 5.88 8.09 -9.51 -3.09 9.51 -3.09 -5.88 8.09 Z")));
+              path.style({ stroke: new Fashion.Stroke(new Fashion.Color("#000"), 1, [1, 1]), fill: null }); 
+              path.position({x: 0, y: 0});
+              path.size({width: 64, height: 64});
+            </script>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

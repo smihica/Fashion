@@ -6,14 +6,19 @@ var Drawable = _class("DrawableSVG", {
 
   methods: {
 
-    init: function(node, width, height)
+    init: function(node, content_size)
     {
       var vg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       vg.setAttribute("version", "1.1");
-      vg.setAttribute("width", width+"px");
-      vg.setAttribute("height", height+"px");
+      vg.setAttribute("width", content_size.width + "px");
+      vg.setAttribute("height", content_size.height + "px");
       this._vg = vg;
       node.appendChild(vg);
+    },
+
+    contentSize: function()
+    {
+      return { x: this._vg.offsetWidth, y: this._vg.offsetHeight };
     },
 
     append: function(shape)

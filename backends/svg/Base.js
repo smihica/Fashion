@@ -17,7 +17,7 @@ var Base = _class("BaseSVG", {
     style: function(st)
     {
 
-      if (!st.fill.none) {
+      if (st.fill) {
         var fill = Util.convertColorArray(st.fill.color);
         fill.rule = st.fill.rule;
 
@@ -28,13 +28,13 @@ var Base = _class("BaseSVG", {
         this._elem.setAttribute('fill', 'none');
       }
 
-      if (!st.stroke.none) {
+      if (st.stroke) {
         var stroke = Util.convertColorArray(st.stroke.color);
-        stroke.width = st.stroke.width;
-
         this._elem.setAttribute('stroke', stroke.color);
         this._elem.setAttribute('stroke-opacity', stroke.opacity);
-        this._elem.setAttribute('stroke-width', stroke.width);
+        this._elem.setAttribute('stroke-width', st.stroke.width);
+        if (st.stroke.pattern && st.stroke.pattern.length > 1)
+          this._elem.setAttribute('stroke-dasharray', Util.convertStrokePattern(st.stroke.pattern));
       } else {
         this._elem.setAttribute('stroke', 'none');
       }
