@@ -112,7 +112,7 @@ var Base = _class("Base", {
         var i;
         var stroke={ none: true },
         visibility=true,
-        fill={ color: [0,0,0,255], rule: 'nonzero' },
+        fill = { color: new Color(), rule: 'nonzero' },
         cursor='default',
         zIndex=0;
 

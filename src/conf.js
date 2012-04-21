@@ -8,12 +8,12 @@ var SEPARATOR = /\s|,/;
 
 var DEFAULT_STYLE = {
   fill: {
-    color: [0, 0, 0, 0],
+    color: new Color(),
     rule: "nonzero",
     none: true
   },
   stroke: {
-    color: [0, 0, 0, 255],
+    color: new Color(),
     width: 1,
     none: false
   },

@@ -33,14 +33,13 @@ var Util = _class("UtilVML", {
     },
 
     convertColorArray: function(arr) {
-      var color = '#', R, G, B;
-      R = (new Number(arr[0])).toString(16);
-      G = (new Number(arr[1])).toString(16);
-      B = (new Number(arr[2])).toString(16);
-      if (R.length < 2) R='0'+R;
-      if (G.length < 2) G='0'+G;
-      if (B.length < 2) B='0'+B;
-      return {color: color+R+G+B, opacity: (arr[3] / 255.0)};
+      var r = color.r.toString(16);
+      if (r.length < 2) r = '0' + r;
+      var g = color.g.toString(16);
+      if (g.length < 2) g = '0' + g;
+      var b = color.b.toString(16);
+      if (b.length < 2) b = '0' + b;
+      return { color: '#' + r + g + b, opacity: (color.a / 255.0) };
     },
 
     convertPathArray: function(path) {

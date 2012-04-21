@@ -1,11 +1,8 @@
 var Fashion = (function() {
   var Fashion = this;
 
-  include("conf.js");
-
   include("util.browser.js");
-
-  var BROWSER = detectBrowser(typeof window == 'undefined' ? void(0): window);
+  BROWSER = detectBrowser(typeof window == 'undefined' ? void(0): window);
 
   include("util.misc.js");
 
@@ -21,7 +18,11 @@ var Fashion = (function() {
   include("../backends/backend.js");
   Fashion.Backend = Backend;
 
-  Fashion.IMPL = Backend.determineImplementation(DEFAULT_PRIORITY);
+  include("Color.js");
+  Fashion.Color = Color;
+
+  include("Stroke.js");
+  Fashion.Stroke = Stroke;
 
   include("Shape.js");
   include("Base.js");
@@ -38,5 +39,10 @@ var Fashion = (function() {
   Fashion.Path     = Path;
   Fashion.Text     = Text;
   Fashion.Drawable = Drawable;
+
+  include("conf.js");
+
+  Fashion.IMPL = Backend.determineImplementation(DEFAULT_PRIORITY);
+
   return this;
 }).call(typeof exports !== 'undefined' ? exports: {});

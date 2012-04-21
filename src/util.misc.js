@@ -27,3 +27,17 @@ function xparseInt(str, radix) {
     throw new ValueError("Invalid numeric string: " + str);
   return retval;
 }
+
+function _repeat(str, length) {
+  var retval = '';
+  while (length) {
+    if (length & 1)
+      retval += str;
+    str += str;
+    length >>= 1;
+  }
+}
+
+function _lpad(str, length, pad) {
+  return _repeat(pad, length - str.length) + str;
+}

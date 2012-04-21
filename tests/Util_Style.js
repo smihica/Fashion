@@ -2,31 +2,29 @@ var Fashion = require('../fashion.js');
 
 exports.Util_Style = {
   testConvertStrokeString: function(test) {
-    test.expect(8);
-    test.equal(Fashion.Util.Style.convertStrokeString(""), null);
-    test.equal(Fashion.Util.Style.convertStrokeString("none"), null);
+    test.expect(6);
     test.deepEqual(Fashion.Util.Style.convertStrokeString("#CCC"),
-                   { color: [ 204, 204, 204, null ], size: null, dash: null });
+                   { color: { r: 204, g: 204, b: 204, a: 255 }, width: null, pattern: null });
     test.deepEqual(Fashion.Util.Style.convertStrokeString(" #CCC "),
-                   { color: [ 204, 204, 204, null ], size: null, dash: null });
+                   { color: { r: 204, g: 204, b: 204, a: 255 }, width: null, pattern: null });
     test.deepEqual(Fashion.Util.Style.convertStrokeString(" #CCC 10"),
-                   { color: [ 204, 204, 204, null ], size: 10, dash: null });
+                   { color: { r: 204, g: 204, b: 204, a: 255 }, width: 10, pattern: null });
     test.deepEqual(Fashion.Util.Style.convertStrokeString(" #CCC 10 "),
-                   { color: [ 204, 204, 204, null ], size: 10, dash: null });
-    test.deepEqual(Fashion.Util.Style.convertStrokeString(" #CCC  10 .._-.."),
-                   { color: [ 204, 204, 204, null ], size: 10, dash: '.._-..' });
-    test.deepEqual(Fashion.Util.Style.convertStrokeString(" #CCC    100 .._-.._---__"),
-                   { color: [ 204, 204, 204, null ], size: 100, dash: '.._-.._---__'});
+                   { color: { r: 204, g: 204, b: 204, a: 255 }, width: 10, pattern: null });
+    test.deepEqual(Fashion.Util.Style.convertStrokeString(" #CCC  10 --__"),
+                   { color: { r: 204, g: 204, b: 204, a: 255 }, width: 10, pattern: [ 2, 2 ] });
+    test.deepEqual(Fashion.Util.Style.convertStrokeString(" #CCC    100 -_--_"),
+                   { color: { r: 204, g: 204, b: 204, a: 255 }, width: 100, pattern: [ 1, 1, 2, 1 ] });
     test.done();
   },
 
   testConvertColorString: function(test) {
     test.expect(5);
-    test.deepEqual(Fashion.Util.Style.convertColorString("#ccc"), [ 204, 204, 204, null ]);
-    test.deepEqual(Fashion.Util.Style.convertColorString("#FFFFFF"), [ 255, 255, 255, null ]);
-    test.deepEqual(Fashion.Util.Style.convertColorString("#7F7F7F00"), [ 127, 127, 127, 0 ]);
-    test.deepEqual(Fashion.Util.Style.convertColorString("white"), [ 255, 255, 255, null ]);
-    test.deepEqual(Fashion.Util.Style.convertColorString("aqua"), [ 0, 255, 255, null ]);
+    test.deepEqual(Fashion.Util.Style.convertColorString("#ccc"), { r: 204, g: 204, b: 204, a: 255 });
+    test.deepEqual(Fashion.Util.Style.convertColorString("#FFFFFF"), { r: 255, g: 255, b: 255, a: 255 });
+    test.deepEqual(Fashion.Util.Style.convertColorString("#7F7F7F00"), { r: 127, g: 127, b: 127, a: 0 });
+    test.deepEqual(Fashion.Util.Style.convertColorString("white"), { r: 255, g: 255, b: 255, a: 255 });
+    test.deepEqual(Fashion.Util.Style.convertColorString("aqua"), { r: 0, g: 255, b: 255, a: 255 });
     test.done();
   }
 };

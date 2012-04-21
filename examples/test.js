@@ -29,7 +29,7 @@ var test = function() {
     },
     stroke: {
       width: 10,
-      color: Fashion.Util.Style.convertColorString('#F00F')
+      color: Fashion.Util.Style.convertColorString('#FF0000FF')
     }
   });
 
@@ -37,7 +37,7 @@ var test = function() {
     fill: { none: true },
     stroke: {
       width: 4,
-      color: [0, 255, 0, 255]
+      color: new Fashion.Color(0, 255, 0, 255)
     }
   });
 
@@ -47,18 +47,19 @@ var test = function() {
   var stylize = function(n) {
     n.style({
       fill: {
-        color: [+((Math.random()*255).toFixed(0)),
-                +((Math.random()*255).toFixed(0)),
-                +((Math.random()*255).toFixed(0)),
-                +((Math.random()*255).toFixed(0))],
+        color: new Fashion.Color(
+          (Math.random() * 255).toFixed(0),
+          (Math.random() * 255).toFixed(0),
+          (Math.random() * 255).toFixed(0),
+          (Math.random() * 255).toFixed(0)),
         rule: ''
       },
       stroke: {
-        color: [
-            +((Math.random()*255).toFixed(0)),
-            +((Math.random()*255).toFixed(0)),
-            +((Math.random()*255).toFixed(0)),
-            +((Math.random()*255).toFixed(0)) ],
+        color: new Fashion.Color(
+          (Math.random()*255).toFixed(0),
+          (Math.random()*255).toFixed(0),
+          (Math.random()*255).toFixed(0),
+          (Math.random()*255).toFixed(0)),
         width: 2
       }
     });
