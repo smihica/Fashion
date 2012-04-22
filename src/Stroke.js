@@ -1,12 +1,10 @@
-var Stroke;
-
-(function() {
+var Stroke = (function() {
   var predefined_patterns = {
     'dotted': [1, 1],
     'dashed': [2, 2]
   };
 
-  Stroke = _class("Stroke", {
+  return _class("Stroke", {
     props: {
       color: null,
       width: null,

@@ -1,5 +1,4 @@
-var Color;
-(function() {
+var Color = (function() {
   var color_code_table = {
     aliceblue: [240, 248, 255, 255], 
     antiquewhite: [250, 235, 215, 255], 
@@ -150,7 +149,7 @@ var Color;
     yellowgreen: [154, 205, 50, 255]
   };
 
-  Color = _class('Color', {
+  return _class('Color', {
     props: {
       r: 0,
       g: 0,
