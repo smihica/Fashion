@@ -3,6 +3,8 @@ var Fashion = require('../fashion.js');
 (function(exports) {
 var IMPL_old = null;
 
+var dummyElement = { clientWidth: 0., clientHeight: 0. };
+
 exports.Drawable = {
   setUp: function(callback) {
     IMPL_old = Fashion.IMPL;
@@ -23,13 +25,13 @@ exports.Drawable = {
 
   testInstantiate: function(test) {
     test.expect(1);
-    test.ok(new Fashion.Drawable());
+    test.ok(new Fashion.Drawable(dummyElement));
     test.done();
   },
 
   testNumElements: function(test) {
     test.expect(4);
-    var d = new Fashion.Drawable();
+    var d = new Fashion.Drawable(dummyElement);
     test.equals(0, d.numElements());
     d.draw({});
     test.equals(1, d.numElements());
@@ -42,7 +44,7 @@ exports.Drawable = {
 
   testDraw: function(test) {
     test.expect(3);
-    var d = new Fashion.Drawable();
+    var d = new Fashion.Drawable(dummyElement);
     test.equals(d.draw({}).__id, 'G' + d._id_acc);
     test.equals(d.draw({}).__id, 'G' + d._id_acc);
     test.equals(d.draw({}).__id, 'G' + d._id_acc);
@@ -51,7 +53,7 @@ exports.Drawable = {
 
   testEach: function(test) {
     test.expect(1);
-    var d = new Fashion.Drawable();
+    var d = new Fashion.Drawable(dummyElement);
     var shapes = [ d.draw({ a:0, b:'a' }), d.draw({ a:1, b:'b' }), d.draw({ a:2, b:'c' }) ];
     var rt = '';
     d.each(function(shape) { if (shape.a >= 1) rt += shape.b; });
@@ -61,7 +63,7 @@ exports.Drawable = {
 
   testFind:  function(test) {
     test.expect(3);
-    var d = new Fashion.Drawable();
+    var d = new Fashion.Drawable(dummyElement);
     var s1 = d.draw({ a:0, b:'a' });
     var s2 = d.draw({ a:1, b:'b' });
     var s3 = d.draw({ a:2, b:'c' });
@@ -79,7 +81,7 @@ exports.Drawable = {
 
   testCollect: function(test) {
     test.expect(2);
-    var d = new Fashion.Drawable();
+    var d = new Fashion.Drawable(dummyElement);
     var s0 = d.draw({a:0}), s1 = d.draw({a:1}), s2 = d.draw({a:2}), s3 = d.draw({a:3});
     // get even
     var even_shapes = d.collect(function(shape) { return (shape.a % 2) == 0; });
@@ -93,7 +95,7 @@ exports.Drawable = {
 
   testMap:function(test) {
     test.expect(2);
-    var d = new Fashion.Drawable();
+    var d = new Fashion.Drawable(dummyElement);
     var s0 = d.draw({a:0,b:'a'}), s1 = d.draw({a:1,b:'b'});
     var s2 = d.draw({a:2,b:'c'}), s3 = d.draw({a:3,b:'d'});
     d = d.map(function(s) { s.a += 1; return s } ).map(function(s) { s.a *= 10; s.b += "\n"; return s } );
@@ -104,7 +106,7 @@ exports.Drawable = {
 
   testErase: function(test) {
     test.expect(4);
-    var d = new Fashion.Drawable();
+    var d = new Fashion.Drawable(dummyElement);
     var a = d.draw({ a:0 }), b = d.draw({ a:1 }), c = d.draw({ a:2 });
     test.equals(d.numElements(), 3);
     d.erase(a);
