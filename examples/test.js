@@ -2,7 +2,7 @@ var drawable = null;
 
 var test_init = function() {
   var c = document.getElementById('STAGE');
-  drawable = new Fashion.Drawable(c, 1000, 1000);
+  drawable = new Fashion.Drawable(c, { width: 1000, height: 1000 });
 
 };
 
@@ -24,9 +24,7 @@ var test = function() {
   p3.transform({translate: {x: 50, y: 90}}, {rotate: {angle: -45}}, {translate: {x: 130, y: 160}});
 
   p2.style({
-    fill: {
-      none: true
-    },
+    fill: null,
     stroke: {
       width: 10,
       color: Fashion.Util.Style.convertColorString('#FF0000FF')
@@ -34,7 +32,7 @@ var test = function() {
   });
 
   p3.style({
-    fill: { none: true },
+    fill: null,
     stroke: {
       width: 4,
       color: new Fashion.Color(0, 255, 0, 255)
