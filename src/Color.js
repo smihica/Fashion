@@ -160,7 +160,6 @@ var Color;
 
     methods: {
       init: function Color_init() {
-        Array.call(this);
         switch (arguments.length) {
         case 0:
           break;
