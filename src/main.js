@@ -24,6 +24,9 @@ var Fashion = (function() {
   include("Stroke.js");
   Fashion.Stroke = Stroke;
 
+  include("PathData.js");
+  Fashion.PathData = PathData;
+
   include("Shape.js");
   include("Base.js");
 

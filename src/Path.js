@@ -30,34 +30,16 @@ var Path = _class("Path", {
      * R   Catmull-Rom curveto*x1 y1        (x y)+
      *
      **/
-    points: function(points, copyless)
+    points: function(points)
     {
 
       if (points !== void(0)) {
-
-        this._points = (copyless) ? points : _clone(points);
+        this._points = points;
         this.impl.points(this._points, this);
         this._updateState();
-
       }
 
       return this._points;
-    },
-
-    pointAt: function(i, point, copyless)
-    {
-      if (i < this._points.length) {
-
-        if (point !== void(0)) {
-          this._points[i] = (copyless) ? point : _clone(point);
-          this.points(this._points, true);
-        }
-
-        return this._points[i];
-
-      } else {
-        throw new RangeError("There are only "+ this._points.length + " points, " + i + "given.");
-      }
     },
 
     position: function(d)
@@ -97,7 +79,7 @@ var Path = _class("Path", {
     {
       if (d === void(0))
         throw new ArgumentError("applyMatrix expects 1 argument at least.");
-      this._applyMatrixToPoints(d);
+      this._points.applyMatrix(d);
       this.points(this._points, true);
       return this;
     },
@@ -189,71 +171,6 @@ var Path = _class("Path", {
     },
 
     _applyMatrixToPoints: function(matrix) {
-
-      var idt, points, p, x, y, last_x, last_y;
-      last_x = last_y = 0;
-      points = this._points;
-
-      loop:
-      for (var i=0, l=points.length; i<l; i++) {
-
-        p = points[i];
-        idt = p[0];
-
-        switch (idt) {
-
-        case 'M':
-        case 'L':
-        case 'T':
-        case 'R':
-          x = [1]; y = [2];
-          last_x = p[1]; last_y = p[2];
-          break;
-
-        case 'C':
-          x = [1, 3, 5];
-          y = [2, 4, 6];
-          last_x = p[5]; last_y = p[6];
-          break;
-
-        case 'Z':
-          continue loop;
-
-        case 'H':
-          x = [1]; y = [0];
-          last_x = p[1];
-          break;
-
-        case 'V':
-          x = [0]; y = [1];
-          last_y = p[1];
-          break;
-
-        case 'S':
-        case 'Q':
-          x = [1, 3];
-          y = [2, 4];
-          last_x = p[3]; last_y = p[4];
-          break;
-
-        case 'A':
-          x = [1, 6];
-          y = [2, 7];
-          last_x = p[6]; last_y = p[7];
-          break;
-        }
-
-        for (var j=0, m=x.length; j<m; j++) {
-          var x_idx = x[j]; var y_idx = y[j];
-
-          p[x_idx] = matrix.x((x_idx) ? p[x_idx] : last_x,
-                              (y_idx) ? p[y_idx] : last_y);
-
-          p[y_idx] = matrix.y((x_idx) ? p[x_idx] : last_x,
-                              (y_idx) ? p[y_idx] : last_y);
-
-        }
-      }
     }
   }
 });

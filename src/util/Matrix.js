@@ -111,6 +111,11 @@ var Matrix = (function() {
         return (x * this.b) + (y * this.d) + this.f;
       },
 
+      apply: function(p) {
+        return { x: (p.x * this.a) + (p.y * this.c) + this.e,
+                 y: (p.x * this.b) + (p.y * this.d) + this.f };
+      },
+
       get: function (i) {
         return +this[String.fromCharCode(97 + i)].toFixed(FLOAT_ACCURACY);
       },
