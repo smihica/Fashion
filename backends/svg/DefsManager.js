@@ -86,7 +86,6 @@ var DefsManager = (function() {
         if (!serializer)
           throw new NotSupported(className + " is not supported by SVG backend");
         var xml = serializer(def);
-        console.log(xml);
         var n = this.nodes[xml];
         if (!n) {
           var parser = new DOMParser();
