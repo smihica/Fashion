@@ -147,11 +147,16 @@ var Base = _class("Base", {
           zIndex: zIndex
         };
 
-        this.impl.style(this._style);
-
+        if (this.drawable)
+          this.impl.style(this._style);
       }
 
       return this._style;
+    },
+
+    attachTo: function(drawable) {
+      this.drawable = drawable;
+      this.impl.style(this._style);
     },
 
     addStyle: function()

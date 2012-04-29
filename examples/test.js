@@ -44,22 +44,18 @@ var test = function() {
 
   var stylize = function(n) {
     n.style({
-      fill: {
-        color: new Fashion.Color(
+      fill: new Fashion.FloodFill(new Fashion.Color(
           (Math.random() * 255).toFixed(0),
           (Math.random() * 255).toFixed(0),
           (Math.random() * 255).toFixed(0),
-          (Math.random() * 255).toFixed(0)),
-        rule: ''
-      },
-      stroke: {
-        color: new Fashion.Color(
-          (Math.random()*255).toFixed(0),
-          (Math.random()*255).toFixed(0),
-          (Math.random()*255).toFixed(0),
-          (Math.random()*255).toFixed(0)),
-        width: 2
-      }
+          (Math.random() * 255).toFixed(0))),
+      stroke: new Fashion.Stroke(
+          new Fashion.Color(
+            (Math.random()*255).toFixed(0),
+            (Math.random()*255).toFixed(0),
+            (Math.random()*255).toFixed(0),
+            (Math.random()*255).toFixed(0)),
+          2)
     });
   };
 

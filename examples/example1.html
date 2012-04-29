@@ -27,20 +27,39 @@ function last(items) {
             <div class="stage"></div>
             <script type="text/javascript">
               var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
-              drawable.draw(new Fashion.Text(0, 12, 12, "Text"));
+              drawable.draw(new Fashion.Text(0, 12, 12, "Text")).style({ fill: new Fashion.FloodFill(new Fashion.Color("#000")) });
             </script>
           </td>
         </tr>
         <tr>
-          <td>Path - Fill</td>
+          <td>Path - FloodFill</td>
           <td>
             <div class="stage"></div>
             <script type="text/javascript">
               var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
-              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 0 -10 L 5.88 8.09 -9.51 -3.09 9.51 -3.09 -5.88 8.09 Z")));
-              path.style({ stroke: null, fill: { color: new Fashion.Color("#000") } }); 
-              path.position({x: 0, y: 0});
-              path.size({width: 64, height: 64});
+              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 32 0 L 51.72 60.54 0 23.03 63 23.03 12.27 60.54 Z")));
+              path.style({ stroke: null, fill: new Fashion.FloodFill(new Fashion.Color("#fc0")) }); 
+            </script>
+          </td>
+        </tr>
+        <tr>
+          <td>Path - LinearGradientFill</td>
+          <td>
+            <div class="stage"></div>
+            <script type="text/javascript">
+              var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
+              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 32 0 L 51.72 60.54 0 23.03 63 23.03 12.27 60.54 Z")));
+              path.style({ stroke: null, fill: new Fashion.LinearGradientFill([[0, new Fashion.Color("#fc0")], [1, new Fashion.Color("#fff")]], .125) }); 
+            </script>
+          </td>
+        </tr>
+          <td>Path - RadialGradientFill</td>
+          <td>
+            <div class="stage"></div>
+            <script type="text/javascript">
+              var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
+              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 32 0 L 51.72 60.54 0 23.03 63 23.03 12.27 60.54 Z")));
+              path.style({ stroke: null, fill: new Fashion.RadialGradientFill([[0, new Fashion.Color("#fc0")], [1, new Fashion.Color("#fff")]], { x: "50%", y: "50%" }) }); 
             </script>
           </td>
         </tr>
@@ -50,10 +69,8 @@ function last(items) {
             <div class="stage"></div>
             <script type="text/javascript">
               var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
-              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 0 -10 L 5.88 8.09 -9.51 -3.09 9.51 -3.09 -5.88 8.09 Z")));
+              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 32 0 L 51.72 60.54 0 23.03 63 23.03 12.27 60.54 Z")));
               path.style({ stroke: new Fashion.Stroke(new Fashion.Color("#000"), 1), fill: null }); 
-              path.position({x: 0, y: 0});
-              path.size({width: 64, height: 64});
             </script>
           </td>
         </tr>
@@ -63,10 +80,8 @@ function last(items) {
             <div class="stage"></div>
             <script type="text/javascript">
               var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
-              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 0 -10 L 5.88 8.09 -9.51 -3.09 9.51 -3.09 -5.88 8.09 Z")));
+              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 32 0 L 51.72 60.54 0 23.03 63 23.03 12.27 60.54 Z")));
               path.style({ stroke: new Fashion.Stroke(new Fashion.Color("#000"), 1, [1, 1]), fill: null }); 
-              path.position({x: 0, y: 0});
-              path.size({width: 64, height: 64});
             </script>
           </td>
         </tr>

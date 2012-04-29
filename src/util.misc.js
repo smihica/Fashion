@@ -36,6 +36,7 @@ function _repeat(str, length) {
     str += str;
     length >>= 1;
   }
+  return retval;
 }
 
 function _lpad(str, length, pad) {

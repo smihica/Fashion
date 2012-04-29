@@ -209,12 +209,12 @@ var Color = (function() {
             a !== null ? a: this.a);
       },
 
-      toString: function() {
+      toString: function(without_alpha) {
         return '#' + _lpad(this.r.toString(16), 2, '0')
                    + _lpad(this.g.toString(16), 2, '0')
                    + _lpad(this.b.toString(16), 2, '0')
-                   + (this.a !== null ? _lpad(this.a.toString(16), 2, '0'):
-                                        '');
+                   + (this.a !== null && !without_alpha ?
+                      _lpad(this.a.toString(16), 2, '0'): '');
       },
 
       valueOf: function() {

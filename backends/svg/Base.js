@@ -1,6 +1,8 @@
 var Base = _class("BaseSVG", {
 
-  props : {},
+  props : {
+    drawable: null,
+  },
 
   methods: {
 
@@ -16,29 +18,28 @@ var Base = _class("BaseSVG", {
 
     style: function(st)
     {
-
       if (st.fill) {
-        var fill = Util.convertColorArray(st.fill.color);
-        fill.rule = st.fill.rule;
-
-        this._elem.setAttribute('fill', fill.color);
-        this._elem.setAttribute('fill-opacity', fill.opacity);
-        this._elem.setAttribute('fill-rule', fill.rule);
+        if (st.fill instanceof FloodFill) {
+          this._elem.setAttribute('fill', st.fill.color.toString(true));
+          this._elem.setAttribute('fill-opacity', st.fill.color.a / 255.0);
+        } else if (st.fill instanceof LinearGradientFill
+            || st.fill instanceof RadialGradientFill) {
+          var n = this.drawable._defsManager.get(st.fill)
+          this._elem.setAttribute('fill', "url(#" + n.getAttribute("id") + ")");
+        }
       } else {
         this._elem.setAttribute('fill', 'none');
       }
 
       if (st.stroke) {
-        var stroke = Util.convertColorArray(st.stroke.color);
-        this._elem.setAttribute('stroke', stroke.color);
-        this._elem.setAttribute('stroke-opacity', stroke.opacity);
+        this._elem.setAttribute('stroke', st.stroke.color.toString(true));
+        this._elem.setAttribute('stroke-opacity', st.stroke.color.a / 255.0);
         this._elem.setAttribute('stroke-width', st.stroke.width);
         if (st.stroke.pattern && st.stroke.pattern.length > 1)
-          this._elem.setAttribute('stroke-dasharray', Util.convertStrokePattern(st.stroke.pattern));
+          this._elem.setAttribute('stroke-dasharray', st.stroke.pattern.join(' '));
       } else {
         this._elem.setAttribute('stroke', 'none');
       }
-      //stroke.dasharray  = Util.convertStrokeDash(st.stroke.dash);
       var visibility = st.visibility;
       var cursor = st.cursor;
 
@@ -48,7 +49,6 @@ var Base = _class("BaseSVG", {
         this._elem.setAttribute('z-index', 0);
       }
 
-      //this._elem.setAttribute('stroke-dasharray', stroke.dasharray);
       this._elem.style.display = visibility ? 'block' : 'none';
       this._elem.style.cursor  = cursor;
 
@@ -84,3 +84,7 @@ var Base = _class("BaseSVG", {
 
   }
 });
+
+/*
+ * vim: sts=2 sw=2 ts=2 et
+ */

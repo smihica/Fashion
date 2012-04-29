@@ -98,7 +98,7 @@ var Drawable = _class("Drawable", {
       var id = this.gensym();
       this._elements[id] = shape;
       shape.__id = id;
-      shape.drawable = this;
+      shape.attachTo(this);
       this._numElements++;
       return shape;
     },

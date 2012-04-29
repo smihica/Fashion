@@ -24,6 +24,14 @@ var Fashion = (function() {
   include("Stroke.js");
   Fashion.Stroke = Stroke;
 
+  include("Fill.js");
+  Fashion.Fill = Fill;
+  Fashion.FloodFill = FloodFill;
+  Fashion.GradientFill = GradientFill;
+  Fashion.LinearGradientFill = LinearGradientFill;
+  Fashion.RadialGradientFill = RadialGradientFill;
+  Fashion.ImageTileFill = ImageTileFill;
+
   include("PathData.js");
   Fashion.PathData = PathData;
 
