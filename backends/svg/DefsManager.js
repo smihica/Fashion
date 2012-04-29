@@ -70,11 +70,14 @@ var DefsManager = (function() {
     methods: {
       init: function(node) {
         this.node = node;
-        this.seq = 0;
       },
 
       nextId: function() {
-        return "__svg__def" + (++this.seq);
+        var id;
+        do {
+          id = "__svg__def" + (Math.random() * 2147483648 | 0);
+        } while (this.node.ownerDocument.getElementById(id));
+        return id;
       },
 
       get: function(def) {
