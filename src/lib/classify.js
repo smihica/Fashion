@@ -3,7 +3,7 @@ var _class = (function() {
   var CLASS_RELATIONSHIP = [[Object, null]];
 
   function get_parent(_class) {
-    for (var i=0,l=CLASS_RELATIONSHIP.length;i<l;i++) {
+    for (var i = 0, l = CLASS_RELATIONSHIP.length; i < l; i++) {
       var rel = CLASS_RELATIONSHIP[i];
       if (rel[0] === _class) return rel[1];
     }
@@ -53,8 +53,10 @@ var _class = (function() {
 
   function mixin(_class, include) {
     var incproto = include.prototype;
-    for(i in incproto) {
-      if (i !== "__super__" && i !== "constructor" && i !=="init") {
+    for (var i in incproto) {
+      if (i == 'init') {
+        _class.prototype['init%%' + include['%%CLASSNAME%%']] = incproto[i];
+      } else if (i !== "__super__" && i !== "constructor") {
         _class.prototype[i] = incproto[i];
       }
     }
@@ -126,23 +128,13 @@ var _class = (function() {
       }
     }
 
-    var init = methods["init"];
-
-    if (init) {
-      __class__ = function() {
-        __class__['%%INIT_INSTANCE_ORIGN_PROPS'](this);
-        init.apply(this, arguments);
-      };
-
-    } else {
-      __class__ = function(arg){
-        __class__['%%INIT_INSTANCE_ORIGN_PROPS'](this);
-        if (arg) {
-          _clone(arg, this);
-        }
-      };
-
-    }
+    __class__ = function() {
+      __class__['%%INIT_INSTANCE_ORIGN_PROPS'](this);
+      if (this.init)
+        this.init.apply(this, arguments);
+      else
+        _clone(arg, this); 
+    };
 
     l = 0;
     for (p in props) {
@@ -160,7 +152,7 @@ var _class = (function() {
 
     inherits(__class__, parent);
 
-    for(j=0, l=mixins.length; j<l; j++) {
+    for (j = 0, l = mixins.length; j < l; j++) {
       mixin(__class__, mixins[j]);
     }
 
@@ -192,3 +184,6 @@ var _class = (function() {
   };
 
 })();
+/*
+ * vim: sts=2 sw=2 ts=2 et
+ */
