@@ -54,10 +54,8 @@ var _class = (function() {
   var mixin = function(_class, include) {
     var incproto = include.prototype;
     for(i in incproto) {
-      if (incproto.hasOwnProperty(i)) {
-        if (i !== "__super__" && i !== "constructor" && i !=="init") {
-          _class.prototype[i] = incproto[i];
-        }
+      if (i !== "__super__" && i !== "constructor" && i !=="init") {
+        _class.prototype[i] = incproto[i];
       }
     }
 
@@ -94,38 +92,35 @@ var _class = (function() {
     var interfaces = [];
 
     for(i in definition) {
-      if (definition.hasOwnProperty(i)) {
-        if (i === "props") {
-          def = definition[i];
-          for (j in def) {
-            if (def.hasOwnProperty(j))
-              props[j] = def[j];
-          }
-
-        } else if (i === "class_props") {
-          class_props = definition[i];
-
-        } else if (i === "methods") {
-          methods = definition[i];
-
-        } else if (i === "class_methods") {
-          class_methods = definition[i];
-
-        } else if (i === "parent") {
-          parent = definition[i];
-
-        } else if (i === "interfaces") {
-          interfaces = definition[i];
-
-        } else if (i === "mixins") {
-          mixins = definition[i];
-
-        } else {
-          throw new ArgumentError(
-              'You gave \'' + i + '\' as definition, but the _class() excepts' +
-              ' only \'props\',\'class_props\',\'methods\',\'class_methods\',\'parent\',\'interfaces\',\'mixins\'.');
-
+      if (i === "props") {
+        def = definition[i];
+        for (j in def) {
+          if (def.hasOwnProperty(j))
+            props[j] = def[j];
         }
+      } else if (i === "class_props") {
+        class_props = definition[i];
+
+      } else if (i === "methods") {
+        methods = definition[i];
+
+      } else if (i === "class_methods") {
+        class_methods = definition[i];
+
+      } else if (i === "parent") {
+        parent = definition[i];
+
+      } else if (i === "interfaces") {
+        interfaces = definition[i];
+
+      } else if (i === "mixins") {
+        mixins = definition[i];
+
+      } else {
+        throw new ArgumentError(
+            'You gave \'' + i + '\' as definition, but the _class() excepts' +
+            ' only \'props\',\'class_props\',\'methods\',\'class_methods\',\'parent\',\'interfaces\',\'mixins\'.');
+
       }
     }
 
