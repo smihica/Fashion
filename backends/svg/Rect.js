@@ -4,10 +4,6 @@ var Rect = _class("RectSVG", {
 
   mixins: [Base],
 
-  props : {
-    _elem: null
-  },
-
   methods: {
     init: function()
     {

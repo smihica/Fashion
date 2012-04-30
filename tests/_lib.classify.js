@@ -1,6 +1,6 @@
 var Fashion = require('../fashion.js');
 
-var Worker = Fashion._class("Worker", {
+var Worker = Fashion._lib._class("Worker", {
   props: {
     workedTime: 0
   },
@@ -9,7 +9,7 @@ var Worker = Fashion._class("Worker", {
   }
 });
 
-var Parttimer = Fashion._class("Parttimer", {
+var Parttimer = Fashion._lib._class("Parttimer", {
   parent: Worker,
   props: {
     hourlyPay: 800
@@ -21,7 +21,7 @@ var Parttimer = Fashion._class("Parttimer", {
   }
 });
 
-var Cook = Fashion._class("Cook", {
+var Cook = Fashion._lib._class("Cook", {
   parent: Parttimer,
   props: {
     advantage: 50
@@ -34,12 +34,12 @@ var Cook = Fashion._class("Cook", {
   }
 });
 
-var Waiter = Fashion._class("Waiter", {
+var Waiter = Fashion._lib._class("Waiter", {
   parent: Parttimer
 });
 
 
-exports._class = {
+exports._lib_class = {
   testPrototypeChain: function(test) {
     test.expect(11);
 

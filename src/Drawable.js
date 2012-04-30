@@ -121,7 +121,7 @@ var Drawable = _class("Drawable", {
         this._numElements--;
 
       } else {
-        throw new NotFound("Shape " + shape + " is not added yet");
+        throw new NotSupported("Shape " + shape + " is not added yet");
 
       }
       return shape;

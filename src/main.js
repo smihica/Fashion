@@ -1,18 +1,10 @@
 var Fashion = (function() {
   var Fashion = this;
 
-  include("util.browser.js");
-  BROWSER = detectBrowser(typeof window == 'undefined' ? void(0): window);
-
-  include("util.misc.js");
-
-  include("util.error.js");
-
-  include("util.classify.js");
-  Fashion._class = _class;
+  include("lib/lib.js");
+  Fashion._lib = _lib;
 
   include("util/util.js");
-  include("util/util.test.js");
   Fashion.Util = Util;
 
   include("../backends/backend.js");
@@ -34,6 +26,12 @@ var Fashion = (function() {
 
   include("PathData.js");
   Fashion.PathData = PathData;
+
+  include("MouseEvt.js");
+  Fashion.MouseEvt = MouseEvt;
+
+  include("MouseEventsHandler.js");
+  Fashion.MouseEventsHandler = MouseEventsHandler;
 
   include("Shape.js");
   include("Base.js");

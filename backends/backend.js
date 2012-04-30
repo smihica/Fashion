@@ -2,17 +2,19 @@ var Backend = (function() {
 
   var _ = {};
 
+  include("MouseEvtImpl.js");
   include("BaseImpl.js");
   include("DrawableImpl.js");
   include("ShapeImpl.js");
   include("PathImpl.js");
   include("TextImpl.js");
 
-  _.BaseImpl     = BaseImpl;
-  _.DrawableImpl = DrawableImpl;
-  _.ShapeImpl    = ShapeImpl;
-  _.PathImpl     = PathImpl;
-  _.TextImpl     = TextImpl;
+  _.MouseEvtImpl   = MouseEvtImpl;
+  _.BaseImpl       = BaseImpl;
+  _.DrawableImpl   = DrawableImpl;
+  _.ShapeImpl      = ShapeImpl;
+  _.PathImpl       = PathImpl;
+  _.TextImpl       = TextImpl;
 
   include("svg/svg.js");
   _.SVG = SVG;

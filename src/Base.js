@@ -6,7 +6,8 @@ var Base = _class("Base", {
     _position: {x:0, y:0},
     _size: {width:0, height:0},
     _transform: {},
-    _style: {}
+    _style: {},
+    handlers: null
   },
 
   methods: {
@@ -96,10 +97,6 @@ var Base = _class("Base", {
 
     },
 
-    addTransform: function()
-    {
-    },
-
     resetTransform: function()
     {
       this._transform = {};
@@ -138,7 +135,6 @@ var Base = _class("Base", {
           }
         }
 
-
         this._style = {
           stroke: stroke,
           visibility: visibility,
@@ -157,10 +153,6 @@ var Base = _class("Base", {
     attachTo: function(drawable) {
       this.drawable = drawable;
       this.impl.style(this._style);
-    },
-
-    addStyle: function()
-    {
     },
 
     resetStyle: function()
@@ -187,14 +179,19 @@ var Base = _class("Base", {
 
     },
 
-    addEvent: function(evt)
+    addEvent: function(h)
     {
-      this.impl.addEvent(evt);
+      if (this.handlers === null) {
+        this.handlers = new MouseEventsHandler(this);
+        this.impl.holdEventsHandler(this.handlers);
+      }
+      this.handlers.add(h);
     },
 
-    removeEvent: function(evt)
+    removeEvent: function()
     {
-      this.impl.removeEvent(evt);
+      if (this.handlers === null) throw new NotSupported("EventsHandler has not initialized in this shape.");
+      this.handlers.remove.apply(this.handlers, arguments);
     }
   }
 });

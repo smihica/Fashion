@@ -4,10 +4,6 @@ var Text = _class("TextSVG", {
 
   mixins: [Base],
 
-  props : {
-    _elem: null
-  },
-
   methods: {
     init: function(str)
     {

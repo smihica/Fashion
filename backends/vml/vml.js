@@ -21,7 +21,7 @@ var VML = (function() {
   }
 
   include("Util.js");
-
+  include("MouseEvt.js");
   include("Base.js");
   include("Circle.js");
   include("Rect.js");
@@ -29,12 +29,13 @@ var VML = (function() {
   include("Text.js");
   include("Drawable.js");
 
-  _.Util     = Util;
-  _.Circle   = Circle;
-  _.Rect     = Rect;
-  _.Path     = Path;
-  _.Text     = Text;
-  _.Drawable = Drawable;
+  _.Util       = Util;
+  _.MouseEvent = MouseEvent;
+  _.Circle     = Circle;
+  _.Rect       = Rect;
+  _.Path       = Path;
+  _.Text       = Text;
+  _.Drawable   = Drawable;
   _.Drawable.setup();
 
   return _;

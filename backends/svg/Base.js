@@ -1,7 +1,11 @@
 var Base = _class("BaseSVG", {
 
+  interfaces: [BaseImpl],
+
   props : {
+    handler: null,
     drawable: null,
+    _elem: null
   },
 
   methods: {
@@ -59,29 +63,37 @@ var Base = _class("BaseSVG", {
       this.style(DEFAULT_STYLE);
     },
 
-
-    // !!!!!!!!!! TEMP implement. !!!!!!!!!!
-    addEvent: function(evt)
+    holdEventsHandler: function(handler)
     {
-      for (i in evt) {
-        if (evt.hasOwnProperty(i)) {
-          if (i === 'mouseover' || i === 'mouseout' || i === 'click' ) {
-            this._elem.addEventListener(i, evt[i], false);
+      var self = this;
+      if (this.handler === null) {
+        var funcs = new MultipleKeyHash();
+        this.handler = handler;
+        this.handler.holdTrigger('shape-impl', {
+          add:    function(type, raw) {
+            var wrapped = function(dom_evt){
+              var evt = new MouseEvt(dom_evt, self);
+              return raw.call(self, evt);
+            };
+            funcs.put(raw, wrapped);
+            self._elem.addEventListener(type, wrapped, false);
+          },
+          remove: function(type, raw) {
+            self._elem.removeEventListener(type, funcs.pop(raw), false);
           }
-        }
+        });
+      } else {
+        throw new AlreadyExists("impl already has a events handler.");
       }
     },
-    removeEvent: function(evt)
-    {
-      for (i in evt) {
-        if (evt.hasOwnProperty(i))
-          if (i === 'mouseover' || i === 'mouseout' || i === 'click' )
-            this._elem.removeEventListener(i, evt[i], false);
+
+    releaseEventsHandler: function () {
+      if (this.handler !== null) {
+        this.handler.releaseTriger('shape-impl');
+      } else {
+        throw new NotFound("events handler is not exist yet.");
       }
     }
-    //////////////////////////////////////////
-
-
   }
 });
 

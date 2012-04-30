@@ -138,8 +138,11 @@ var _class = (function() {
       };
 
     } else {
-      __class__ = function(){
+      __class__ = function(arg){
         __class__['%%INIT_INSTANCE_ORIGN_PROPS'](this);
+        if (arg) {
+          _clone(arg, this);
+        }
       };
 
     }

@@ -9,11 +9,10 @@ var Shape = _class("Shape", {
     displaySize:      function()  {},
     hitTest:          function(d) {},
     transform:        function(d) {},
-    addTransform:     function(d) {},
     resetTransform:   function()  {},
     style:            function(d) {},
-    addStyle:         function()  {},
+    resetStyle:       function()  {},
     addEvent:         function(e) {},
-    resetStyle:       function()  {}
+    removeEvent:      function(e) {}
   }
 });
