@@ -53,6 +53,7 @@ function last(items) {
             </script>
           </td>
         </tr>
+        <tr>
           <td>Path - RadialGradientFill</td>
           <td>
             <div class="stage"></div>
@@ -60,6 +61,17 @@ function last(items) {
               var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
               var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 32 0 L 51.72 60.54 0 23.03 63 23.03 12.27 60.54 Z")));
               path.style({ stroke: null, fill: new Fashion.RadialGradientFill([[0, new Fashion.Color("#fc0")], [1, new Fashion.Color("#fff")]], { x: "50%", y: "50%" }) }); 
+            </script>
+          </td>
+        </tr>
+        <tr>
+          <td>Path - ImageTileFill</td>
+          <td>
+            <div class="stage"></div>
+            <script type="text/javascript">
+              var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
+              var path = drawable.draw(new Fashion.Path(Fashion.Util.Path.convertPathString("M 32 0 L 51.72 60.54 0 23.03 63 23.03 12.27 60.54 Z")));
+              path.style({ stroke: null, fill: new Fashion.ImageTileFill(new Fashion.ImageData("pattern.gif")) }); 
             </script>
           </td>
         </tr>

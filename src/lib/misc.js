@@ -57,3 +57,32 @@ function _repeat(str, length) {
 function _lpad(str, length, pad) {
   return _repeat(pad, length - str.length) + str;
 };
+
+function _bindEvent(target, type, f) {
+  if (typeof BROWSER == 'undefined')
+    return;
+
+  if (BROWSER.identifier == 'ie' && BROWSER.version < 9)
+    target.attachEvent('on' + type, f);
+  else
+    target.addEventListener(type, f, false);
+}
+
+function _unbindEvent(target, type, f) {
+  if (typeof BROWSER == 'undefined')
+    return;
+
+  if (BROWSER.identifier == 'ie' && BROWSER.version < 9)
+    target.detachEvent('on' + type, f);
+  else
+    target.removeEventListener(type, f, false);
+}
+
+var _escapeXMLSpecialChars = (function () {
+  var specials = new RegExp("[<>&'\"]"),
+      map = ['', '&lt;', '&gt;', '&amp;', '&apos;', '&quot;', ''];
+  return function (str) {
+    return str.replace(specials, function(x) { return map[special.source.indexOf(x)] });
+  };
+})();
+

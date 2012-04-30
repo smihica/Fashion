@@ -117,13 +117,13 @@ var Base = _class("Base", {
           if (st.hasOwnProperty(i)) {
             switch(i) {
             case 'stroke':
-              stroke = _clone(st[i]);
+              stroke = st[i];
               break;
             case 'visibility':
               visibility = st[i];
               break;
             case 'fill':
-              fill = _clone(st[i]);
+              fill = st[i];
               break;
             case 'cursor':
               cursor = st[i];

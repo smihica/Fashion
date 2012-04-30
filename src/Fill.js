@@ -66,13 +66,12 @@ var ImageTileFill = _class("ImageTileFill", {
 
   props: {
     url: null,
-    width: { x: 0, y: 0 }
+    imageData: null
   },
 
   methods: {
-    init: function(url) {
-      this.__super__().init.call(this);
-      this.url = url;
+    init: function(imageData) {
+      this.imageData = imageData;
     }
   }
 });

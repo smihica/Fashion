@@ -1,3 +1,48 @@
+function createForeignNode(xml) {
+  return new DOMParser().parseFromString(
+    '<?xml version="1.0" ?>'
+    + '<svg xmlns="' + SVG_NAMESPACE + '" '
+    + 'xmlns:xlink="' + XLINK_NAMESPACE + '">'
+    + xml + '</svg>', "text/xml").documentElement.firstChild;
+}
+
+var Def = _class('Def', {
+  props: {
+    manager: null,
+    id: null,
+    node: null,
+    xml: null,
+    refcount: 1
+  },
+
+  methods: {
+    init: function(manager, node, xml, id) {
+      this.manager = manager;
+      this.node = node;
+      this.xml = xml;
+      this.id = id;
+    },
+
+    dispose: function() {
+      if (this.manager)
+        this.manager.remove(this);
+      this.manager = null;
+      this.xml = null;
+      this.node = null;
+      this.id = null;
+    },
+
+    addRef: function() {
+      ++this.refcount;
+    },
+
+    delRef: function() {
+      if (--this.refcount <= 0)
+        this.dispose();
+    }
+  }
+});
+
 var DefsManager = (function() {
   var serializers = {
     LinearGradientFill: function(obj) {
@@ -21,8 +66,8 @@ var DefsManager = (function() {
       }
       var v2x = vx / 2 + .5, v2y = vy / 2 + .5;
       var v1x = -v2x + 1, v1y = -v2y + 1;
-      var retval = [
-        '<', 'linearGradient',
+      var chunks = [
+        '<linearGradient',
         ' x1="', v1x * 100, '%"',
         ' y1="', v1y * 100, '%"',
         ' x2="', v2x * 100, '%"',
@@ -31,40 +76,57 @@ var DefsManager = (function() {
       ];
       var colors = obj.colors;
       for (var i = 0; i < colors.length; i++) {
-        retval.push('<', 'stop',
-                    ' offset="', colors[i][0] * 100, '"',
+        chunks.push('<stop offset="', colors[i][0] * 100, '"',
                     ' stop-color="', colors[i][1].toString(true), '"',
                     ' stop-opacity="', colors[i][1].a / 255.0, '"',
                     ' />');
       }
-      retval.push('</', 'linearGradient', '>');
-      return retval.join('');
+      chunks.push('</linearGradient>');
+      return [ chunks.join(''), null ];
     },
     RadialGradientFill: function(obj) {
-      var retval = [
-        '<', 'radialGradient',
-        ' cx="50%" cy="50%" r="50%"',
+      var chunks = [
+        '<radialGradient cx="50%" cy="50%" r="50%"',
         ' fx="', obj.focus.x, '"',
         ' fy="', obj.focus.y, '"',
         ' gradientUnits="objectBoundingBox">'
       ];
       var colors = obj.colors;
       for (var i = 0; i < colors.length; i++) {
-        retval.push('<', 'stop',
-                    ' offset="', colors[i][0] * 100, '"',
+        chunks.push('<stop offset="', colors[i][0] * 100, '"',
                     ' stop-color="', colors[i][1].toString(true), '"',
                     ' stop-opacity="', colors[i][1].a / 255.0, '"',
                     ' />');
       }
-      retval.push('</', 'radialGradient', '>');
-      return retval.join('');
+      chunks.push('</radialGradient>');
+      var xml = chunks.join('');
+      return [ xml, null ];
+    },
+    ImageTileFill: function(obj) {
+      var xml = [
+        '<pattern width="0" height="0" patternUnits="userSpaceOnUse">',
+        '<image xlink:href="', _escapeXMLSpecialChars(obj.imageData.url), '" width="0" height="0" />',
+        '</pattern>'
+      ].join('');
+      return [
+        xml,
+        function(n) {
+          obj.imageData.size(function(size) {
+            n.setAttribute("width", size.width);
+            n.setAttribute("height", size.height);
+            n.firstChild.setAttribute("width", size.width);
+            n.firstChild.setAttribute("height", size.width);
+          });
+        }
+      ];
     }
   };
 
   return _class("DefsManager", {
     props: {
       node: null,
-      nodes: {}
+      nodes: {},
+      dynamicNodes: {}
     },
 
     methods: {
@@ -85,19 +147,23 @@ var DefsManager = (function() {
         var serializer = serializers[className];
         if (!serializer)
           throw new NotSupported(className + " is not supported by SVG backend");
-        var xml = serializer(def);
-        var n = this.nodes[xml];
-        if (!n) {
-          var parser = new DOMParser();
-          n = parser.parseFromString(
-            '<?xml version="1.0" ?><svg xmlns="' + SVG_NAMESPACE + '">'
-            + xml + '</svg>', "text/xml").documentElement.firstChild;
-          n.setAttribute("id", this.nextId());
+        var pair = serializer(def);
+        var def = this.nodes[pair[0]];
+        if (!def) {
+          var id = this.nextId();
+          var n = createForeignNode(pair[0]);
+          if (pair[1]) pair[1](n);
+          n.setAttribute("id", id);
           n = this.node.ownerDocument.adoptNode(n);
+          def = new Def(this, n, pair[0], id);
           this.node.appendChild(n);
-          this.nodes[xml] = n;
+          this.nodes[pair[0]] = def;
         }
-        return n;
+        return def;
+      },
+
+      remove: function(def) {
+        delete this.nodes[def.xml];
       }
     }
   });

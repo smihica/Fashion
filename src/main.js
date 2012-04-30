@@ -4,6 +4,10 @@ var Fashion = (function() {
   include("lib/lib.js");
   Fashion._lib = _lib;
 
+  var _window = typeof window == 'undefined' ? void(0): window;
+  var _Image = typeof window.Image !== 'undefined' ? window.Image: null;
+  BROWSER = detectBrowser(_window);
+
   include("util/util.js");
   Fashion.Util = Util;
 
@@ -24,6 +28,9 @@ var Fashion = (function() {
   Fashion.RadialGradientFill = RadialGradientFill;
   Fashion.ImageTileFill = ImageTileFill;
 
+  include("ImageData.js");
+  Fashion.ImageData = ImageData;
+
   include("PathData.js");
   Fashion.PathData = PathData;
 
@@ -41,12 +48,14 @@ var Fashion = (function() {
   include("Path.js");
   include("Drawable.js");
   include("Text.js");
+  include("Image.js");
 
   Fashion.Shape    = Shape;
   Fashion.Circle   = Circle;
   Fashion.Rect     = Rect;
   Fashion.Path     = Path;
   Fashion.Text     = Text;
+  Fashion.Image    = Image;
   Fashion.Drawable = Drawable;
 
   include("conf.js");

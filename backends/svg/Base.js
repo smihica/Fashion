@@ -5,10 +5,20 @@ var Base = _class("BaseSVG", {
   props : {
     handler: null,
     drawable: null,
-    _elem: null
+    _elem: null,
+    def: null
   },
 
   methods: {
+    dispose: function() {
+      if (this.drawable) {
+        this.drawable.remove(this);
+      }
+      if (this.def) {
+        this.def.delRef();
+        this.def = null;
+      }
+    },
 
     transform: function(matrix)
     {
@@ -27,9 +37,14 @@ var Base = _class("BaseSVG", {
           this._elem.setAttribute('fill', st.fill.color.toString(true));
           this._elem.setAttribute('fill-opacity', st.fill.color.a / 255.0);
         } else if (st.fill instanceof LinearGradientFill
-            || st.fill instanceof RadialGradientFill) {
-          var n = this.drawable._defsManager.get(st.fill)
-          this._elem.setAttribute('fill', "url(#" + n.getAttribute("id") + ")");
+            || st.fill instanceof RadialGradientFill
+            || st.fill instanceof ImageTileFill) {
+          var def = this.drawable._defsManager.get(st.fill);
+          this._elem.setAttribute('fill', "url(#" + def.id + ")");
+          if (this.def)
+            this.def.delRef();
+          this.def = def;
+          def.addRef();
         }
       } else {
         this._elem.setAttribute('fill', 'none');
