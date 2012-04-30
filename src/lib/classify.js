@@ -2,7 +2,7 @@ var _class = (function() {
 
   var CLASS_RELATIONSHIP = [[Object, null]];
 
-  var get_parent = function(_class) {
+  function get_parent(_class) {
     for (var i=0,l=CLASS_RELATIONSHIP.length;i<l;i++) {
       var rel = CLASS_RELATIONSHIP[i];
       if (rel[0] === _class) return rel[1];
@@ -10,14 +10,14 @@ var _class = (function() {
     return null;
   };
 
-  var __super__ = function() {
+  function __super__() {
     var pro = this.__proto__;
     return ((pro !== void(0)) ?
             ((this.constructor.prototype === this) ? pro : pro.__proto__ ) :
             get_parent(this.constructor).prototype);
   };
 
-  var inherits = function(_class, parent) {
+  function inherits(_class, parent) {
 
     CLASS_RELATIONSHIP.push([_class, parent]);
 
@@ -39,19 +39,19 @@ var _class = (function() {
 
   };
 
-  var method = function(_class, name, func) {
+  function method(_class, name, func) {
     _class.prototype[name] = func;
   };
 
   var genclassid = (function() {
     var id = 0;
-    return function() {
+    return function getclassid() {
       var ret = "%%ANONYMOUS_CLASS_"+id+"%%"; ++id;
       return ret;
     };
   })();
 
-  var mixin = function(_class, include) {
+  function mixin(_class, include) {
     var incproto = include.prototype;
     for(i in incproto) {
       if (i !== "__super__" && i !== "constructor" && i !=="init") {
@@ -67,7 +67,7 @@ var _class = (function() {
     };
   };
 
-  var check_interface = function(_class, impl) {
+  function check_interface(_class, impl) {
     for (var i in impl.prototype) {
       if (impl.prototype.hasOwnProperty(i)) {
         if (!_class.prototype.hasOwnProperty(i)) {
