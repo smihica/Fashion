@@ -91,32 +91,34 @@ var _class = (function() {
     var mixins = [];
     var interfaces = [];
 
-    for(i in definition) {
-      if (i === "props") {
+    for (i in definition) {
+      switch (i) {
+      case "props":
         def = definition[i];
         for (j in def) {
           if (def.hasOwnProperty(j))
             props[j] = def[j];
         }
-      } else if (i === "class_props") {
+        break;
+      case "class_props":
         class_props = definition[i];
-
-      } else if (i === "methods") {
+        break;
+      case "methods":
         methods = definition[i];
-
-      } else if (i === "class_methods") {
+        break;
+      case "class_methods":
         class_methods = definition[i];
-
-      } else if (i === "parent") {
+        break;
+      case "parent":
         parent = definition[i];
-
-      } else if (i === "interfaces") {
+        break;
+      case "interfaces":
         interfaces = definition[i];
-
-      } else if (i === "mixins") {
+        break;
+      case "mixins":
         mixins = definition[i];
-
-      } else {
+        break;
+      default:
         throw new ArgumentError(
             'You gave \'' + i + '\' as definition, but the _class() excepts' +
             ' only \'props\',\'class_props\',\'methods\',\'class_methods\',\'parent\',\'interfaces\',\'mixins\'.');
