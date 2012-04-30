@@ -56,6 +56,15 @@ exports._lib_MultipleKeyHash = {
 
   test_arbitrary_copare_function: function(test) {
     test.expect(0);
+
+    var hash = new Fashion._lib.MultipleKeyHash(function(k1, k2){
+      return (k1.a === k2.a && k1.b === k2.b && k1.c === k2.c );
+    });
+
+    var key1 = {a: "a", b: "b", c: "c"};
+    var key2 = {a: "d", b: "e", c: "f"};
+    var key3 = {a: "g", b: "h", c: "i"};
+
     test.done();
   }
 };
