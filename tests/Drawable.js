@@ -3,7 +3,13 @@ var Fashion = require('../fashion.js');
 (function(exports) {
 var IMPL_old = null;
 
-var dummyElement = { clientWidth: 0., clientHeight: 0. };
+var dummyElement = { clientWidth: 0., clientHeight: 0.  };
+
+function DummyShape(obj) { for (var k in obj) this[k] = obj[k]; }
+DummyShape.prototype.drawable = null;
+DummyShape.prototype.attachTo = function(drawable) {
+  this.drawable = drawable;
+};
 
 exports.Drawable = {
   setUp: function(callback) {
@@ -33,11 +39,11 @@ exports.Drawable = {
     test.expect(4);
     var d = new Fashion.Drawable(dummyElement);
     test.equals(0, d.numElements());
-    d.draw({});
+    d.draw(new DummyShape());
     test.equals(1, d.numElements());
-    d.draw({});
+    d.draw(new DummyShape());
     test.equals(2, d.numElements());
-    d.draw({});
+    d.draw(new DummyShape());
     test.equals(3, d.numElements());
     test.done();
   },
@@ -45,16 +51,19 @@ exports.Drawable = {
   testDraw: function(test) {
     test.expect(3);
     var d = new Fashion.Drawable(dummyElement);
-    test.equals(d.draw({}).__id, 'G' + d._id_acc);
-    test.equals(d.draw({}).__id, 'G' + d._id_acc);
-    test.equals(d.draw({}).__id, 'G' + d._id_acc);
+    test.equals(d.draw(new DummyShape()).__id, 'G' + d._id_acc);
+    test.equals(d.draw(new DummyShape()).__id, 'G' + d._id_acc);
+    test.equals(d.draw(new DummyShape()).__id, 'G' + d._id_acc);
     test.done();
   },
 
   testEach: function(test) {
     test.expect(1);
     var d = new Fashion.Drawable(dummyElement);
-    var shapes = [ d.draw({ a:0, b:'a' }), d.draw({ a:1, b:'b' }), d.draw({ a:2, b:'c' }) ];
+    var shapes = [
+      d.draw(new DummyShape({ a:0, b:'a' })),
+      d.draw(new DummyShape({ a:1, b:'b' })),
+      d.draw(new DummyShape({ a:2, b:'c' })) ];
     var rt = '';
     d.each(function(shape) { if (shape.a >= 1) rt += shape.b; });
     test.equals(rt, 'bc');
@@ -64,9 +73,9 @@ exports.Drawable = {
   testFind:  function(test) {
     test.expect(3);
     var d = new Fashion.Drawable(dummyElement);
-    var s1 = d.draw({ a:0, b:'a' });
-    var s2 = d.draw({ a:1, b:'b' });
-    var s3 = d.draw({ a:2, b:'c' });
+    var s1 = d.draw(new DummyShape({ a:0, b:'a' }));
+    var s2 = d.draw(new DummyShape({ a:1, b:'b' }));
+    var s3 = d.draw(new DummyShape({ a:2, b:'c' }));
     // found
     var _s = d.find(function(shape) { return shape.b === 'c'; });
     test.deepEqual(s3, _s);
@@ -82,7 +91,10 @@ exports.Drawable = {
   testCollect: function(test) {
     test.expect(2);
     var d = new Fashion.Drawable(dummyElement);
-    var s0 = d.draw({a:0}), s1 = d.draw({a:1}), s2 = d.draw({a:2}), s3 = d.draw({a:3});
+    var s0 = d.draw(new DummyShape({a:0})),
+        s1 = d.draw(new DummyShape({a:1})),
+        s2 = d.draw(new DummyShape({a:2})),
+        s3 = d.draw(new DummyShape({a:3}));
     // get even
     var even_shapes = d.collect(function(shape) { return (shape.a % 2) == 0; });
     test.deepEqual(even_shapes, [s0, s2]);
@@ -96,8 +108,10 @@ exports.Drawable = {
   testMap:function(test) {
     test.expect(2);
     var d = new Fashion.Drawable(dummyElement);
-    var s0 = d.draw({a:0,b:'a'}), s1 = d.draw({a:1,b:'b'});
-    var s2 = d.draw({a:2,b:'c'}), s3 = d.draw({a:3,b:'d'});
+    var s0 = d.draw(new DummyShape({a:0,b:'a'})),
+        s1 = d.draw(new DummyShape({a:1,b:'b'})),
+        s2 = d.draw(new DummyShape({a:2,b:'c'})),
+        s3 = d.draw(new DummyShape({a:3,b:'d'}));
     d = d.map(function(s) { s.a += 1; return s } ).map(function(s) { s.a *= 10; s.b += "\n"; return s } );
     test.equals(s2.a, 30);
     test.equals(s3.b, "d\n");
@@ -107,7 +121,9 @@ exports.Drawable = {
   testErase: function(test) {
     test.expect(4);
     var d = new Fashion.Drawable(dummyElement);
-    var a = d.draw({ a:0 }), b = d.draw({ a:1 }), c = d.draw({ a:2 });
+    var a = d.draw(new DummyShape({ a:0 })),
+        b = d.draw(new DummyShape({ a:1 })),
+        c = d.draw(new DummyShape({ a:2 }));
     test.equals(d.numElements(), 3);
     d.erase(a);
     test.equals(d.numElements(), 2);
