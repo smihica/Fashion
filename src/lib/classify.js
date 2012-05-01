@@ -128,7 +128,7 @@ var _class = (function() {
       }
     }
 
-    __class__ = function() {
+    __class__ = function(arg) {
       __class__['%%INIT_INSTANCE_ORIGN_PROPS'](this);
       if (this.init)
         this.init.apply(this, arguments);
