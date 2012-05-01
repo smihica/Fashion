@@ -1,12 +1,21 @@
-var drawable = null;
-
-var test_init = function() {
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <script type="text/javascript" src="../fashion.js" charset="utf-8"></script>
+    <style> table.te td { border: 1px solid black; } </style>
+  </head>
+  <body>
+    <div class="page">
+      <div style="float:left; margin:5px; padding:0">
+        <h1>TEST</h1>
+        <div id="STAGE" class="canvas" style="width:600px; height:450px; overflow:scroll; border: 1px solid #000;">
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+(function() {
   var c = document.getElementById('STAGE');
-  drawable = new Fashion.Drawable(c, { width: 1000, height: 1000 });
-
-};
-
-var test = function() {
+  var drawable = new Fashion.Drawable(c, { width: 1000, height: 1000 });
 
   var p1 = drawable.draw(
     new Fashion.Path(
@@ -85,6 +94,7 @@ var test = function() {
     stylize(r);
 
   }
-
-
-};
+})();
+    </script>
+  </body>
+</html>
