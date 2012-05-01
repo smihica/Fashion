@@ -5,7 +5,7 @@ var Fashion = (function() {
   Fashion._lib = _lib;
 
   var _window = typeof window == 'undefined' ? void(0): window;
-  var _Image = typeof window.Image !== 'undefined' ? window.Image: null;
+  var _Image = _window && typeof _window.Image !== 'undefined' ? _window.Image: null;
   BROWSER = detectBrowser(_window);
 
   include("util/util.js");
