@@ -26,10 +26,10 @@
         var circle = new Fashion.Circle(64, 64, 128, 128);
         circle.style({fill: new Fashion.FloodFill(new Fashion.Color("#000"))});
         var moveA = function(evt) {
-           console.log("A:", evt.contentPosition.x, evt.contentPosition.y);
+           //console.log("A:", evt.contentPosition.x, evt.contentPosition.y);
         };
         var moveB = function(evt) {
-           console.log("B:",evt.contentPosition.x, evt.contentPosition.y);
+           //console.log("B:",evt.contentPosition.x, evt.contentPosition.y);
         };
         circle.addEvent({
            mousemove: moveA,
@@ -59,22 +59,22 @@
         var circle2_style2 = { fill: new Fashion.FloodFill(new Fashion.Color("#F00")) };
         circle2.style(circle2_style1);
         var moveA2 = function(evt) {
-          console.log(evt.contentPosition.x, evt.contentPosition.y);
+        //console.log(evt.contentPosition.x, evt.contentPosition.y);
           this.style(circle2_style2);
         };
         circle2.addEvent({
           mousemove: moveA2,
           mousedown: function(evt) {
-            console.log("capture!!");
+        //console.log("capture!!");
             this.captureMouse();
           },
           mouseup: function(evt) {
-            console.log("release!!");
+            //console.log("release!!");
             this.style(circle2_style1);
             this.releaseMouse();
           },
           mouseout: function(evt) {
-            console.log("mouseout");
+            //console.log("mouseout");
             this.style(circle2_style1);
           },
         });

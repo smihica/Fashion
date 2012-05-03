@@ -21,7 +21,7 @@ var GradientFill = _class("GradientFill", {
   parent: Fill,
 
   props: {
-    colors: [],
+    colors: []
   },
 
   methods: {

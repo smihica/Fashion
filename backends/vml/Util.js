@@ -16,7 +16,7 @@ var Util = _class("UtilVML", {
       return pattern.join(' ');
     },
 
-    convertColorArray: function(arr) {
+    convertColorArray: function(color) {
       var r = color.r.toString(16);
       if (r.length < 2) r = '0' + r;
       var g = color.g.toString(16);

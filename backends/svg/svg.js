@@ -20,7 +20,7 @@ var SVG = (function() {
   include("Drawable.js");
 
   return {
-	MouseEvt : MouseEvt,
+    MouseEvt : MouseEvt,
     Util     : Util,
     Circle   : Circle,
     Rect     : Rect,

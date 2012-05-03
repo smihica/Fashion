@@ -1,7 +1,7 @@
 var MultipleKeyHash = _class("MultipleKeyHash", {
   props: {
     _eql: function(key1, key2) { return key1 === key2 },
-    _src: [],
+    _src: []
   },
 
   methods: {

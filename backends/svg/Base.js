@@ -91,10 +91,10 @@ var Base = _class("BaseSVG", {
               return raw.call(self, evt);
             };
             funcs.put(raw, wrapped);
-            self._elem.addEventListener(type, wrapped, false);
+            UtilImpl.DomEvt.addEvt(self._elem, type, wrapped);
           },
           remove: function(type, raw) {
-            self._elem.removeEventListener(type, funcs.pop(raw), false);
+            UtilImpl.DomEvt.remEvt(self._elem, type, funcs.pop(raw));
           }
         });
       } else {

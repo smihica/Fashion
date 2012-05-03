@@ -1,7 +1,6 @@
 var Backend = (function() {
 
-  var _ = {};
-
+  include("UtilImpl.js");
   include("MouseEvtImpl.js");
   include("BaseImpl.js");
   include("DrawableImpl.js");
@@ -9,21 +8,9 @@ var Backend = (function() {
   include("PathImpl.js");
   include("TextImpl.js");
 
-  _.MouseEvtImpl   = MouseEvtImpl;
-  _.BaseImpl       = BaseImpl;
-  _.DrawableImpl   = DrawableImpl;
-  _.ShapeImpl      = ShapeImpl;
-  _.PathImpl       = PathImpl;
-  _.TextImpl       = TextImpl;
-
   include("svg/svg.js");
-  _.SVG = SVG;
-
   include("vml/vml.js");
-  _.VML = VML;
-
   include("canvas/canvas.js");
-  _.Canvas = Canvas;
 
   var unsupported = function () {
     throw new NotSupported('Browser is not supported');
@@ -38,9 +25,7 @@ var Backend = (function() {
     Drawable : unsupported
   };
 
-  _.Dummy = Dummy;
-
-  _.determineImplementation = function determineImplementation(priority) {
+  var determineImplementation = function determineImplementation(priority) {
     for (var i=0, l=priority.length; i<l; i++) {
       var target = priority[i].toLowerCase();
       if (target === 'svg' && (SVG !== null))            return SVG;
@@ -50,6 +35,19 @@ var Backend = (function() {
     return Dummy;
   };
 
-  return _;
+  return {
+    UtilImpl       : UtilImpl,
+    MouseEvtImpl   : MouseEvtImpl,
+    BaseImpl       : BaseImpl,
+    DrawableImpl   : DrawableImpl,
+    ShapeImpl      : ShapeImpl,
+    PathImpl       : PathImpl,
+    TextImpl       : TextImpl,
+    SVG            : SVG,
+    VML            : VML,
+    Canvas         : Canvas,
+    Dummy          : Dummy,
+    determineImplementation : determineImplementation
+  };
 
 })();

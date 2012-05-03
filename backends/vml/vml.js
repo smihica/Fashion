@@ -30,7 +30,7 @@ var VML = (function() {
   include("Drawable.js");
 
   _.Util       = Util;
-  _.MouseEvent = MouseEvent;
+  _.MouseEvt   = MouseEvt;
   _.Circle     = Circle;
   _.Rect       = Rect;
   _.Path       = Path;

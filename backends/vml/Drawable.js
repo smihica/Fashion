@@ -12,13 +12,13 @@ var Drawable = _class("DrawableVML", {
   },
 
   methods: {
-    init: function(node, width, height)
+    init: function(node, content_size)
     {
       var vg = Util.createVmlElement('group');
       vg.style.left = 0;
       vg.style.top = 0;
-      vg.style.width = width;
-      vg.style.height = height;
+      vg.style.width = content_size.width + "px";
+      vg.style.height = content_size.height + "px";
       this._vg = vg;
       node.appendChild(vg);
     },

@@ -1,9 +1,10 @@
 var Base = _class("BaseVML", {
 
-  props : {},
+  props : {
+    handler: null
+  },
 
   methods: {
-
     transform: function(matrix)
     {
       this._elem.style.filter = Util.matrixString(matrix);
@@ -20,7 +21,7 @@ var Base = _class("BaseVML", {
       var fill = (node.getElementsByTagName('fill') && node.getElementsByTagName('fill')[0]);
       var stroke = (node.getElementsByTagName('stroke') && node.getElementsByTagName('stroke')[0]);
 
-      if (!st.fill.none) {
+      if (st.fill && !st.fill.none) {
         if (!fill) fill = Util.createVmlElement('fill', true);
         var color_op = Util.convertColorArray(st.fill.color);
 
@@ -40,7 +41,7 @@ var Base = _class("BaseVML", {
         }
       }
 
-      if (!st.stroke.none) {
+      if (st.stroke && !st.stroke.none) {
         if (!stroke) stroke = Util.createVmlElement('stroke', true);
         var color_op = Util.convertColorArray(st.stroke.color);
 
@@ -79,11 +80,36 @@ var Base = _class("BaseVML", {
       this.style(DEFAULT_STYLE);
     },
 
-    addEvent: function(evt)
+    holdEventsHandler: function(handler)
     {
+      var self = this;
+      if (this.handler === null) {
+        var funcs = new MultipleKeyHash();
+        this.handler = handler;
+        this.handler.holdTrigger('shape-impl', {
+          add:    function(type, raw) {
+            var wrapped = function(dom_evt){
+              var evt = new MouseEvt(dom_evt, self);
+              return raw.call(self, evt);
+            };
+            funcs.put(raw, wrapped);
+            UtilImpl.DomEvt.addEvt(self._elem, type, wrapped);
+          },
+          remove: function(type, raw) {
+            UtilImpl.DomEvt.remEvt(self._elem, type, funcs.pop(raw));
+          }
+        });
+      } else {
+        throw new AlreadyExists("impl already has a events handler.");
+      }
     },
-    removeEvent: function(evt)
-    {
+
+    releaseEventsHandler: function () {
+      if (this.handler !== null) {
+        this.handler.releaseTriger('shape-impl');
+      } else {
+        throw new NotFound("events handler is not exist yet.");
+      }
     }
   }
 });
