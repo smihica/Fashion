@@ -15,8 +15,6 @@ MYSRCS	= \
 	src/conf.js		 	\
 	src/main.js		 	\
 	src/util/Matrix.js		\
-	src/util/Path.js		\
-	src/util/Style.js		\
 	src/util/util.js		\
 	src/lib/MultipleKeyHash.js 	\
 	src/lib/browser.js 		\

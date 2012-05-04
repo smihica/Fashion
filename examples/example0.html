@@ -19,15 +19,15 @@
 
   var p1 = drawable.draw(
     new Fashion.Path(
-      Fashion.Util.Path.convertPathString('M 0 50 L 0 0 50 0')));
+      new Fashion.PathData('M 0 50 L 0 0 50 0')));
 
   var p2 = drawable.draw(
     new Fashion.Path(
-      Fashion.Util.Path.convertPathString('M 0 50 L 0 0 50 0')));
+      new Fashion.PathData('M 0 50 L 0 0 50 0')));
 
   var p3 = drawable.draw(
     new Fashion.Path(
-      Fashion.Util.Path.convertPathString('M 0 50 L 0 0 50 0')));
+      new Fashion.PathData('M 0 50 L 0 0 50 0')));
 
   p2.transform({translate: {x: 50, y: 90}}, {rotate: {angle: -45}});
   p3.transform({translate: {x: 50, y: 90}}, {rotate: {angle: -45}}, {translate: {x: 130, y: 160}});
@@ -36,7 +36,7 @@
     fill: null,
     stroke: {
       width: 10,
-      color: Fashion.Util.Style.convertColorString('#FF0000FF')
+      color: new Fashion.Color('#FF0000FF')
     }
   });
 
@@ -78,7 +78,7 @@
 
     var p = drawable.draw(
       new Fashion.Path(
-        Fashion.Util.Path.convertPathString(
+        new Fashion.PathData(
           'M 0 -10 L 5.88 8.09 -9.51 -3.09 9.51 -3.09 -5.88 8.09 Z')));
     p.position({x: Math.random()*1000, y: Math.random()*1000});
     p.size({width: Math.random()*300, height: Math.random()*300});
