@@ -127,19 +127,26 @@ var PathData = (function() {
       break;
 
     case 'M':
-      if (l != 2)
-        throw new ValueError("moveTo takes 2 arguments, " + l + " given: " + arr.join(" "));
+      if (l == 0 || l % 2 != 0)
+        throw new ValueError("moveTo takes 2 * n arguments, " + l + " given: " + arr.join(" "));
       var x = this.parseNumber(arr[i]), y = this.parseNumber(arr[i + 1]);
       this.data.push(['M', x, y]);
+      for (var j = i + 2, n = i + l; j < n ; j += 2) {
+        x = this.parseNumber(arr[j]), y = this.parseNumber(arr[j + 1]);
+        this.data.push(['L', x, y]);
+      }
       this.last.x = x, this.last.y = y;
       break;
 
     case 'm':
-      if (l != 2)
-        throw new ValueError("moveToRel takes 2 arguments, " + l + " given: " + arr.join(" "));
-      var x = this.last.x + this.parseNumber(arr[i]),
-          y = this.last.y + this.parseNumber(arr[i + 1]);
+      if (l == 0 || l % 2 != 0)
+        throw new ValueError("moveToRel takes 2 * n arguments, " + l + " given: " + arr.join(" "));
+      var x = this.parseNumber(arr[i]), y = this.parseNumber(arr[i + 1]);
       this.data.push(['M', x, y]);
+      for (var j = i + 2, n = i + l; j < n ; j += 2) {
+        x += this.parseNumber(arr[j]), y += this.parseNumber(arr[j + 1]);
+        this.data.push(['L', x, y]);
+      }
       this.last.x = x, this.last.y = y;
       break;
 
@@ -147,7 +154,7 @@ var PathData = (function() {
       if (l == 0 || l % 2 != 0)
         throw new ValueError("lineTo takes 2 * n arguments, " + l + " given: " + arr.join(" "));
       var x = 0., y = 0.;
-      for (var j = i, n = i + l; j <n ; j += 2) {
+      for (var j = i, n = i + l; j < n ; j += 2) {
         x = this.parseNumber(arr[j]), y = this.parseNumber(arr[j + 1]);
         this.data.push(['L', x, y]);
       }
