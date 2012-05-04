@@ -2,20 +2,6 @@
 
 var UtilImpl = {
   DomEvt: _class("Impl.UtilImpl.DomEvt", {
-    class_methods: {
-      addEvt: ((window.document.addEventListener) ?
-               function(elem, type, func){ return elem.addEventListener(type, func, false); } :
-               ((window.document.attachEvent) ?
-                function(elem, type, func) { return elem.attachEvent('on' + type, func); } :
-                function() { throw new NotSupported("This Browser is not Supported add Event to a DomElement."); })),
-
-      remEvt: ((window.document.removeEventListener) ?
-               function(elem, type, func) { return elem.removeEventListener(type, func, false); } :
-               ((window.document.detachEvent) ?
-                 function(elem, tyoe, func) { return elem.detachEvent('on' + type, func); } :
-                function() { throw new NotSupported("This Browser is not Supported add Event to a DomElement."); }))
-    },
-
     methods: {
       convertToMouseEvt: function convertToMouseEvt(dom_evt) {
         var which = dom_evt.which;
