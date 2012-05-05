@@ -58,7 +58,7 @@ var Drawable = _class("DrawableSVG", {
 
       this._viewport.addEventListener('scroll', function(evt) {
         onscroll({x: this.scrollLeft, y:this.scrollTop});
-      }, false)
+      }, false);
 
     },
 
@@ -95,7 +95,6 @@ var Drawable = _class("DrawableSVG", {
     scrollPosition: function(position)
     {
       if (position) {
-        console.log(position.x, position.y);
         this._viewport.scrollLeft = position.x+'';
         this._viewport.scrollTop  = position.y+'';
       }

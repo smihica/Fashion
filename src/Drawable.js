@@ -14,6 +14,7 @@ var Drawable = _class("Drawable", {
     _viewport_size:     {width: 0, height: 0},
     _scroll_position:      {x: 0, y: 0},
     _scroll_position_real: {x: 0, y: 0},
+    _offset_position:      null,
     _zoom_ratio: 1.0
   },
 
@@ -106,8 +107,8 @@ var Drawable = _class("Drawable", {
     {
       if (position) {
         var cs = this._content_size, vs = this._viewport_size;
-        var left_limit = cs.width  - vs.width;
-        var top_limit  = cs.height - vs.height;
+        var left_limit = cs.width  - (vs.width  / this._zoom_ratio);
+        var top_limit  = cs.height - (vs.height / this._zoom_ratio);
         this._scroll_position.x = _clip(position.x, 0, left_limit);
         this._scroll_position.y = _clip(position.y, 0, top_limit);
         this._scroll_position_real.x = Math.round(this._scroll_position.x * this._zoom_ratio);
@@ -118,9 +119,12 @@ var Drawable = _class("Drawable", {
       return _clone(this._scroll_position);
     },
 
-    getOffsetPosition: function()
+    getOffsetPosition: function(reflesh)
     {
-      return this.impl.getOffsetPosition();
+      if (reflesh || this._offset_position === null)
+        this._offset_position = this.impl.getOffsetPosition(reflesh);
+
+      return _clone(this._offset_position);
     },
 
     gensym: function()

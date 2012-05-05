@@ -50,17 +50,65 @@ var UtilImpl = {
     }
   }),
 
-  // Please write better code !!!
-  getDomOffsetPosition: function getDomOffsetPosition(obj) {
-    var curleft = 0, curtop = 0;
-    if (obj.offsetParent) {
-      do {
-        curleft += obj.offsetLeft;
-        curtop += obj.offsetTop;
+  getDomOffsetPosition: (function () {
 
-      } while (obj = obj.offsetParent);
-    }
-    return {x: curleft, y: curtop};
-  }
+    var support_box_model = (document.compatMode === "CSS1Compat");
+
+    var contains = (function() {
+      if ( document.documentElement.contains ) {
+        return function( a, b ) {
+          return a !== b && (a.contains ? a.contains(b) : true);
+        };
+
+      } else if ( document.documentElement.compareDocumentPosition ) {
+        return function( a, b ) {
+          return !!(a.compareDocumentPosition(b) & 16);
+        };
+
+      } else {
+        return function() {
+          return false;
+        };
+      }
+    })();
+
+    if ( "getBoundingClientRect" in document.documentElement )
+      return function getDomOffsetPosition_boundingClientRect(elem, doc, docElem, box ) {
+        doc = document; docElem = document.documentElement;
+
+        try {
+          box = elem.getBoundingClientRect();
+        } catch(e) {}
+
+        if ( !box || !contains( docElem, elem ) ) {
+          console.log('here');
+          return box ? { top: box.top, left: box.left } : { top: 0, left: 0 };
+        }
+
+        var body = doc.body,
+        clientTop  = docElem.clientTop  || body.clientTop  || 0,
+        clientLeft = docElem.clientLeft || body.clientLeft || 0,
+        scrollTop  = _window.pageYOffset || support_box_model && docElem.scrollTop  || body.scrollTop,
+        scrollLeft = _window.pageXOffset || support_box_model && docElem.scrollLeft || body.scrollLeft,
+        top  = box.top  + scrollTop  - clientTop,
+        left = box.left + scrollLeft - clientLeft;
+
+        return { x: left, y: top };
+      };
+
+    return function getDomOffsetPosition(elem) {
+      var curleft = 0, curtop = 0;
+      if (elem.offsetParent) {
+        do {
+          curleft += elem.offsetLeft;
+          curtop += elem.offsetTop;
+
+        } while (elem = elem.offsetParent);
+      }
+      return {x: curleft, y: curtop};
+    };
+
+  })()
+
 };
 
