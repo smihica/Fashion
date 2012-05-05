@@ -175,7 +175,7 @@ var Color = (function() {
       initWithColorCode: function Color_initWithColorCode(str) {
         var rt;
         if (!(rt = color_code_table[str])) {
-          var g = /^\s*#(?:([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])|([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})?)\s*$/.exec(str);
+          var g = /^\s*(?:#(?:([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])|([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})?)|rgb\(([^)]*)\)|rgba\(([^)]*)\))\s*$/.exec(str);
           if (!g)
             throw new ValueError("Invalid color specifier: " + str);
 
@@ -185,20 +185,37 @@ var Color = (function() {
               var v = xparseInt(g[i], 16);
               rt[i - 1] = v | (v << 4);
             }
-          } else {
+          } else if (g[4] !== void(0)) {
             for (var i = 4; i <= 7 && g[i]; i++)
               rt[i - 4] = xparseInt(g[i], 16);
+          } else if (g[8] !== void(0)) {
+            var s = g[8].split(/\s*,\s*/);
+            if (s.length != 3)
+              throw new ValueError("Invalid color specifier: " + str);
+            for (var i = 0; i < 3; i++)
+              rt[i] = xparseInt(s[i]);
+          } else if (g[9] !== void(0)) {
+            var s = g[9].split(/\s*,\s*/);
+            if (s.length != 4)
+              throw new ValueError("Invalid color specifier: " + str);
+            for (var i = 0; i < 4; i++)
+              rt[i] = xparseInt(s[i]);
           }
         }
 
-        this.initWithRGBA.apply(this, rt);
+        this.r = 0|rt[0];
+        this.g = 0|rt[1];
+        this.b = 0|rt[2];
+        this.a = 0|rt[3];
       },
 
       initWithRGBA: function Color_initWithRGBA(r, g, b, a) {
         this.r = 0|r;
         this.g = 0|g;
         this.b = 0|b;
-        if (a !== void(0))
+        if (a === null)
+          this.a = null;
+        else if (a !== void(0))
           this.a = 0|a;
       },
 
