@@ -59,15 +59,6 @@ exports.Style = {
     test.done();
   },
 
-  testStyleWithString: function(test) {
-    test.expect(3);
-    var x = new Fashion.Style("fill: #00ff00; stroke: #0000ff; stroke-width: 0.172");
-    test.deepEqual(new Fashion.Color(0, 255, 0,   255), x.fill.color); 
-    test.deepEqual(new Fashion.Color(0, 0,   255, 255), x.stroke.color); 
-    test.equal(.172, x.stroke.width); 
-    test.done();
-  },
-
   testStyleOverride: function(test) {
     test.expect(8);
     var original = new Fashion.Style(
