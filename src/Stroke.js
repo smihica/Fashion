@@ -42,8 +42,9 @@ var Stroke = (function() {
         case 0:
           break;
         case 1:
-          this.initWithString.apply(this, arguments);
-          break;
+          if (typeof arguments[0] == 'string' || arguments[0] instanceof String)
+            this.initWithString.apply(this, arguments);
+          /* fall throigh */
         case 2:
         case 3:
           this.initWithArguments.apply(this, arguments);
@@ -55,7 +56,7 @@ var Stroke = (function() {
   
       initWithArguments: function Stroke_initWithArguments(color, width, pattern) {
         this.color = color;
-        this.width = width;
+        this.width = width === void(0) ? null: width;
         this.pattern = pattern === void(0) ? null: pattern;
       },
   

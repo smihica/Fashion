@@ -35,6 +35,9 @@ var Fashion = (function() {
   include("PathData.js");
   Fashion.PathData = PathData;
 
+  include("Style.js");
+  Fashion.Style = Style;
+
   include("MouseEvt.js");
   Fashion.MouseEvt = MouseEvt;
 
