@@ -198,7 +198,8 @@ var Color = (function() {
         this.r = 0|r;
         this.g = 0|g;
         this.b = 0|b;
-        this.a = 0|a;
+        if (a !== void(0))
+          this.a = 0|a;
       },
 
       replace: function(r, g, b, a) {
