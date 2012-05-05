@@ -7,7 +7,7 @@ var Base = _class("Base", {
     _size: {width:0, height:0},
     _transform: {},
     _style: {},
-    handlers: null
+    handler: null
   },
 
   methods: {
@@ -19,7 +19,7 @@ var Base = _class("Base", {
         this._position.y = y;
         this.impl.position(x, y, this._size.width, this._size.height);
       }
-      return {x: this._position.x, y: this._position.y};
+      return _clone(this._position);
     },
 
     size: function(d)
@@ -30,7 +30,7 @@ var Base = _class("Base", {
         this._size.height = height;
         this.impl.size(width, height);
       }
-      return {width: this._size.width, height: this._size.height};
+      return _clone(this._size);
     },
 
     transform: function()
@@ -42,7 +42,6 @@ var Base = _class("Base", {
         var scale, rotate, translate, tr, j, i;
         var pos = this.position();
         var x = pos.x, y = pos.y;
-        // console.log(x, y);
         var m = new Util.Matrix();
 
         for (j=0; j<l; j++) {
@@ -181,17 +180,14 @@ var Base = _class("Base", {
 
     addEvent: function(h)
     {
-      if (this.handlers === null) {
-        this.handlers = new MouseEventsHandler(this);
-        this.impl.holdEventsHandler(this.handlers);
-      }
-      this.handlers.add(h);
+      if (this.handler === null) this.handler = new MouseEventsHandler(this);
+      this.handler.add(h);
     },
 
     removeEvent: function()
     {
-      if (this.handlers === null) throw new NotSupported("EventsHandler has not initialized in this shape.");
-      this.handlers.remove.apply(this.handlers, arguments);
+      if (this.handler === null) throw new NotSupported("EventsHandler has not initialized in this shape.");
+      this.handler.remove.apply(this.handler, arguments);
     }
   }
 });

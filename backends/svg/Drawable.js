@@ -4,29 +4,101 @@ var Drawable = _class("DrawableSVG", {
 
   props: {
     prefix: "svg",
+    handler: null,
     _defsManager: null,
-    _vg: null,
+
+    _svg:         null,
+    _vg:          null,
+    _viewport:    null,
+
     _capturing_shapes: new MultipleKeyHash(),
     _capturing_functions: new MultipleKeyHash()
   },
 
   methods: {
-    init: function(node, content_size)
+    init: function(node, content_size, viewport_size, onscroll)
     {
-      var vg = newNode("svg");
-      vg.setAttribute("version", "1.1");
-      vg.setAttribute("width", content_size.width + "px");
-      vg.setAttribute("height", content_size.height + "px");
+      var svg = newNode("svg");
+      svg.setAttribute("version", "1.1");
+      svg.setAttribute("width", content_size.width + "px");
+      svg.setAttribute("height", content_size.height + "px");
+      svg.style.margin = "0";
+      svg.style.padding = "0";
+      //svg.style.background = "#CCC";
+
       var defs = newNode("defs");
-      vg.appendChild(defs);
-      node.appendChild(vg);
-      this._vg = vg;
       this._defsManager = new DefsManager(defs);
+      svg.appendChild(defs);
+
+      var root = newNode("g");
+      svg.appendChild(root);
+
+      var viewport = document.createElement("div");
+      viewport.style.padding = '0';
+      viewport.style.width  = viewport_size.width + "px";
+      viewport.style.height = viewport_size.height + "px";
+
+      if (content_size.width <= viewport_size.width &&
+          content_size.height <= viewport_size.height)
+        viewport.style.overflow = "hidden";
+      else
+        viewport.style.overflow = "scroll";
+
+
+      viewport.style.border = "1px solid #999";
+      viewport.style.margin = "0";
+      viewport.style.padding = "0";
+      viewport.appendChild(svg);
+
+      node.appendChild(viewport);
+
+      this._viewport = viewport;
+      this._svg      = svg;
+      this._vg       = root;
+
+      this._viewport.addEventListener('scroll', function(evt) {
+        onscroll({x: this.scrollLeft, y:this.scrollTop});
+      }, false)
+
     },
 
-    contentSize: function()
+    zoom: function(ratio)
     {
-      return { x: this._vg.offsetWidth, y: this._vg.offsetHeight };
+      if (ratio) {
+        this._vg.setAttribute("transform", "scale(" + ratio + ")");
+      }
+    },
+
+    viewportSize: function(size)
+    {
+      if (size) {
+        this._viewport.style.width  = size.width;
+        this._viewport.style.height = size.height;
+      }
+    },
+
+    contentSize: function(size, scrolling)
+    {
+      if (size) {
+        this._svg.setAttribute("width", size.width + "px");
+        this._svg.setAttribute("height", size.height + "px");
+
+        if (scrolling) {
+          this._viewport.style.overflow = 'scroll';
+        } else {
+          this._viewport.style.overflow = 'hidden';
+        }
+
+      }
+    },
+
+    scrollPosition: function(position)
+    {
+      if (position) {
+        console.log(position.x, position.y);
+        this._viewport.scrollLeft = position.x+'';
+        this._viewport.scrollTop  = position.y+'';
+      }
     },
 
     append: function(shape)
@@ -44,6 +116,11 @@ var Drawable = _class("DrawableSVG", {
 
     anchor: function()
     {
+    },
+
+    getOffsetPosition: function()
+    {
+      return UtilImpl.getDomOffsetPosition(this._viewport);
     },
 
     captureMouse: function(shape)
@@ -116,7 +193,41 @@ var Drawable = _class("DrawableSVG", {
       }
 
       handler.releaseTrigger('drawable-impl');
+    },
+
+    holdEventsHandler: function(handler)
+    {
+      var self = this;
+      if (this.handler === null) {
+        var funcs = new MultipleKeyHash();
+        this.handler = handler;
+        this.handler.holdTrigger('drawable-impl', {
+          add:    function(type, raw) {
+            var wrapped = function(dom_evt){
+              var evt = new MouseEvt(dom_evt, self);
+              return raw.call(self, evt);
+            };
+            funcs.put(raw, wrapped);
+            UtilImpl.DomEvt.addEvt(self._svg, type, wrapped);
+          },
+          remove: function(type, raw) {
+            UtilImpl.DomEvt.remEvt(self._svg, type, funcs.pop(raw));
+          }
+        });
+      } else {
+        throw new AlreadyExists("impl already has a events handler.");
+      }
+    },
+
+    releaseEventsHandler: function ()
+    {
+      if (this.handler !== null) {
+        this.handler.releaseTriger('drawable-impl');
+      } else {
+        throw new NotFound("events handler is not exist yet.");
+      }
     }
+
   }
 });
 /*

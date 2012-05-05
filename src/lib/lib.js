@@ -10,6 +10,7 @@ _lib._clone                = _clone;
 _lib.xparseInt             = xparseInt;
 _lib._repeat               = _repeat;
 _lib._lpad                 = _lpad;
+_lib._clip                 = _clip;
 
 include("error.js");
 _lib.FashionError          = FashionError;

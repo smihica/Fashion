@@ -10,13 +10,15 @@ var MouseEventsHandler = _class("MouseEventsHandler", {
     mousemove: new MultipleKeyHash(),
     mouseout:  new MultipleKeyHash(),
     _triggers: {},
-    _shape: null
+    _target: null
   },
 
   methods: {
 
-    init: function(shape, h) {
-      this._shape = shape;
+    init: function(target, h) {
+      this._target = target;
+      this._target.impl.holdEventsHandler(this);
+
       if (h) {
         this.add(h);
       }
@@ -39,15 +41,15 @@ var MouseEventsHandler = _class("MouseEventsHandler", {
     },
 
     add: function(h) {
-      var shape = this._shape;
+      var target = this._target;
       var self = this;
       for (var type in h) {
         (function (type) {
           if (self.hasOwnProperty(type)) {
             var raw = h[type];
             var wrapped = function(impl_evt) {
-              var evt = new MouseEvt(impl_evt, shape);
-              return raw.call(shape, evt);
+              var evt = new MouseEvt(impl_evt, target);
+              return raw.call(target, evt);
             };
             self[type].put(raw, wrapped);
             self._triggerAppend(type, wrapped);

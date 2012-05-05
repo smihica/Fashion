@@ -138,6 +138,14 @@ exports._lib_misc = {
   test_lpad: function(test) {
     test.expect(0);
     test.done();
+  },
+
+  test_clip: function(test) {
+    test.expect(3);
+    test.strictEqual(0, Fashion._lib._clip(-10, 0, 100));
+    test.strictEqual(100, Fashion._lib._clip(300, 0, 100));
+    test.strictEqual(50, Fashion._lib._clip(50, 0, 100));
+    test.done();
   }
 
 };
