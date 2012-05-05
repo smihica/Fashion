@@ -66,6 +66,25 @@ exports.Style = {
     test.deepEqual(new Fashion.Color(0, 0,   255, 255), x.stroke.color); 
     test.equal(.172, x.stroke.width); 
     test.done();
+  },
+
+  testStyleOverride: function(test) {
+    test.expect(8);
+    var original = new Fashion.Style(
+      new Fashion.FloodFill(new Fashion.Color(0, 0, 0)),
+      new Fashion.Stroke(new Fashion.Color(0, 0, 0), null, null));
+    test.deepEqual(new Fashion.Color(0, 0, 0), original.fill.color);
+    test.deepEqual(new Fashion.Color(0, 0, 0), original.stroke.color);
+    test.equal(null, original.stroke.width);
+    test.equal(null, original.stroke.pattern);
+    var overridden = original.override(new Fashion.Style(
+      new Fashion.FloodFill(),
+      new Fashion.Stroke(new Fashion.Color(1, 1, 1), 1, 'pattern')));
+    test.deepEqual(new Fashion.Color(0, 0, 0), overridden.fill.color);
+    test.deepEqual(new Fashion.Color(1, 1, 1), overridden.stroke.color);
+    test.equal(1, overridden.stroke.width);
+    test.equal('pattern', overridden.stroke.pattern);
+    test.done();
   }
 };
 
