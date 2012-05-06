@@ -42,8 +42,10 @@ var Stroke = (function() {
         case 0:
           break;
         case 1:
-          if (typeof arguments[0] == 'string' || arguments[0] instanceof String)
+          if (typeof arguments[0] == 'string' || arguments[0] instanceof String) {
             this.initWithString.apply(this, arguments);
+            break;
+          }
           /* fall throigh */
         case 2:
         case 3:
