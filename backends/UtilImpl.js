@@ -52,15 +52,15 @@ var UtilImpl = {
 
   getDomOffsetPosition: (function () {
 
-    var support_box_model = (document.compatMode === "CSS1Compat");
+    var support_box_model =  (_window && _window.document.compatMode === "CSS1Compat");
 
     var contains = (function() {
-      if ( document.documentElement.contains ) {
+      if ( _window && _window.document.documentElement.contains ) {
         return function( a, b ) {
           return a !== b && (a.contains ? a.contains(b) : true);
         };
 
-      } else if ( document.documentElement.compareDocumentPosition ) {
+      } else if ( _window && _window.document.documentElement.compareDocumentPosition ) {
         return function( a, b ) {
           return !!(a.compareDocumentPosition(b) & 16);
         };
@@ -72,7 +72,7 @@ var UtilImpl = {
       }
     })();
 
-    if ( "getBoundingClientRect" in document.documentElement )
+    if ( _window && "getBoundingClientRect" in _window.document.documentElement )
       return function getDomOffsetPosition_boundingClientRect(elem, doc, docElem, box ) {
         doc = document; docElem = document.documentElement;
 
