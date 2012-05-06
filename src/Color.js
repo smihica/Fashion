@@ -180,21 +180,21 @@ var Color = (function() {
             throw new ValueError("Invalid color specifier: " + str);
 
           rt = [0, 0, 0, 255];
-          if (g[1] !== void(0)) {
+          if (g[1]) {
             for (var i = 1; i <= 3; i++) {
               var v = xparseInt(g[i], 16);
               rt[i - 1] = v | (v << 4);
             }
-          } else if (g[4] !== void(0)) {
+          } else if (g[4]) {
             for (var i = 4; i <= 7 && g[i]; i++)
               rt[i - 4] = xparseInt(g[i], 16);
-          } else if (g[8] !== void(0)) {
+          } else if (g[8]) {
             var s = g[8].split(/\s*,\s*/);
             if (s.length != 3)
               throw new ValueError("Invalid color specifier: " + str);
             for (var i = 0; i < 3; i++)
               rt[i] = xparseInt(s[i]);
-          } else if (g[9] !== void(0)) {
+          } else if (g[9]) {
             var s = g[9].split(/\s*,\s*/);
             if (s.length != 4)
               throw new ValueError("Invalid color specifier: " + str);
