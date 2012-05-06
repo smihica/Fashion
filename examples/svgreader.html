@@ -15,10 +15,22 @@ function loadXml(url, success, error) {
   var xhr = XHR();
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4) {
-      if (xhr.status == 200 || xhr.status == 0)
-        success(xhr.responseXML);
-      else
+      if (xhr.status == 200 || xhr.status == 0) {
+        var xml = xhr.responseXML;
+        if ((!xml || !xml.documentElement) && xhr.responseText) {
+          if (window.DOMParser) {
+            var parser = window.DOMParser();
+            xml = parser.parseFromString(xhr.responseText);
+          } else {
+            var xml = new ActiveXObject("Microsoft.XMLDOM");
+            xml.async = false;
+            xml.loadXML(xhr.responseText);
+          }
+        }
+        success(xml);
+      } else {
         error();
+      }
     }
   };
   xhr.open("GET", url, true);
