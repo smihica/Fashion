@@ -59,15 +59,19 @@ var Drawable = _class("Drawable", {
 
     zoom: function(ratio, position)
     {
-      this._zoom_ratio = ratio;
-      this.impl.zoom(ratio);
-      this.contentSize(this._content_size);
-      if (position) {
-        this.scrollPosition({
-          x: position.x - ((this._viewport_size.width  / this._zoom_ratio) / 2),
-          y: position.y - ((this._viewport_size.height / this._zoom_ratio) / 2)
-        });
+      if (ratio) {
+        this._zoom_ratio = ratio;
+        this.impl.zoom(ratio);
+        this.contentSize(this._content_size);
+        if (position) {
+          this.scrollPosition({
+            x: position.x - ((this._viewport_size.width  / this._zoom_ratio) / 2),
+            y: position.y - ((this._viewport_size.height / this._zoom_ratio) / 2)
+          });
+        } else {
+        }
       }
+      return this._zoom_ratio;
     },
 
     viewportSize: function(size)
@@ -93,10 +97,9 @@ var Drawable = _class("Drawable", {
         this._content_size_real.width  = Math.round(Math.max(this._content_size.width  * this._zoom_ratio, vs.width));
         this._content_size_real.height = Math.round(Math.max(this._content_size.height * this._zoom_ratio, vs.height));
 
-        this.impl.contentSize(
-          this._content_size_real,
-          (this._content_size.width > this._viewport_size.width ||
-           this._content_size.height > this._viewport_size.height));
+        this.impl.contentSize(this._content_size_real,
+                              (this._content_size_real.width > this._viewport_size.width ||
+                               this._content_size_real.height > this._viewport_size.height));
 
         this.scrollPosition(this._scroll_position);
       }

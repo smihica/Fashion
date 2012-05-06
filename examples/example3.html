@@ -14,12 +14,17 @@
     <div class="page">
       <h1>zoom scroll</h1>
       <div></div>
+      <button id="zoomin">ZoomIN</button>
+      <button id="zoomout">ZoomOUT</button>
       <script type="text/javascript">
         var node = last(document.getElementsByTagName('div'));
         var drawable = new Fashion.Drawable(
           node,
           {content: {width: 512, height: 512},
            viewport: {width: 256, height: 256}});
+
+        var zoomin  = document.getElementById('zoomin');
+        var zoomout = document.getElementById('zoomout');
 
         var circle = new Fashion.Circle(64, 64, 128, 128);
         var circle2 = new Fashion.Circle(384, 384, 128, 128);
@@ -33,18 +38,16 @@
         drawable.addEvent({
           mousemove: function(evt) {
             console.log(JSON.stringify(evt.contentPosition));
-          },
-          mousedown: function(evt) {
-           if (evt.left) {
-             zoom *= 1.2;
-             console.log(evt.contentPosition);
-             drawable.zoom(zoom, evt.contentPosition);
-           } else if (evt.right) {
-             zoom /= 1.2;
-             drawable.zoom(zoom, evt.contentPosition);
-           }
           }
         });
+
+        zoomin.addEventListener('click', function() {
+          drawable.zoom(drawable.zoom() * 1.1);
+        }, false);
+
+        zoomout.addEventListener('click', function() {
+          drawable.zoom(drawable.zoom() / 1.1);
+        }, false);
 
       </script>
     </div>

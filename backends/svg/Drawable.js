@@ -24,7 +24,7 @@ var Drawable = _class("DrawableSVG", {
       svg.setAttribute("height", content_size.height + "px");
       svg.style.margin = "0";
       svg.style.padding = "0";
-      //svg.style.background = "#CCC";
+      svg.style.background = "#CCC";
 
       var defs = newNode("defs");
       this._defsManager = new DefsManager(defs);
@@ -82,6 +82,8 @@ var Drawable = _class("DrawableSVG", {
       if (size) {
         this._svg.setAttribute("width", size.width + "px");
         this._svg.setAttribute("height", size.height + "px");
+        this._svg.style.width  = size.width + "px";
+        this._svg.style.height = size.height + "px";
 
         if (scrolling) {
           this._viewport.style.overflow = 'scroll';
