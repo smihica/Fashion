@@ -71,7 +71,7 @@ var UtilImpl = {
       }
     })();
 
-    if ( _window && "getBoundingClientRect" in _window.document.documentElement )
+    if ( _window && "getBoundingClientRect" in _window.document.documentElement ) {
       return function getDomOffsetPosition_boundingClientRect(elem, doc, docElem, box ) {
         doc = document; docElem = document.documentElement;
 
