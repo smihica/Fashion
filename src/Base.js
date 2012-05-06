@@ -6,6 +6,8 @@ var Base = _class("Base", {
     _position: {x:0, y:0},
     _size: {width:0, height:0},
     _transform: {},
+    _transform_matrix: null,
+    _matrixes: new MultipleKeyHash(),
     _style: {},
     handler: null
   },
@@ -38,6 +40,9 @@ var Base = _class("Base", {
       var l;
 
       if ((l = arguments.length) > 0) {
+
+        this._matrixes.pop(this._transform_matrix);
+        this._transform = {};
 
         var scale, rotate, translate, tr, j, i;
         var pos = this.position();
@@ -82,10 +87,12 @@ var Base = _class("Base", {
               }
             }
           }
-          m.set(tr);
+          m.set(this._transform);
         }
 
-        this.impl.transform(m);
+        this._transform_matrix = m;
+        this._matrixes.put(this._transform_matrix, null);
+        this.impl.transform(this._matrixes);
       }
 
       return ({
@@ -98,8 +105,15 @@ var Base = _class("Base", {
 
     resetTransform: function()
     {
+
+      var m = this._matrixes.pop(this._transform_matrix);
+
+      if (m) {
+        this.impl.transform(this._matrixes);
+      }
+
       this._transform = {};
-      this.impl.resetTransform();
+      this._transform_matrix = null;
     },
 
     style: function(st)

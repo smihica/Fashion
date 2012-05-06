@@ -20,14 +20,15 @@ var Base = _class("BaseSVG", {
       }
     },
 
-    transform: function(matrix)
+    transform: function(matrixes)
     {
-      this._elem.setAttribute('transform', Util.matrixString(matrix));
-    },
-
-    resetTransform: function()
-    {
-      this._elem.removeAttribute('transform');
+      if (matrixes.length() > 0) {
+        var mat = new Fashion.Util.Matrix();
+        matrixes.forEach(function(k, v) { mat.combine(k); }, this);
+        this._elem.setAttribute('transform', Util.matrixString(mat));
+      } else {
+        this._elem.removeAttribute('transform');
+      }
     },
 
     style: function(st)

@@ -5,7 +5,8 @@ var Path = _class("Path", {
   interfaces: [Shape],
 
   props: {
-    _points: []
+    _points: [],
+    _position_matrix: new Util.Matrix()
   },
 
   methods: {
@@ -13,6 +14,7 @@ var Path = _class("Path", {
     {
       this.impl = new Fashion.IMPL.Path();
       this.points(points);
+      this._matrixes.put(this._position_matrix, null);
     },
 
     /**
@@ -45,17 +47,14 @@ var Path = _class("Path", {
     position: function(d)
     {
       if (d) {
-        var lx = this._position.x;
-        var ly = this._position.y;
-        var xm = d.x - lx;
-        var ym = d.y - ly;
-        var points = this._points;
-
-        var mat = (new Util.Matrix()).translate(xm, ym);
-        this.applyMatrix(mat);
+        var last = this._position_matrix.apply(this._position);
+        var xm = d.x - last.x;
+        var ym = d.y - last.y;
+        this._position_matrix.translate(xm, ym);
+        this.impl.transform(this._matrixes);
       }
 
-      return { x: this._position.x, y: this._position.y };
+      return this._position_matrix.apply(this._position);
     },
 
     size: function(d)
@@ -168,9 +167,6 @@ var Path = _class("Path", {
       this._size.width  = pos.x_max - pos.x_min;
       this._size.height = pos.y_max - pos.y_min;
 
-    },
-
-    _applyMatrixToPoints: function(matrix) {
     }
   }
 });

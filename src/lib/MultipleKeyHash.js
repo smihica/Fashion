@@ -74,7 +74,18 @@ var MultipleKeyHash = _class("MultipleKeyHash", {
       var rt = [];
       for (var l=this._src.length; 0<l; l--) rt.unshift(this._src[l-1].value);
       return rt;
-    }
+    },
 
+    forEach: function(fn, self) {
+      self = self || this;
+      for (var i=0, l=this._src.length; i<l; i++) {
+        var item = this._src[i];
+        fn.call(self, item.key, item.value, item);
+      }
+    },
+
+    length: function() {
+      return this._src.length;
+    }
   }
 });

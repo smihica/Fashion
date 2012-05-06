@@ -71,6 +71,10 @@ var Matrix = (function() {
 
       },
 
+      combine: function(o) {
+        this.add(o.a, o.b, o.c, o.d, o.e, o.f);
+      },
+
       invert: function () {
         var me = this,
         x = me.a * me.d - me.b * me.c;

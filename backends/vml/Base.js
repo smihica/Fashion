@@ -5,14 +5,16 @@ var Base = _class("BaseVML", {
   },
 
   methods: {
-    transform: function(matrix)
-    {
-      this._elem.style.filter = Util.matrixString(matrix);
-    },
 
-    resetTransform: function()
+    transform: function(matrixes)
     {
-      this._elem.style.filter = '';
+      if (matrixes.length() > 0) {
+        var mat = new Fashion.Util.Matrix();
+        matrixes.forEach(function(k, v) { mat.combine(k); }, this);
+        this._elem.style.filter = Util.matrixString(mat);
+      } else {
+        this._elem.style.filter = '';
+      }
     },
 
     style: function(st)
