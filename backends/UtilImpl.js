@@ -34,7 +34,7 @@ var UtilImpl = {
         var pageX = dom_evt.pageX;
         var pageY = dom_evt.pageY;
         if ( dom_evt.pageX == null && dom_evt.clientX != null ) {
-          var eventDoc = dom_evt.target.ownerDocument || document;
+          var eventDoc = dom_evt.target.ownerDocument || _window.document;
           var doc = eventDoc.documentElement;
           var body = eventDoc.body;
 
@@ -51,7 +51,6 @@ var UtilImpl = {
   }),
 
   getDomOffsetPosition: (function () {
-
     var support_box_model =  (_window && _window.document.compatMode === "CSS1Compat");
 
     var contains = (function() {
@@ -95,19 +94,19 @@ var UtilImpl = {
 
         return { x: left, y: top };
       };
+    } else {
+      return function getDomOffsetPosition(elem) {
+        var curleft = 0, curtop = 0;
+        if (elem.offsetParent) {
+          do {
+            curleft += elem.offsetLeft;
+            curtop += elem.offsetTop;
 
-    return function getDomOffsetPosition(elem) {
-      var curleft = 0, curtop = 0;
-      if (elem.offsetParent) {
-        do {
-          curleft += elem.offsetLeft;
-          curtop += elem.offsetTop;
-
-        } while (elem = elem.offsetParent);
-      }
-      return {x: curleft, y: curtop};
-    };
-
+          } while (elem = elem.offsetParent);
+        }
+        return {x: curleft, y: curtop};
+      };
+    }
   })()
 
 };

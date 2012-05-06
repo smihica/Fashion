@@ -6,7 +6,7 @@ var SVG = (function() {
   var XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 
   function newNode(element_name) {
-    return document.createElementNS(SVG_NAMESPACE, element_name);
+    return _window.document.createElementNS(SVG_NAMESPACE, element_name);
   }
 
   include("Util.js");

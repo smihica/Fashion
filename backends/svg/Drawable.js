@@ -33,7 +33,7 @@ var Drawable = _class("DrawableSVG", {
       var root = newNode("g");
       svg.appendChild(root);
 
-      var viewport = document.createElement("div");
+      var viewport = _window.document.createElement("div");
       viewport.style.padding = '0';
       viewport.style.width  = viewport_size.width + "px";
       viewport.style.height = viewport_size.height + "px";
