@@ -59,8 +59,6 @@ var PathData = (function() {
     'arcRel': 'a'
   };
 
-  var SEPARATOR = /\s+|\s*,\s*\s*;\*/;
-
   function PathDataBuilder(data) {
     this.data = data;
     this.last = { x: 0., y: 0. };
@@ -337,7 +335,7 @@ var PathData = (function() {
 
       initWithString: function PathData_initWithString(str) {
         var x, atom, arglen_now, seg, last_idt;
-        var arr = str.split(SEPARATOR);
+        var arr = str.match(/-?[0-9.]+|[A-Za-z_]+/g);
         var builder = new PathDataBuilder(this);
         for (var i = 0, n; i < arr.length; i = n) {
           var op;
