@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+  <title>SVG viewer</title>
+  <script type="text/javascript" src="../fashion.js"></script>
+  <script type="text/javascript">
+function XHR() {
+  return Fashion.browser.identifier == 'ie' ?
+      new ActiveXObject("Msxml2.XMLHTTP"):
+      new XMLHttpRequest();
+}
+
+function loadXml(url, success, error) {
+  var xhr = XHR();
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+      if (xhr.status == 200 || xhr.status == 0)
+        success(xhr.responseXML);
+      else
+        error();
+    }
+  };
+  xhr.open("GET", url, true);
+  xhr.send();
+}
+
+var parseCSSRules = (function () {
+  var regexp_for_rules = /\s*(-?(?:[_a-z\u00a0-\u10ffff]|\\[^\n\r\f#])(?:[\-_A-Za-z\u00a0-\u10ffff]|\\[^\n\r\f])*)\s*:\s*((?:(?:(?:[^;\\ \n\r\t\f"']|\\[0-9A-Fa-f]{1,6}(?:\r\n|[ \n\r\t\f])?|\\[^\n\r\f0-9A-Fa-f])+|"(?:[^\n\r\f\\"]|\\(?:\n|\r\n|\r|\f)|\\[^\n\r\f])*"|'(?:[^\n\r\f\\']|\\(?:\n|\r\n|\r|\f)|\\[^\n\r\f])*')(?:\s+|(?=;|$)))+)(?:;|$)/g;
+
+  var regexp_for_values = /(?:((?:[^;\\ \n\r\t\f"']|\\[0-9A-Fa-f]{1,6}(?:\r\n|[ \n\r\t\f])?|\\[^\n\r\f0-9A-Fa-f])+)|"((?:[^\n\r\f\\"]|\\(?:\n|\r\n|\r|\f)|\\[^\n\r\f])*)"|'((?:[^\n\r\f\\']|\\(?:\n|\r\n|\r|\f)|\\[^\n\r\f])*)')(?:\s+|$)/g;
+
+  function unescape(escaped) {
+    return escaped.replace(/(?:\\(0{0,2}d[89ab][0-9A-Fa-f]{2})(?:\r\n|[ \n\r\t\f])?)?\\([0-9A-Fa-f]{1,6})(?:\r\n|[ \n\r\t\f])?|\\([^\n\r\f0-9A-Fa-f])/g, function(_, a, b, c) {
+      if (a !== void(0)) {
+        var c2 = parseInt(b, 16) ;
+        if (c2 < 0xdc00 || c2 > 0xdfff)
+          throw new ValueError("Invalid surrogate pair");
+        return String.fromCharCode((((parseInt(a, 16) & 0x3ff) << 10) | (c2 & 0x3ff)) + 0x10000);
+      } else if (b !== void(0)) {
+        return String.fromCharCode(parseInt(b, 16));
+      } else if (c !== void(0)) {
+        return c;
+      }
+    });
+  }
+
+  return function parseCSSRules(str) {
+    var retval = {};
+    var r = str.replace(regexp_for_rules, function (_, k, v) {
+      var values = [];
+      var r = v.replace(regexp_for_values, function (_, a, b, c) {
+        if (a !== void(0)) {
+          values.push(unescape(a));
+        } else if (b !== void(0)) {
+          values.push(unescape(b));
+        } else if (c !== void(0)) {
+          values.push(unescape(c));
+        }
+        return '';
+      });
+      if (r != '')
+        throw new ValueError("Invalid CSS rule string: " + str);
+      retval[k] = values;
+      return '';
+    });
+    if (r != '')
+      throw new ValueError("Invalid CSS rule string: " + str);
+    return retval;
+  };
+})();
+
+function parseCSSAsSvgStyle(str) {
+  var rules = parseCSSRules(str);
+  var fill = null;
+  var fillString = rules['fill'];
+  var fillOpacity = null;
+  var fillOpacityString = rules['fill-opacity'];
+  var stroke = null;
+  var strokeString = rules['stroke'];
+  var strokeWidth = null;
+  var strokeWidthString = rules['stroke-width'];
+  var strokeOpacity = null;
+  var strokeOpacityString = rules['stroke-opacity'];
+  if (fillString) {
+    if (fillString[0] == 'none')
+      fill = false;
+    else
+      fill = new Fashion.Color(fillString[0]);
+  }
+  if (fillOpacityString) {
+    fillOpacity = parseFloat(fillOpacityString[0]);
+  }
+  if (strokeString) {
+    if (strokeString[0] == 'none')
+      stroke = false;
+    else
+      stroke = new Fashion.Color(strokeString[0]);
+  }
+  if (strokeWidthString) {
+    strokeWidth = parseFloat(strokeWidthString[0]);
+  }
+  if (strokeOpacityString) {
+    strokeOpacity = parseFloat(strokeOpacityString[0]);
+  }
+  return {
+    fill: fill,
+    fillOpacity: fillOpacity,
+    stroke: stroke,
+    strokeWidth: strokeWidth,
+    strokeOpacity: strokeOpacity
+  };
+}
+
+function mergeSvgStyle(origStyle, newStyle) {
+  return {
+    fill: newStyle.fill !== null ? newStyle.fill: origStyle.fill,
+    fillOpacity: newStyle.fillOpacity !== null ? newStyle.fillOpacity: origStyle.fillOpacity,
+    stroke: newStyle.stroke !== null ? newStyle.stroke: origStyle.stroke,
+    strokeWidth: newStyle.strokeWidth !== null ? newStyle.strokeWidth: origStyle.strokeWidth,
+    strokeOpacity: newStyle.strokeOpacity !== null ? newStyle.strokeOpacity: origStyle.strokeOpacity
+  };
+}
+
+function buildStyleFromSvgStyle(svgStyle) {
+  return {
+    fill:
+      svgStyle.fill ? 
+        new Fashion.FloodFill(
+          svgStyle.fill.replace(
+            null, null, null,
+            svgStyle.fillOpacity ? svgStyle.fillOpacity * 255: 255)):
+        null,
+    stroke: 
+      svgStyle.stroke ? new Fashion.Stroke(
+        svgStyle.stroke.replace(
+          null, null, null,
+          svgStyle.fillOpacity ? svgStyle.fillOpacity * 255: 255),
+        svgStyle.strokeWidth ? svgStyle.strokeWidth: 1,
+        svgStyle.strokePattern ? svgStyle.strokePattern: null):
+        null,
+    visibility: true
+  };
+}
+
+function appendShapes(drawable, svgStyle, nodeList) {
+  for (var i = 0; i < nodeList.length; i++) {
+    var n = nodeList[i];
+    if (n.nodeType != 1) continue;
+    var styleString = n.getAttribute('style');
+    var currentSvgStyle =
+      styleString ?
+        mergeSvgStyle(svgStyle, parseCSSAsSvgStyle(styleString)):
+        svgStyle;
+    var shape = null;
+    switch (n.nodeName) {
+    case 'g':
+      appendShapes(drawable, currentSvgStyle, n.childNodes);
+      break;
+    case 'path':
+      var pathDataString = n.getAttribute('d');
+      if (!pathDataString)
+        throw "Pathdata is not provided for the path element";
+      shape = drawable.draw(new Fashion.Path(new Fashion.PathData(pathDataString)));
+      break;
+    }
+    if (shape !== null) {
+      var x = parseFloat(n.getAttribute('x')),
+          y = parseFloat(n.getAttribute('y'));
+      shape.style(buildStyleFromSvgStyle(currentSvgStyle));
+    }
+  }
+}
+
+function parseSvg(xml) {
+  var widthString = xml.documentElement.getAttribute('width');
+  var heightString = xml.documentElement.getAttribute('height');
+  var size = widthString ?
+    heightString ?
+      {
+        width: parseFloat(xml.documentElement.getAttribute('width')),
+        height: parseFloat(xml.documentElement.getAttribute('height'))
+      }
+      :
+      {
+        width: parseFloat(xml.documentElement.getAttribute('width')),
+        height: parseFloat(xml.documentElement.getAttribute('width'))
+      }
+    :
+    heightString ?
+      {
+        width: parseFloat(xml.documentElement.getAttribute('height')),
+        height: parseFloat(xml.documentElement.getAttribute('height'))
+      }
+      :
+      null
+    ;
+  var viewportNode = document.createElement("div");
+  var drawable = new Fashion.Drawable(viewportNode, size);
+  appendShapes(
+    drawable,
+    { fill: false, fillOpacity: false,
+      stroke: false, strokeOpacity: false },
+    xml.documentElement.childNodes);
+  return viewportNode;
+}
+
+window.onload = function() {
+  var canvasElement = document.getElementById("canvas");
+  var svgStyle = {
+    'fill': new Fashion.Color(0, 0, 0), 'fill-opacity': 1.,
+    'stroke': null, 'stroke-opacity': 1.,
+    'stroke-width': 1
+  };
+  loadXml("molumen_GAZ_21_.svg",
+    function(xml) {
+      try {
+        var viewportNode = parseSvg(xml);
+        canvasElement.removeChild(canvasElement.firstChild);
+        canvasElement.appendChild(viewportNode);
+      } catch (e) {
+        canvasElement.firstChild.innerHTML = e.message;
+      }
+    }, function() {
+      canvasElement.firstChild.innerHTML = "Loading failed";
+    }
+  );
+};
+
+</script>
+</head>
+<body>
+  <div id="canvas"><div class="message">Loading...</div></div>
+</body>
+</html>
