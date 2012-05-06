@@ -33,8 +33,8 @@ var Drawable = _class("Drawable", {
 
       } else {
         content_size = viewport_size = {
-          width:  target.style.clientWidth,
-          height: target.style.clientHeight
+          width:  target.clientWidth,
+          height: target.clientHeight
         };
       }
 
