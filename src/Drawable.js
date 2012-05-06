@@ -24,26 +24,19 @@ var Drawable = _class("Drawable", {
       var self = this;
       this.target = target;
 
-      var content_size, viewport_size;
-      if (size) {
-        viewport_size = (size.viewport) ? size.viewport : size;
-        content_size  = (size.content)  ? size.content  : (size.viewport) ? size.viewport : size;
-        if (content_size.width < viewport_size.width)   content_size.width  = viewport_size.width;
-        if (content_size.height < viewport_size.height) content_size.height = viewport_size.height;
+      this._viewport_size.width  = (size && size.viewport && size.viewport.width)  || (size && size.width)  || target.clientWidth;
+      this._viewport_size.height = (size && size.viewport && size.viewport.height) || (size && size.height) || target.clientHeight;
+      this._content_size.width   = (size && size.content  && size.content.width)   || (size && size.width)  || viewport_size.width;
+      this._content_size.height  = (size && size.content  && size.content.height)  || (size && size.height) || viewport_size.height;
 
-      } else {
-        content_size = viewport_size = {
-          width:  target.clientWidth,
-          height: target.clientHeight
-        };
-      }
+      if (this._content_size.width < this._viewport_size.width)
+        this._content_size.width = this._viewport_size.width;
 
-      this._content_size.width  = content_size.width;
-      this._content_size.height = content_size.height;
-      this._content_size_real.width  = content_size.width * this._zoom_ratio;
-      this._content_size_real.height = content_size.height * this._zoom_ratio;
-      this._viewport_size.width  = viewport_size.width;
-      this._viewport_size.height = viewport_size.height;
+      if (this._content_size.height < this._viewport_size.height)
+        this._content_size.height = this._viewport_size.height;
+
+      this._content_size_real.width  = this._content_size.width * this._zoom_ratio;
+      this._content_size_real.height = this._content_size.height * this._zoom_ratio;
 
       this.impl = new Fashion.IMPL.Drawable(
         target,
@@ -91,7 +84,6 @@ var Drawable = _class("Drawable", {
     {
       if (size) {
         var vs = this._viewport_size;
-
         this._content_size.width  = Math.max(size.width,  vs.width);
         this._content_size.height = Math.max(size.height, vs.height);
         this._content_size_real.width  = Math.round(Math.max(this._content_size.width  * this._zoom_ratio, vs.width));
