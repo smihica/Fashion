@@ -1,4 +1,5 @@
 # macro
+UGLIFY_JS = uglifyjs
 MYSRCS	= \
 	src/Base.js		 	\
 	src/Circle.js	 		\
@@ -57,15 +58,20 @@ MYSRCS	= \
 ROOTSRC = src/main.js
 
 # proc
-.PHONY:	all clean
 
-all:	cmp
+all: fashion.js fashion.min.js
 
 clean:
-	rm -rf fashion.js fashion_test.js
+	rm -rf fashion.js fashion.min.js
 
-cmp:	$(MYSRCS)
-	export REQUEST_METHOD="GET" QUERY_STRING="file=$(ROOTSRC)"; ./compile.py -c > fashion.js
+fashion.js: $(MYSRCS)
+	REQUEST_METHOD="GET" QUERY_STRING="file=$(ROOTSRC)" ./compile.py -c > fashion.js
+
+fashion.min.js: fashion.js
+	$(UGLIFY_JS) $< > $@	
 
 check:	$(MYSRCS)
 	node_modules/nodeunit/bin/nodeunit tests
+
+.PHONY:	all clean
+

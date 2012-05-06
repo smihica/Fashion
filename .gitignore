@@ -6,6 +6,7 @@ doc/build
 doc/source/_*
 build/
 fashion.js
+fashion.min.js
 
 */**/*.o
 */**/\#*
