@@ -29,6 +29,3 @@ _lib._class = _class;
 
 include("MultipleKeyHash.js");
 _lib.MultipleKeyHash = MultipleKeyHash;
-
-include("css.js");
-_lib._parseCSSRules = _parseCSSRules;
