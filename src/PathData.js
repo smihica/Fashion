@@ -335,7 +335,7 @@ var PathData = (function() {
 
       initWithString: function PathData_initWithString(str) {
         var x, atom, arglen_now, seg, last_idt;
-        var arr = str.match(/-?[0-9.]+|[A-Za-z_]+/g);
+        var arr = str.match(/-?((?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?)|[A-Za-z_]+/g);
         var builder = new PathDataBuilder(this);
         for (var i = 0, n; i < arr.length; i = n) {
           var op;

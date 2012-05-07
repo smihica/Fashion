@@ -300,7 +300,27 @@ exports.PathData = {
     test.equal(pathData[2][1], 0.);
     test.equal(pathData[2][2], 0.);
     test.done();
-  }
+  },
+
+  regression: function(test) {
+    test.expect(13);
+    var pathData = new Fashion.PathData("M -1 2 .3 0.4 5e6 7e-8 .9e10 -11e-12");
+    test.equal(pathData.length, 4);
+    test.equal(pathData[0][0], 'M');
+    test.equal(pathData[0][1], -1);
+    test.equal(pathData[0][2], 2);
+    test.equal(pathData[1][0], 'L');
+    test.equal(pathData[1][1], .3);
+    test.equal(pathData[1][2], .4);
+    test.equal(pathData[2][0], 'L');
+    test.equal(pathData[2][1], 5e6);
+    test.equal(pathData[2][2], 7e-8);
+    test.equal(pathData[3][0], 'L');
+    test.equal(pathData[3][1], .9e10);
+    test.equal(pathData[3][2], -11e-12);
+    test.done();
+  },
+
 };
 
 /*
