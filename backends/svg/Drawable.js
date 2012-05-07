@@ -11,6 +11,8 @@ var Drawable = _class("DrawableSVG", {
     _vg:          null,
     _viewport:    null,
 
+    _onscroll:    null,
+
     _capturing_shapes: new MultipleKeyHash(),
     _capturing_functions: new MultipleKeyHash()
   },
@@ -25,6 +27,9 @@ var Drawable = _class("DrawableSVG", {
       svg.style.margin = "0";
       svg.style.padding = "0";
       svg.style.background = "#CCC";
+      svg.style["-moz-user-select"] = svg.style["-khtml-user-select"] =
+        svg.style["-webkit-user-select"] = svg.style["-ms-user-select"] =
+        svg.style["user-select"] = 'none';
 
       var defs = newNode("defs");
       this._defsManager = new DefsManager(defs);
@@ -56,8 +61,10 @@ var Drawable = _class("DrawableSVG", {
       this._svg      = svg;
       this._vg       = root;
 
+      this._onscroll = onscroll || function() {};
+      var self = this;
       this._viewport.addEventListener('scroll', function(evt) {
-        onscroll({x: this.scrollLeft, y:this.scrollTop});
+        self._onscroll({x: this.scrollLeft, y:this.scrollTop});
       }, false);
 
     },
@@ -99,6 +106,7 @@ var Drawable = _class("DrawableSVG", {
       if (position) {
         this._viewport.scrollLeft = position.x+'';
         this._viewport.scrollTop  = position.y+'';
+        this._onscroll({x: position.x, y: position.y});
       }
     },
 

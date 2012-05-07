@@ -104,8 +104,8 @@ var Drawable = _class("Drawable", {
         var cs = this._content_size, vs = this._viewport_size;
         var left_limit = cs.width  - (vs.width  / this._zoom_ratio);
         var top_limit  = cs.height - (vs.height / this._zoom_ratio);
-        this._scroll_position.x = _clip(position.x, 0, left_limit);
-        this._scroll_position.y = _clip(position.y, 0, top_limit);
+        this._scroll_position.x = _clip(position.x, 0, left_limit, false);
+        this._scroll_position.y = _clip(position.y, 0, top_limit, false);
         this._scroll_position_real.x = Math.round(this._scroll_position.x * this._zoom_ratio);
         this._scroll_position_real.y = Math.round(this._scroll_position.y * this._zoom_ratio);
         this.impl.scrollPosition(this._scroll_position_real);
