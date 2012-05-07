@@ -79,8 +79,8 @@ var Drawable = _class("DrawableSVG", {
     viewportSize: function(size)
     {
       if (size) {
-        this._viewport.style.width  = size.width;
-        this._viewport.style.height = size.height;
+        this._viewport.style.width  = size.width + "px";
+        this._viewport.style.height = size.height + "px";
       }
     },
 
