@@ -49,10 +49,6 @@ var Drawable = _class("DrawableSVG", {
       else
         viewport.style.overflow = "scroll";
 
-
-      viewport.style.border = "1px solid #999";
-      viewport.style.margin = "0";
-      viewport.style.padding = "0";
       viewport.appendChild(svg);
 
       node.appendChild(viewport);
