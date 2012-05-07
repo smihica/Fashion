@@ -26,8 +26,8 @@ var Drawable = _class("Drawable", {
 
       this._viewport_size.width  = (size && size.viewport && size.viewport.width)  || (size && size.width)  || target.clientWidth;
       this._viewport_size.height = (size && size.viewport && size.viewport.height) || (size && size.height) || target.clientHeight;
-      this._content_size.width   = (size && size.content  && size.content.width)   || (size && size.width)  || viewport_size.width;
-      this._content_size.height  = (size && size.content  && size.content.height)  || (size && size.height) || viewport_size.height;
+      this._content_size.width   = (size && size.content  && size.content.width)   || (size && size.width)  || this._viewport_size.width;
+      this._content_size.height  = (size && size.content  && size.content.height)  || (size && size.height) || this._viewport_size.height;
 
       if (this._content_size.width < this._viewport_size.width)
         this._content_size.width = this._viewport_size.width;
