@@ -1,7 +1,9 @@
 var Stroke = (function() {
   var predefined_patterns = {
+    'solid':  [],
     'dotted': [1, 1],
-    'dashed': [2, 2]
+    'dashed': [2, 2],
+    'double': []
   };
 
   return _class("Stroke", {
