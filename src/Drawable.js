@@ -227,7 +227,7 @@ var Drawable = _class("Drawable", {
 
     removeEvent: function()
     {
-      if (this.handler === null) throw new NotSupported("EventsHandler has not initialized in this drawable.");
+      if (this.handler === null) return;
       this.handler.remove.apply(this.handler, arguments);
     }
   }
