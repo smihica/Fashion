@@ -1,6 +1,9 @@
 var Fashion = require('../fashion.js');
 
 var Worker = Fashion._lib._class("Worker", {
+  class_props: {
+    worker: true
+  },
   props: {
     workedTime: 0
   },
@@ -11,6 +14,9 @@ var Worker = Fashion._lib._class("Worker", {
 
 var Parttimer = Fashion._lib._class("Parttimer", {
   parent: Worker,
+  class_props: {
+    partTimer: true
+  },
   props: {
     hourlyPay: 800
   },
@@ -23,6 +29,9 @@ var Parttimer = Fashion._lib._class("Parttimer", {
 
 var Cook = Fashion._lib._class("Cook", {
   parent: Parttimer,
+  class_props: {
+    cook: true
+  },
   props: {
     advantage: 50
   },
@@ -35,7 +44,10 @@ var Cook = Fashion._lib._class("Cook", {
 });
 
 var Waiter = Fashion._lib._class("Waiter", {
-  parent: Parttimer
+  parent: Parttimer,
+  class_props: {
+    waiter: true
+  }
 });
 
 
@@ -84,6 +96,21 @@ exports._lib_class = {
     test.ok(c.__proto__.__proto__.__proto__.hasOwnProperty("getMonthlyPay"));
     test.equal(typeof c.hoge, 'undefined');
 
+    test.done();
+  },
+
+  testClassProperties: function(test) {
+    test.expect(10);
+    test.ok(!Worker.partTimer);
+    test.ok(Parttimer.__super__.worker);
+    test.ok(Parttimer.partTimer);
+    test.ok(Cook.__super__.__super__.worker);
+    test.ok(Cook.__super__.partTimer);
+    test.ok(Cook.cook);
+    test.ok(!Waiter.cook);
+    test.ok(Waiter.__super__.__super__.worker);
+    test.ok(Waiter.__super__.partTimer);
+    test.ok(Waiter.waiter);
     test.done();
   }
 };

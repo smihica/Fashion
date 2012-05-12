@@ -1,25 +1,29 @@
 var Circle = _class("CircleSVG", {
+  parent: Base,
 
-  interfaces: [ShapeImpl],
-
-  mixins: [Base],
+  class_props: {
+    _refresher: new Refresher(Base._refresher).setup({
+      moreHandlers: [
+        [
+          DIRTY_POSITION | DIRTY_SIZE,
+          function() {
+            var position = this.wrapper._position, size = this.wrapper._size;
+            this._elem.setAttribute('rx', (size.x / 2) + 'px');
+            this._elem.setAttribute('ry', (size.y / 2) + 'px');
+            this._elem.setAttribute('cx', (position.x + (size.x / 2))+'px');
+            this._elem.setAttribute('cy', (position.y + (size.y / 2))+'px');
+          }
+        ]
+      ]
+    })
+  },
 
   methods: {
-    init: function()
-    {
-      this._elem = Util.createSvgElement('ellipse');
-    },
-
-    position: function(x, y, width, height)
-    {
-      this._elem.setAttribute('cx', (x+(width/2))+'px');
-      this._elem.setAttribute('cy', (y+(height/2))+'px');
-    },
-
-    size: function(width, height)
-    {
-      this._elem.setAttribute('rx', (width/2)+'px');
-      this._elem.setAttribute('ry', (height/2)+'px');
+    newElement: function() {
+      return newElement('ellipse');
     }
   }
 });
+/*
+ * vim: sts=2 sw=2 ts=2 et
+ */

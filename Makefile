@@ -24,12 +24,10 @@ MYSRCS	= \
 	src/lib/misc.js	 		\
 	src/lib/lib.js	 		\
 					\
-	backends/BaseImpl.js		\
+	backends/Refresher.js		\
+	backends/VisualObject.js		\
 	backends/DrawableImpl.js	\
 	backends/MouseEvtImpl.js	\
-	backends/PathImpl.js		\
-	backends/ShapeImpl.js		\
-	backends/TextImpl.js		\
 	backends/backend.js		\
 					\
 	backends/canvas/canvas.js	\
@@ -42,7 +40,6 @@ MYSRCS	= \
 	backends/svg/Path.js		\
 	backends/svg/Rect.js		\
 	backends/svg/Text.js		\
-	backends/svg/Util.js		\
 					\
 	backends/vml/vml.js		\
 	backends/vml/Base.js		\

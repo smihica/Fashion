@@ -1,5 +1,4 @@
 var Circle = _class("CircleVML", {
-
   mixins: [Base],
 
   props: {
@@ -9,7 +8,7 @@ var Circle = _class("CircleVML", {
   methods: {
     init: function()
     {
-      this._elem = Util.createVmlElement('oval');
+      this._elem = newElement('oval');
     },
 
     position: function(x, y, width, height)

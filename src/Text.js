@@ -2,54 +2,61 @@ var Text = _class("Text", {
 
   mixins: [Base],
 
-  props: {},
+  props: {
+    _text: '',
+    _fontFamily: 'Sans',
+    _fontSize: 10
+  },
 
   methods: {
-    init: function (x, y, font_size, str)
-    {
-      this.impl = new Fashion.IMPL.Text(str);
-      this.size({font: font_size});
-      this.position({x: x, y: y});
+    init: function (values) {
+      Base.prototype.init.apply(this, arguments);
+      this.impl = new Fashion.IMPL.Text(this);
     },
 
-    fontFamily: function(d)
-    {
-      if (d) {
-        this._family = d;
-        this.impl.family(this._family);
+    fontFamily: function(value) {
+      if (value) {
+        this._fontFamily = value
+        this._dirty |= DIRTY_SHAPE;
+        if (this.drawable)
+          this.drawable._enqueueForUpdate(this);
       }
-      return this._family;
+      return this._fontFamily;
     },
 
-    lineWidth: function()
-    {
-    },
-
-    size: function(d)
-    {
-      if (d) {
-        var font = d.font;
-        this._size.font = font;
-        this.impl.size(font);
+    fontSize: function(value) {
+      if (value) {
+        this._fontSize = value;
+        this._dirty |= DIRTY_SHAPE;
+        if (this.drawable)
+          this.drawable._enqueueForUpdate(this);
       };
-
-      return {font: this._size.font};
+      return this._fontSize;
     },
 
-    displayPosition: function()
-    {
+    text: function (value) {
+      if (value) {
+        this._text = value;
+        this._dirty |= DIRTY_SHAPE;
+        if (this.drawable)
+          this.drawable._enqueueForUpdate(this);
+      };
+      return this._text;
     },
 
-    displaySize: function()
-    {
+    displayPosition: function() {
     },
 
-    gravityPosition: function()
-    {
+    displaySize: function() {
     },
 
-    hitTest: function(d)
-    {
+    gravityPosition: function() {
+    },
+
+    hitTest: function(d) {
     }
   }
 });
+/*
+ * vim: sts=2 sw=2 ts=2 et
+ */

@@ -7,27 +7,21 @@ var Rect = _class("Rect", {
   props: {},
 
   methods: {
-    init: function (x, y, width, height)
-    {
-      this.impl = new Fashion.IMPL.Rect();
-      this.size({width: width, height: height});
-      this.position({x: x, y: y});
+    init: function (values) {
+      Base.prototype.init.apply(this, arguments);
+      this.impl = new Fashion.IMPL.Rect(this);
     },
 
-    displayPosition: function()
-    {
+    displayPosition: function() {
     },
 
-    displaySize: function()
-    {
+    displaySize: function() {
     },
 
-    gravityPosition: function()
-    {
+    gravityPosition: function() {
     },
 
-    hitTest: function(d)
-    {
+    hitTest: function(d) {
     }
   }
 });

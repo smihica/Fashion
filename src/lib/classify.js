@@ -1,30 +1,15 @@
 var _class = (function() {
-
-  var CLASS_RELATIONSHIP = [[Object, null]];
-
-  function get_parent(_class) {
-    for (var i = 0, l = CLASS_RELATIONSHIP.length; i < l; i++) {
-      var rel = CLASS_RELATIONSHIP[i];
-      if (rel[0] === _class) return rel[1];
-    }
-    return null;
-  };
-
   function __super__() {
-    var pro = this.__proto__;
-    return ((pro !== void(0)) ?
-            ((this.constructor.prototype === this) ? pro : pro.__proto__ ) :
-            get_parent(this.constructor).prototype);
-  };
+    return this.constructor.__super__.prototype;
+  }
 
   function inherits(_class, parent) {
+    _class.__super__ = parent;
 
-    CLASS_RELATIONSHIP.push([_class, parent]);
-
-    var f = function(){}
+    var f = function() {};
     f.prototype = parent.prototype;
+    f.prototype.constructor = parent;
     _class.prototype = new f();
-    _class.prototype.constructor = _class;
     _class.prototype.__super__ = __super__;
 
     var iiop = _class['%%INIT_INSTANCE_ORIGN_PROPS'];
@@ -40,6 +25,7 @@ var _class = (function() {
   };
 
   function method(_class, name, func) {
+    func.__class__ = _class;
     _class.prototype[name] = func;
   };
 
@@ -136,19 +122,14 @@ var _class = (function() {
         _clone(arg, this); 
     };
 
-    l = 0;
-    for (p in props) {
-      if (props.hasOwnProperty(p)) l++;
-    }
-
-    __class__['%%INIT_INSTANCE_ORIGN_PROPS'] = (
-      ( l > 0 ) ? function(inst) {
+    __class__['%%INIT_INSTANCE_ORIGN_PROPS'] =
+      function(inst) {
         for (var p in props) {
           if (props.hasOwnProperty(p)) {
             inst[p] = _clone(props[p]);
           }
         }
-      } : function(){});
+      };
 
     inherits(__class__, parent);
 
@@ -161,26 +142,24 @@ var _class = (function() {
         method(__class__, i, methods[i]);
       }
     }
+    __class__.prototype.constructor = __class__;
 
     __class__['%%CLASSNAME%%'] = name || genclassid();
-    for(i in class_methods) {
-      if (class_methods.hasOwnProperty(i)) {
-        __class__[i] = class_methods[i];
-      }
-    }
-
-    for(i in class_props) {
-      if (class_props.hasOwnProperty(i)) {
-        __class__[i] = class_props[i];
-      }
+    for (i in class_methods) {
+      __class__[i] = class_methods[i];
     }
 
     for (j=0, l=interfaces.length; j<l; j++) {
       check_interface(__class__, interfaces[j]);
     }
 
-    return __class__;
+    for (i in class_props) {
+      __class__[i] = class_props[i];
+    }
 
+    class_methods['init'] && class_methods.init.call(__class__);
+
+    return __class__;
   };
 
 })();

@@ -22,11 +22,16 @@
       <h1>addEvent removeEvent</h1>
       <div class="stage"></div>
       <script type="text/javascript">
+        var count = 0;
         var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
-        var circle = new Fashion.Circle(64, 64, 128, 128);
-        circle.style({fill: new Fashion.FloodFill(new Fashion.Color("#000"))});
+        var circle = new Fashion.Circle({
+          position: { x: 64, y: 64 },
+          size: { x: 128, y: 128 },
+          style: { fill: new Fashion.FloodFill(new Fashion.Color("#000")) }
+        });
         var moveA = function(evt) {
-           //console.log("A:", evt.contentPosition.x, evt.contentPosition.y);
+          var i = Math.abs((++count % 512) - 255);
+          evt.target.style({ fill: new Fashion.FloodFill(new Fashion.Color(i, 255 - i, i)) });
         };
         var moveB = function(evt) {
            //console.log("B:",evt.contentPosition.x, evt.contentPosition.y);
@@ -34,13 +39,13 @@
         circle.addEvent({
            mousemove: moveA,
            mousedown: function() {
-             this.removeEvent(moveA);
-             this.removeEvent(arguments.callee);
-             this.size({width: 32, height: 32});
+             this.removeEvent('mousemove', moveA);
+             this.removeEvent('mousedown', arguments.callee);
+             this.size({ x: 32, y: 32 });
              this.addEvent({
                mousedown: function() {
-                 this.removeEvent("mousemove", "mousedown");
-                 this.size({width: 0, height: 0});
+                 this.removeEvent("mousedown", arguments.callee);
+                 this.size({ x: 0, y: 0 });
                }
              });
            }
@@ -54,28 +59,36 @@
       <div class="stage"></div>
       <script type="text/javascript">
         var drawable2 = new Fashion.Drawable(last(document.getElementsByTagName('div')));
-        var circle2 = new Fashion.Circle(96, 96, 64, 64);
-        var circle2_style1 = { fill: new Fashion.FloodFill(new Fashion.Color("#000")) };
-        var circle2_style2 = { fill: new Fashion.FloodFill(new Fashion.Color("#F00")) };
-        circle2.style(circle2_style1);
-        var moveA2 = function(evt) {
-        //console.log(evt.contentPosition.x, evt.contentPosition.y);
-          this.style(circle2_style2);
-        };
+        var circle2_styles = [
+          { fill: new Fashion.FloodFill(new Fashion.Color("#000")) },
+          { fill: new Fashion.FloodFill(new Fashion.Color("#0F0")) },
+          { fill: new Fashion.FloodFill(new Fashion.Color("#F00")) }
+        ];
+        var circle2 = new Fashion.Circle({
+          position: { x: 96, y: 96 },
+          size: { x: 64, y: 64 },
+          style: circle2_styles[0]
+        });
+        drawable2.addEvent({
+          mousemove: function () {
+            circle2.style(circle2_styles[2]);
+          },
+          mouseout: function () {
+            circle2.style(circle2_styles[0]);
+          }
+        });
+        var moveA2 = function(evt) { this.style(circle2_styles[1]); };
         circle2.addEvent({
           mousemove: moveA2,
           mousedown: function(evt) {
-        //console.log("capture!!");
             this.captureMouse();
           },
           mouseup: function(evt) {
-            //console.log("release!!");
-            this.style(circle2_style1);
+            this.style(circle2_styles[0]);
             this.releaseMouse();
           },
           mouseout: function(evt) {
-            //console.log("mouseout");
-            this.style(circle2_style1);
+            this.style(circle2_styles[0]);
           },
         });
         drawable2.draw(circle2);

@@ -1,6 +1,8 @@
 var Fashion = (function() {
   var Fashion = this;
 
+  include("constants.js");
+
   include("lib/lib.js");
   Fashion._lib = _lib;
 
@@ -42,6 +44,7 @@ var Fashion = (function() {
   include("MouseEventsHandler.js");
   Fashion.MouseEventsHandler = MouseEventsHandler;
 
+  include("Bindable.js");
   include("Shape.js");
   include("Base.js");
 
@@ -52,6 +55,7 @@ var Fashion = (function() {
   include("Text.js");
   include("Image.js");
 
+  Fashion.Bindable = Bindable;
   Fashion.Shape    = Shape;
   Fashion.Circle   = Circle;
   Fashion.Rect     = Rect;

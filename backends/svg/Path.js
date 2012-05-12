@@ -1,23 +1,25 @@
 var Path = _class("PathSVG", {
+  parent: Base,
 
-  interfaces: [PathImpl],
-
-  mixins: [Base],
+  class_props: {
+    _refresher: new Refresher(Base._refresher).setup({
+      moreHandlers: [
+        [
+          DIRTY_SHAPE,
+          function () {
+            this._elem.setAttribute('d', pathString(this.wrapper._points));
+          }
+        ]
+      ]
+    })
+  },
 
   methods: {
-    init: function()
-    {
-      this._elem = Util.createSvgElement('path');
-    },
-
-    points: function(points)
-    {
-      if (points !== void(0)) {
-        this._points = points;
-        this._elem.setAttribute('d', points.join().replace(/,/g, ' '));
-      }
-
-      return this._points;
+    newElement: function() {
+      return newElement('path');
     }
   }
 });
+/*
+ * vim: sts=2 sw=2 ts=2 et
+ */

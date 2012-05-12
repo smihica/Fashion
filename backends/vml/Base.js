@@ -1,6 +1,6 @@
 var Base = _class("BaseVML", {
-
   props : {
+    drawable: null,
     handler: null
   },
 
@@ -19,67 +19,119 @@ var Base = _class("BaseVML", {
 
     style: function(st)
     {
-      var node = this._elem;
-      var fill = (node.getElementsByTagName('fill') && node.getElementsByTagName('fill')[0]);
-      var stroke = (node.getElementsByTagName('stroke') && node.getElementsByTagName('stroke')[0]);
-
-      if (st.fill && !st.fill.none) {
-        if (!fill) fill = Util.createVmlElement('fill', true);
-        var color_op = Util.convertColorArray(st.fill.color);
-
-        fill.on = true;
-        fill.color = color_op.color;
-        fill.opacity = color_op.opacity;
-        fill.type = "solid";
-        fill.src = '';
-        // TODO
-        // this._elem.setAttribute('fill-rule', fill.rule);
-        node.appendChild(fill);
-
-      } else {
-        if (fill) {
-          fill.on = false;
-          node.removeChild(fill);
+      var elem = this._elem;
+      var fill = elem.getElementsByTagName('fill'), _fill = null;
+      if (st.fill) {
+        if (st.fill instanceof FloodFill) {
+          if (st.fill.color.a == 255) {
+            if (fill && fill.length > 0)
+              fill[0].parentNode.removeChild(fill[0]);
+            elem.fillColor = st.fill.color.toString(true);
+          } else {
+            if (!fill || !fill.length) {
+              fill = [newElement('fill')];
+              elem.appendChild(fill[0]);
+            }
+            fill.type = "solid";
+            fill.color = st.fill.color.toString(true);
+            fill.opacity = st.fill.color.a / 255.;
+          }
+        } else if (st.fill instanceof LinearGradientFill) {
+          if (!fill || !fill.length) {
+            fill = [newElement('fill')];
+            elem.appendChild(fill[0]);
+          }
+          var firstColor = st.fill.colors[0].toString(true);
+          var lastColor = st.fill.colors[st.fill.colors.length - 1].toString(true);
+          if (firstColor[0] == 0 && lastColor[0] == 1) {
+            fill.color = firstColor[1].toString(true);
+            fill.opacity = firstColor[1].a / 255.;
+            fill.color2 = lastColor[1].toString(true);
+            fill.opacity2 = lastColor[1].a / 255.;
+          }
+          var colors = [];
+          for (var i = 0; i < st.fill.colors.length; i++) {
+            var color = st.fill.colors[i];
+            colors.push((color[0] * 100).toFixed(0) + "% " + color[1].toString(true));
+          }
+          fill.type = "gradient";
+          fill.method = "sigma";
+          fill.colors = colors.join(",");
+          fill.angle = (fill.angle * 360).toFixed(0);
+        } else if (st.fill instanceof RadialGradientFill) {
+          if (!fill || !fill.length) {
+            fill = [newElement('fill')];
+            elem.appendChild(fill[0]);
+          }
+          var firstColor = st.fill.colors[0].toString(true);
+          var lastColor = st.fill.colors[st.fill.colors.length - 1].toString(true);
+          if (firstColor[0] == 0 && lastColor[0] == 1) {
+            fill.color = firstColor[1].toString(true);
+            fill.opacity = firstColor[1].a / 255.;
+            fill.color2 = lastColor[1].toString(true);
+            fill.opacity2 = lastColor[1].a / 255.;
+          }
+          var colors = [];
+          for (var i = 0; i < st.fill.colors.length; i++) {
+            var color = st.fill.colors[i];
+            colors.push((color[0] * 100).toFixed(0) + "% " + color[1].toString(true));
+          }
+          fill.type = "gradientRadial";
+          fill.focusPosition = st.fill.focus.x + " " + st.fill.focus.y;
+          fill.colors = colors.join(",");
+        } else if (st.fill instanceof ImageTileFill) {
+          if (!fill || !fill.length) {
+            fill = [newElement('fill')];
+            elem.appendChild(fill[0]);
+          }
+          fill.src = st.fill.imageData.url;
+          fill.type = "tile";
         }
+        elem.filled = true;
+      } else {
+        if (fill && fill.length > 0)
+          fill[0].parentNode.removeChild(fill[0]);
+        elem.filled = false;
       }
 
-      if (st.stroke && !st.stroke.none) {
-        if (!stroke) stroke = Util.createVmlElement('stroke', true);
-        var color_op = Util.convertColorArray(st.stroke.color);
-
-        stroke.on    = true;
-        stroke.color = color_op.color;
-        stroke.weight = st.stroke.width + 'px';
-        stroke.opacity = color_op.opacity;
-        stroke.dashstyle = Util.convertStrokeDash(st.stroke.dash);
-
-        //params["stroke-linejoin"] && (stroke.joinstyle = params["stroke-linejoin"] || "miter");
-        //stroke.miterlimit = params["stroke-miterlimit"] || 8;
-        //params["stroke-linecap"] && (stroke.endcap = params["stroke-linecap"] == "butt" ? "flat" : params["stroke-linecap"] == "square" ? "square" : "round");
-
-        node.appendChild(stroke);
-
-      } else {
-        var stroke = (node.getElementsByTagName('stroke') && node.getElementsByTagName('stroke')[0]);
-        if (stroke) {
-          stroke.on = false;
-          node.removeChild(stroke);
+      var stroke = elem.getElementsByTagName('');
+      if (st.stroke) {
+        if (st.stroke.color.a == 255 && !st.stroke.pattern) {
+          if (stroke && stroke.length > 0)
+            stroke[0].parentNode.removeChild(stroke[0]);
+          elem.strokeColor = st.stroke.color.toString(true);
+          elem.strokeWeight = st.stroke.width;
+        } else {
+          if (!stroke || !stroke.length) {
+            stroke = [newElement('stroke')];
+            elem.appendChild(stroke[0]);
+          }
+          stroke[0].color = st.stroke.color.toString(true);
+          stroke[0].opacity = st.stroke.color.a / 255.;
+          stroke[0].weight = st.stroke.width;
+          if (st.stroke.pattern)
+            stroke[0].dashStyle = st.stroke.pattern.join(' ');
         }
+        elem.stroked = true;
+      } else {
+        elem.stroked = false;
       }
 
-      //stroke.dasharray  = Util.convertStrokeDash(st.stroke.dash);
-      var visibility = st.visibility;
-      var cursor = st.cursor;
-
-      //this._elem.setAttribute('stroke-dasharray', stroke.dasharray);
-      node.style.display = visibility ? 'block' : 'none';
-      node.style.cursor  = cursor;
-
+      elem.style.display = st.visibility ? 'block' : 'none';
+      elem.style.cursor = st.cursor ? st.cursor: 'normal';
     },
 
     resetStyle: function()
     {
       this.style(DEFAULT_STYLE);
+    },
+
+    _attachedTo: function(drawable) {
+    },
+
+    _detached: function() {
+      shape.drawable._vg.removeChild(this._elem);
+      shape.drawable = null;
     },
 
     holdEventsHandler: function(handler)
@@ -115,3 +167,6 @@ var Base = _class("BaseVML", {
     }
   }
 });
+/*
+ * vim: sts=2 sw=2 ts=2 et
+ */

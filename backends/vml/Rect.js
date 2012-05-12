@@ -1,5 +1,4 @@
 var Rect = _class("RectVML", {
-
   mixins: [Base],
 
   props: {
@@ -9,7 +8,7 @@ var Rect = _class("RectVML", {
   methods: {
     init: function()
     {
-      this._elem = Util.createVmlElement('rect');
+      this._elem = newElement('rect');
     },
 
     position: function(x, y, width, height)

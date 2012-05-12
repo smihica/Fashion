@@ -87,6 +87,29 @@ var _escapeXMLSpecialChars = (function () {
 })();
 
 function _clip(target, min, max, max_is_origin) {
-  if (min > max) return (max_is_origin) ? max : min;
   return Math.min(Math.max(target, min), max);
+}
+
+function _clipPoint(target, min, max) {
+  return { x: _clip(target.x, min.x, max.x),
+           y: _clip(target.y, min.y, max.y) };
+}
+
+function _addPoint(lhs, rhs) {
+  return { x: lhs.x + rhs.x, y: lhs.y + rhs.y };
+}
+
+function _subtractPoint(lhs, rhs) {
+  return { x: lhs.x - rhs.x, y: lhs.y - rhs.y };
+}
+
+function _indexOf(array, elem, fromIndex) {
+  if (array instanceof Array && 'indexOf' in Array.prototype) {
+    return array.indexOf(elem, fromIndex);
+  }
+  for (var i = Math.max(fromIndex || 0, 0); i < array.length; i++) {
+    if (array[i] === elem)
+      return i;
+  }
+  return -1;
 }

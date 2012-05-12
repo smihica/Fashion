@@ -3,55 +3,43 @@ var Text = _class("TextVML", {
 
   props : {
     _elem: null,
-    _child: null,
-    _path: null
+    _str: '',
+    _size: 0,
+    _position: { x: 0, y: 0 }
   },
 
   methods: {
-    init: function(str)
-    {
+    init: function(str) {
+      this._str = str;
+    },
 
-      this._elem  = Util.createVmlElement('line');
-      this._path  = Util.createVmlElement('path');
-      this._child = Util.createVmlElement('textpath');
-      this._path.setAttribute('textpathok', 'true');
-      this._child.setAttribute('string', str);
-      this._child.setAttribute('on', 'true');
-      this._elem.appendChild(this._path);
-      this._elem.appendChild(this._child);
-
-      this._elem.style.width = '100px';
-      this._elem.style.height = '100px';
-
-/*
-        <v:line from="50 200" to="400 100">
-        <v:fill on="True" color="red"/>
-        <v:path textpathok="True"/>
-        <v:textpath on="True" string="VML Text"
-           style="font:normal normal normal 36pt Arial"/>
-        </v:line>
-*/
-
+    attachedTo: function(drawable) {
+      this.drawable = drawable;
+      var vml = [
+        '<', VML_PREFIX, ':line style="position:absolute; width:100px; height:100px; left:0px; top:0px">',
+        '<', VML_PREFIX, ':path textpathok="t" />',
+        '<', VML_PREFIX, ':textpath string="', _escapeXMLSpecialChars(this._str), '" />',
+        '</', VML_PREFIX, ':line>'
+      ].join('');
+      drawable._vg.insertAdjacentHTML('beforeEnd', vml);
+      this._elem = drawable._vg.lastChild;
     },
 
     position: function(x, y, width, height)
     {
-      //this._elem.style.left = x + 'px';
-      //this._elem.style.top  = y + 'px';
-
-      this._elem.setAttribute('from', x + ' ' + y);
-      this._elem.setAttribute('to', (x + 1) + ' ' + y);
+      this.position = 
+      this._elem.style.left = x;
+      this._elem.style.top = y;
     },
 
     size: function(font_size)
     {
-      this._child.style.font = "normal normal normal " + font_size + "pt 'Arial'";
-      // this._elem.style.fontSize = font_size + 'px';
+      if (this._elem)
+        this._elem.firstChild.nextSibling.style.font = "normal normal normal " + font_size + "pt 'Arial'";
     },
 
     family: function(font_family)
     {
-      // this._elem.style.fontFamily = font_family;
     }
   }
 });

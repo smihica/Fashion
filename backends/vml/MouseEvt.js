@@ -1,5 +1,4 @@
 var MouseEvt = _class("MouseEvtVML", {
-
   interfaces: [MouseEvtImpl],
 
   mixins: [UtilImpl.DomEvt],

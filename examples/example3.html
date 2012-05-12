@@ -20,16 +20,22 @@
         var node = last(document.getElementsByTagName('div'));
         var drawable = new Fashion.Drawable(
           node,
-          {content: {width: 512, height: 512},
-           viewport: {width: 256, height: 256}});
+          { contentSize: { x: 512, y: 512 },
+            viewportSize: { x: 256, y: 256 } });
 
         var zoomin  = document.getElementById('zoomin');
         var zoomout = document.getElementById('zoomout');
 
-        var circle = new Fashion.Circle(64, 64, 128, 128);
-        var circle2 = new Fashion.Circle(384, 384, 128, 128);
-        circle.style({fill: new Fashion.FloodFill(new Fashion.Color("#000"))});
-        circle2.style({fill: new Fashion.FloodFill(new Fashion.Color("#000"))});
+        var circle = new Fashion.Circle({
+          position: { x: 64, y: 64 },
+          size: { x: 128, y: 128 },
+          style: { fill: new Fashion.FloodFill(new Fashion.Color("#000")) }
+        });
+        var circle2 = new Fashion.Circle({
+          position: { x: 384, y: 384 },
+          size: { x: 128, y: 128 },
+          style: { fill: new Fashion.FloodFill(new Fashion.Color("#000")) }
+        });
         drawable.draw(circle);
         drawable.draw(circle2);
         drawable.scrollPosition({x: 1000, y: 1000});
@@ -37,16 +43,16 @@
         var zoom = 1.0;
         drawable.addEvent({
           mousemove: function(evt) {
-            console.log(JSON.stringify(evt.contentPosition));
+            console.log(JSON.stringify(evt.logicalPosition));
           }
         });
 
         zoomin.addEventListener('click', function() {
-          drawable.zoom(drawable.zoom() * 1.1);
+          drawable.transform(Fashion.Util.Matrix.scale(zoom *= 1.1));
         }, false);
 
         zoomout.addEventListener('click', function() {
-          drawable.zoom(drawable.zoom() / 1.1);
+          drawable.transform(Fashion.Util.Matrix.scale(zoom /= 1.1));
         }, false);
 
       </script>

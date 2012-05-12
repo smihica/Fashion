@@ -4,20 +4,17 @@ var VML = (function() {
   if ((BROWSER.identifier !== 'ie' || BROWSER.version > 8 )) return null;
 
   var _ = {};
-  var prefix = 'v';
+  var VML_PREFIX = 'v';
 
-  if (!window.console && DEBUG_MODE) {
-    window.console = {
-      log: function(txt) {
-        /*
-        var n = document.getElementById('console');
-        n.value += txt + "\n";
-        var r = n.createTextRange();
-        r.move('character', n.value.length);
-        r.select();
-        */
-      }
-    }
+  function setup() {
+    var namespaces = document.namespaces;
+    if (!namespaces[VML_PREFIX])
+      namespaces.add(VML_PREFIX, 'urn:schemas-microsoft-com:vml', '#default#VML');
+  }
+
+  function newElement(type) {
+    var elem = _window.document.createElement(VML_PREFIX + ':' + type);
+    return elem;
   }
 
   include("Util.js");
@@ -36,7 +33,8 @@ var VML = (function() {
   _.Path       = Path;
   _.Text       = Text;
   _.Drawable   = Drawable;
-  _.Drawable.setup();
+
+  setup();
 
   return _;
 

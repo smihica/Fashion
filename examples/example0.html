@@ -8,50 +8,55 @@
     <div class="page">
       <div style="float:left; margin:5px; padding:0">
         <h1>TEST</h1>
-        <div id="STAGE" class="canvas" style="width:600px; height:450px; overflow:scroll; border: 1px solid #000;">
+        <div id="STAGE" class="canvas" style="width:600px; height:450px; border: 1px solid #000;">
         </div>
       </div>
     </div>
     <script type="text/javascript">
 (function() {
   var c = document.getElementById('STAGE');
-  var drawable = new Fashion.Drawable(c, { width: 1000, height: 1000 });
+  var drawable = new Fashion.Drawable(c, { contentSize: { x: 1000, y: 1000 } });
 
   var p1 = drawable.draw(
-    new Fashion.Path(
-      new Fashion.PathData('M 0 50 L 0 0 50 0')));
+    new Fashion.Path({
+      points: new Fashion.PathData('M 0 50 L 0 0 50 0'),
+      transform: Fashion.Util.Matrix.translate({ x: 50, y: 90 })
+                 .rotate(Math.PI * -45 / 180.)
+    })
+  );
 
-  var p2 = drawable.draw(
-    new Fashion.Path(
-      new Fashion.PathData('M 0 50 L 0 0 50 0')));
+  drawable.draw(
+    new Fashion.Path({
+      points: new Fashion.PathData('M 0 50 L 0 0 50 0'),
+      style: {
+        fill: null,
+        stroke: {
+          width: 10,
+          color: new Fashion.Color('#FF0000FF')
+        }
+      }
+    })
+  );
 
-  var p3 = drawable.draw(
-    new Fashion.Path(
-      new Fashion.PathData('M 0 50 L 0 0 50 0')));
-
-  p2.transform({translate: {x: 50, y: 90}}, {rotate: {angle: -45}});
-  p3.transform({translate: {x: 50, y: 90}}, {rotate: {angle: -45}}, {translate: {x: 130, y: 160}});
-
-  p2.style({
-    fill: null,
-    stroke: {
-      width: 10,
-      color: new Fashion.Color('#FF0000FF')
-    }
-  });
-
-  p3.style({
-    fill: null,
-    stroke: {
-      width: 4,
-      color: new Fashion.Color(0, 255, 0, 255)
-    }
-  });
-
+  drawable.draw(
+    new Fashion.Path({
+      points: new Fashion.PathData('M 0 50 L 0 0 50 0'),
+      transform: Fashion.Util.Matrix.translate({ x: 50, y: 90 })
+                 .rotate(Math.PI * -45 / 180.)
+                 .translate({ x: 130, y: 160 }),
+      style: {
+        fill: null,
+        stroke: {
+          width: 4,
+          color: new Fashion.Color(0, 255, 0, 255)
+        }
+      }
+    })
+  );
 
   drawable.erase(p1);
 
-  var stylize = function(n) {
+  function stylize(n) {
     n.style({
       fill: new Fashion.FloodFill(new Fashion.Color(
           (Math.random() * 255).toFixed(0),
@@ -72,27 +77,40 @@
   for(var i=0,l=100; i<l; i++) {
 
     var f = drawable.draw(
-      new Fashion.Text(
-        Math.random()*1000, Math.random()*1000, Math.random()*100, 'Shin Aoyama'));
+      new Fashion.Text({
+        position: { x: Math.random() * 1000, y: Math.random() * 1000 },
+        fontSize: Math.random() * 100,
+        text: 'Shin Aoyama'
+      })
+    );
     stylize(f);
 
     var p = drawable.draw(
-      new Fashion.Path(
-        new Fashion.PathData(
-          'M 0 -10 L 5.88 8.09 -9.51 -3.09 9.51 -3.09 -5.88 8.09 Z')));
-    p.position({x: Math.random()*1000, y: Math.random()*1000});
-    p.size({width: Math.random()*300, height: Math.random()*300});
+      new Fashion.Path({
+        points: new Fashion.PathData(
+          'M 0 -10 L 5.88 8.09 -9.51 -3.09 9.51 -3.09 -5.88 8.09 Z'),
+        position: { x: Math.random() * 1000, y: Math.random() * 1000 },
+        size: { x: Math.random() * 300, y: Math.random() * 300 }
+      })
+    );
     stylize(p);
 
     var c = drawable.draw(
-      new Fashion.Circle(Math.random()*1000, Math.random()*1000, 30, 30));
+      new Fashion.Circle({
+        position: { x: Math.random() * 1000, y: Math.random() * 1000 },
+        size: { x: 30, y: 30 }
+      })
+    );
     stylize(c);
 
 
     var r = drawable.draw(
-      new Fashion.Rect(Math.random()*1000, Math.random()*1000, 50, 50));
+      new Fashion.Rect({
+        position: { x: Math.random() * 1000, y: Math.random() * 1000 },
+        size: { x: 50, y: 50 }
+      })
+    );
     stylize(r);
-
   }
 })();
     </script>

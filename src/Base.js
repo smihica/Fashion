@@ -1,207 +1,118 @@
 var Base = _class("Base", {
 
   props: {
+    id: null,
     impl: null,
     drawable: null,
-    _position: {x:0, y:0},
-    _size: {width:0, height:0},
-    _transform: {},
-    _transform_matrix: null,
-    _matrixes: new MultipleKeyHash(),
-    _style: {},
-    handler: null
+    handler: null,
+    _position: { x: 0, y: 0 },
+    _size: { x: 0, y: 0 },
+    _style: { fill: null, stroke: null },
+    _zIndex: 0,
+    _transform: null,
+    _dirty: DIRTY_POSITION | DIRTY_SIZE | DIRTY_ZINDEX
   },
 
   methods: {
-    position: function(d)
-    {
-      if (d) {
-        var x = d.x, y = d.y;
-        this._position.x = x;
-        this._position.y = y;
-        this.impl.position(x, y, this._size.width, this._size.height);
-      }
-      return _clone(this._position);
-    },
-
-    size: function(d)
-    {
-      if (d) {
-        var width = d.width, height = d.height;
-        this._size.width = width;
-        this._size.height = height;
-        this.impl.size(width, height);
-      }
-      return _clone(this._size);
-    },
-
-    transform: function()
-    {
-      var l;
-
-      if ((l = arguments.length) > 0) {
-
-        this._matrixes.pop(this._transform_matrix);
-        this._transform = {};
-
-        var scale, rotate, translate, tr, j, i;
-        var pos = this.position();
-        var x = pos.x, y = pos.y;
-        var m = new Util.Matrix();
-
-        for (j=0; j<l; j++) {
-
-          tr = arguments[j];
-
-          for (i in tr) {
-            if (tr.hasOwnProperty(i)) {
-              switch(i) {
-              case 'scale':
-                scale = tr[i];
-                if (scale.x === void(0) || scale.y === void(0))
-                  throw new ArgumentError("transform() scale needs x, y parameters at least.");
-                if (scale.cx === void(0)) scale.cx = x;
-                if (scale.cy === void(0)) scale.cy = y;
-                this._transform.scale = scale;
-                break;
-
-              case 'rotate':
-                rotate = tr[i];
-                if (rotate.angle === void(0))
-                  throw new ArgumentError("transform() rotate needs angle parameter at least.");
-                if (rotate.x === void(0)) rotate.x = x;
-                if (rotate.y === void(0)) rotate.y = y;
-                this._transform.rotate = rotate;
-                break;
-
-              case 'translate':
-                translate = tr[i];
-                if (translate.x === void(0) || translate.y === void(0))
-                  throw new ArgumentError("transform() translate needs x, y parameters at least.");
-                this._transform.translate = translate;
-                break;
-
-              default:
-                throw new ArgumentError("transform() expects 'translate', 'scale', 'rotate', but '" + i + "' given.");
-
-              }
-            }
-          }
-          m.set(this._transform);
-        }
-
-        this._transform_matrix = m;
-        this._matrixes.put(this._transform_matrix, null);
-        this.impl.transform(this._matrixes);
-      }
-
-      return ({
-        scale:     this._transform.scale,
-        rotate:    this._transform.rotate,
-        translate: this._transform.translate
-      });
-
-    },
-
-    resetTransform: function()
-    {
-
-      var m = this._matrixes.pop(this._transform_matrix);
-
-      if (m) {
-        this.impl.transform(this._matrixes);
-      }
-
-      this._transform = {};
-      this._transform_matrix = null;
-    },
-
-    style: function(st)
-    {
-      if (st !== void(0)) {
-        var i;
-        var stroke = null;
-        visibility=true,
-        fill = null;
-        cursor='default',
-        zIndex=0;
-
-        for (i in st) {
-          if (st.hasOwnProperty(i)) {
-            switch(i) {
-            case 'stroke':
-              stroke = st[i];
-              break;
-            case 'visibility':
-              visibility = st[i];
-              break;
-            case 'fill':
-              fill = st[i];
-              break;
-            case 'cursor':
-              cursor = st[i];
-              break;
-            case 'zIndex':
-              zIndex = st[i];
-              break;
-            }
+    init: function (values) {
+      if (values) {
+        for (var i in values) {
+          switch (typeof this[i]) {
+          case 'function':
+            this[i](values[i]);
+            break;
+          default:
+            throw new ArgumentError('Invalid keyword argument: ' + i);
           }
         }
+      }
+    },
 
-        this._style = {
-          stroke: stroke,
-          visibility: visibility,
-          fill: fill,
-          cursor: cursor,
-          zIndex: zIndex
-        };
-
+    position: function(value) {
+      if (value) {
+        this._position = value;
+        this._dirty |= DIRTY_POSITION;
         if (this.drawable)
-          this.impl.style(this._style);
+          this.drawable._enqueueForUpdate(this);
       }
+      return this._position;
+    },
 
+    size: function(value) {
+      if (value) {
+        this._size = value;
+        this._dirty |= DIRTY_SIZE;
+        if (this.drawable)
+          this.drawable._enqueueForUpdate(this);
+      }
+      return this._size;
+    },
+
+    zIndex: function(value) {
+      if (value !== void(0)) {
+        this._zIndex = value;
+        this._dirty |= DIRTY_ZINDEX;
+        if (this.drawable)
+          this.drawable._enqueueForUpdate(this);
+      }
+      return this._zIndex;
+    },
+
+    transform: function(value) {
+      if (value !== void(0)) {
+        this._transform = value;
+        this._dirty |= DIRTY_TRANSFORM;
+        if (this.drawable)
+          this.drawable._enqueueForUpdate(this);
+      }
+      return this._transform;
+    },
+
+    style: function(value) {
+      if (value !== void(0)) {
+        this._style = value;
+        this._dirty |= DIRTY_STYLE;
+        if (this.drawable)
+          this.drawable._enqueueForUpdate(this);
+      }
       return this._style;
     },
 
-    attachTo: function(drawable) {
+    _attachTo: function(drawable) {
       this.drawable = drawable;
-      this.impl.style(this._style);
-    },
-
-    resetStyle: function()
-    {
-      this._style = {};
-      this.impl.resetStyle();
     },
 
     captureMouse: function() {
-
       if (!this.drawable)
         throw new NotAttached("This Shape is not attached any Drawable yet.");
-
       this.drawable.captureMouse(this);
-
     },
 
     releaseMouse: function() {
-
       if (!this.drawable)
         throw new NotAttached("This Shape is not attached any Drawable yet.");
-
       this.drawable.releaseMouse(this);
-
     },
 
-    addEvent: function(h)
-    {
-      if (this.handler === null) this.handler = new MouseEventsHandler(this);
-      this.handler.add(h);
+    addEvent: function(type, h) {
+      if (this.handler === null)
+        this.handler = new MouseEventsHandler(this);
+      this.handler.add.apply(this.handler, arguments);
+      this._dirty |= DIRTY_EVENT_HANDLERS; 
+      if (this.drawable)
+        this.drawable._enqueueForUpdate(this);
     },
 
-    removeEvent: function()
-    {
-      if (this.handler === null) throw new NotSupported("EventsHandler has not initialized in this shape.");
+    removeEvent: function(type, h) {
+      if (this.handler === null)
+        return;
       this.handler.remove.apply(this.handler, arguments);
+      this._dirty |= DIRTY_EVENT_HANDLERS;
+      if (this.drawable)
+        this.drawable._enqueueForUpdate(this);
     }
   }
 });
+/*
+ * vim: sts=2 sw=2 ts=2 et
+ */

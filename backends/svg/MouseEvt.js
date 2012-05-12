@@ -16,5 +16,7 @@ var MouseEvt = _class("MouseEvtSVG", {
       this.convertToMouseEvt(dom_evt);
     }
   }
-
 });
+/*
+ * vim: sts=2 sw=2 ts=2 et
+ */

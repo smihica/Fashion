@@ -1,11 +1,5 @@
 var Util = _class("UtilVML", {
   class_methods: {
-    createVmlElement: function(type, attrp) {
-      var elem = document.createElement(prefix + ':' + type);
-      if (!attrp) elem.style.position = 'absolute';
-      return elem;
-    },
-
     matrixString: function(m) {
       return "progid:DXImageTransform.Microsoft.Matrix(" +
         "M11=" + m.get(0) + ", M12=" + m.get(2) + ", M21=" + m.get(1) + ", M22=" + m.get(3) +
@@ -27,46 +21,23 @@ var Util = _class("UtilVML", {
     },
 
     convertPathArray: function(path) {
-
-      var str = '';
-      var last_idt = '';
-      var x, y;
-
-      for (var i=0,l=path.length; i<l; i++ ) {
+      var retval = [];
+      for (var i = 0; i < path.length; i++) {
         var p = path[i];
         var idt = p[0];
         switch (idt) {
         case 'M':
-          idt = 'm';
-          x = p[1]; y = p[2];
-          str += ' ' + idt + ' ' + x.toFixed() + ',' + y.toFixed();
+          retval.push('m' + p[1] + ',' + p[2]);
           break;
-
-        case 'H':
-        case 'V':
-          if (idt ==='V') y = p[1]; else x = p[1];
-          p[1] = x; p[2] = y;
         case 'L':
-          idt = 'l';
-          x = p[1]; y = p[2];
-          str += ((last_idt === idt) ? ', ' : ' ' + idt + ' ' ) + x.toFixed() + ',' + y.toFixed();
-
+          retval.push('l' + p[1] + ',' + p[2]);
           break;
-
         case 'C':
-          idt = 'c';
-          x = item[5]; y = item[6];
-          str += (((last_idt === idt) ? ', ' : ' ' + idt + ' ' ) +
-                  p[1].toFixed() + ',' + p[2].toFixed() + ',' + p[3].toFixed() + ',' +
-                  p[4].toFixed() + ',' + x.toFixed() + ',' + y.toFixed());
-
+          retval.push('c' + p[1] + ',' + p[2] + ',' + p[3] + ',' + p[4] + ',' + p[5] + ',' + p[6]);
           break;
-
         case 'Z':
-          idt = 'x';
-          str += idt+' ';
+          retval.push('x');
           break;
-
         // TODO !!!!
         case 'R':
         case 'T':
@@ -74,11 +45,9 @@ var Util = _class("UtilVML", {
         case 'Q':
         case 'A':
         }
-
-        last_idt = idt;
       }
-
-      return (str + ' e');
+      retval.push('e');
+      return retval.join('');
     }
   }
 });

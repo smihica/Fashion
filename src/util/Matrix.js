@@ -2,10 +2,6 @@ var Matrix = (function() {
 
   var PI = Math.PI;
 
-  var rad = function (deg) {
-    return deg % 360 * PI / 180;
-  };
-
   var norm = function(a) {
     return ( a[0] * a[0] ) + ( a[1] * a[1] );
   };
@@ -17,62 +13,66 @@ var Matrix = (function() {
   };
 
   var _Matrix = _class("Matrix", {
-
     props: {
       a: 1, c: 0, e: 0,
       b: 0, d: 1, f: 0
     },
 
-    methods: {
+    class_methods: {
+      translate: function (offset) {
+        return new this(0, 0, 0, 0, offset.x, offset.y)
+      },
 
+      scale: function (degree, anchor) {
+        if (anchor) {
+          return new this(degree, 0, 0, degree, anchor.x, anchor.y)
+                     .multiplyI(1, 0, 0, 1, -anchor.x, -anchor.y);
+        } else {
+          return new this(degree, 0, 0, degree, 0, 0);
+        }
+      },
+
+      rotate: function (r, anchor) {
+        var cos = Math.cos(r), sin = Math.sin(r);
+        if (anchor) {
+          return new this(cos, sin, -sin, cos, anchor.x, anchor.y)
+                     .multiplyI(1, 0, 0, 1, -anchor.x, -anchor.y);
+        } else {
+          return new this(cos, sin, -sin, cos, 0, 0);
+        }
+      }
+    },
+
+    methods: {
       init: function (a, b, c, d, e, f) {
-        if (a) {
+        if (arguments.length == 6) {
           this.a = +a; this.c = +c; this.e = +e;
           this.b = +b; this.d = +d; this.f = +f;
+        } else if (arguments.length != 0) {
+          throw new ArgumentError("0 or 6 arguments expected");
         }
       },
 
-      set: function(tr) {
-        for (i in tr) {
-          if (tr.hasOwnProperty(i)) {
-            if (i === 'scale') {
-              var s = tr.scale;
-              // console.log("scale:"+s.x+","+s.y+","+s.cx+","+s.cy);
-              this.scale(s.x, s.y, s.cx, s.cy);
-
-            } else if (i === 'rotate') {
-              var r = tr.rotate;
-              // console.log("rotate:"+r.angle+","+r.x+","+r.y);
-              this.rotate(r.angle, r.x, r.y);
-
-            } else if (i === 'translate') {
-              var t = tr.translate;
-              // console.log("translate:"+t.x+","+t.y);
-              this.translate(t.x, t.y);
-
-            } else {
-              throw new ArgumentError("transform() expects 'tranlate', 'scale', 'rotate'.");
-
-            }
-          }
-        }
-        return this;
+      multiplyI: function (a2, b2, c2, d2, e2, f2) {
+        return new this.constructor(
+          this.a * a2 + this.c * b2,
+          this.b * a2 + this.d * b2,
+          this.a * c2 + this.c * d2,
+          this.b * c2 + this.d * d2,
+          this.a * e2 + this.c * f2 + this.e,
+          this.b * e2 + this.d * f2 + this.f
+        );
       },
 
-      add: function (a, b, c, d, e, f) {
-        var a1=this.a, b1=this.b, c1=this.c, d1=this.d, e1=this.e, f1=this.f;
-
-        this.a = a1*a+c1*b;
-        this.b = b1*a+d1*b;
-        this.c = a1*c+c1*d;
-        this.d = b1*c+d1*d;
-        this.e = a1*e+c1*f+e1;
-        this.f = b1*e+d1*f+f1;
-
-      },
-
-      combine: function(o) {
-        this.add(o.a, o.b, o.c, o.d, o.e, o.f);
+      multiply: function (that) {
+        return new this.constructor(
+          this.a * that.a + this.c * that.b,
+          this.b * that.a + this.d * that.b,
+          this.a * that.c + this.c * that.d,
+          this.b * that.c + this.d * that.d,
+          this.a * that.e + this.c * that.f + this.e,
+          this.b * that.e + this.d * that.f + this.f
+        );
       },
 
       invert: function () {
@@ -83,36 +83,27 @@ var Matrix = (function() {
           me.a / x, (me.c * me.f - me.d * me.e) / x, (me.b * me.e - me.a * me.f) / x);
       },
 
-      clone: function () {
-        return new this.constructor(this.a, this.b, this.c, this.d, this.e, this.f);
+      translate: function (offset) {
+        return this.multiplyI(1, 0, 0, 1, offset.x, offset.y);
       },
 
-      translate: function (x, y) {
-        this.add(1, 0, 0, 1, x, y);
-        return this;
+      scale: function (degree, anchor) {
+        if (anchor) {
+          return this.multiplyI(degree, 0, 0, degree, anchor.x, anchor.y)
+                     .multiplyI(1, 0, 0, 1, -cx, -cy);
+        } else {
+          return this.multiplyI(degree, 0, 0, degree, 0, 0);
+        }
       },
 
-      scale: function (x, y, cx, cy) {
-        this.add(x, 0, 0, y, cx, cy);
-        this.add(1, 0, 0, 1, -cx, -cy);
-        return this;
-      },
-
-      rotate:  function (a, x, y) {
-        a = rad(a);
-        var cos = +Math.cos(a).toFixed(FLOAT_ACCURACY_ACCURATE);
-        var sin = +Math.sin(a).toFixed(FLOAT_ACCURACY_ACCURATE);
-        this.add(cos, sin, -sin, cos, x, y);
-        this.add(1, 0, 0, 1, -x, -y);
-        return this;
-      },
-
-      x: function (x, y) {
-        return (x * this.a) + (y * this.c) + this.e;
-      },
-
-      y: function (x, y) {
-        return (x * this.b) + (y * this.d) + this.f;
+      rotate:  function (r, anchor) {
+        var cos = Math.cos(r), sin = Math.sin(r);
+        if (anchor) {
+          return this.multiplyI(cos, sin, -sin, cos, x, y)
+                     .multiplyI(1, 0, 0, 1, -x, -y);
+        } else {
+          return this.multiplyI(cos, sin, -sin, cos, 0, 0);
+        }
       },
 
       apply: function(p) {
@@ -121,23 +112,16 @@ var Matrix = (function() {
       },
 
       get: function (i) {
-        return +this[String.fromCharCode(97 + i)].toFixed(FLOAT_ACCURACY);
-      },
-
-      getAll: function() {
-        var rt = [];
-        for(var i=0; i<6; i++) {
-          rt.push(this.get(i));
-        }
-        return rt;
+        return this[String.fromCharCode(97 + i)];
       },
 
       toString: function () {
-        return [this.get(0), this.get(2), this.get(1), this.get(3), 0, 0].join();
+        return '{ ' + this.a + ', ' + this.b + ', ' + this.e + 
+               '  ' + this.c + ', ' + this.d + ', ' + this.f + ' }';
       },
 
       offset: function () {
-        return [this.e.toFixed(FLOAT_ACCURACY), this.f.toFixed(FLOAT_ACCURACY)];
+        return { x: this.e, y: this.f };
       },
 
       split: function () {

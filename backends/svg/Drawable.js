@@ -1,238 +1,217 @@
 var Drawable = _class("DrawableSVG", {
-
-  interfaces : [DrawableImpl],
+  interfaces : [VisualObject, DrawableImpl],
 
   props: {
     prefix: "svg",
-    handler: null,
+    wrapper: null,
     _defsManager: null,
-
+    _depthManager: null,
     _svg:         null,
     _vg:          null,
     _viewport:    null,
+    _capturingShape: null,
+    _handledEvents: {
+      mousedown: null,
+      mouseup:   null,
+      mousemove: null,
+      mouseout:  null
+    },
+    _eventFunc: null,
+    _captureEventFunc: null,
+    _refresher: null
+  },
 
-    _onscroll:    null,
+  class_props: {
+    _refresher: new Refresher().setup({
+      preHandler: function() {
+        if (!this._viewport.parentNode != this.wrapper.target) {
+          this.wrapper.target.appendChild(this._viewport);
+        }
+      },
 
-    _capturing_shapes: new MultipleKeyHash(),
-    _capturing_functions: new MultipleKeyHash()
+      handlers: [
+        [
+          DIRTY_SIZE,
+          function() {
+            var viewportSize = this.wrapper._viewport_size;
+            this._viewport.style.width  = viewportSize.x + 'px';
+            this._viewport.style.height = viewportSize.y + 'px';
+            this._updateContentSize();
+          }
+        ],
+        [
+          DIRTY_TRANSFORM,
+          function() {
+            this._vg.setAttribute("transform", matrixString(this.wrapper._transform));
+            this._updateContentSize();
+          }
+        ],
+        [
+          DIRTY_EVENT_HANDLERS,
+          function() {
+            for (var type in this._handledEvents) {
+              var handled = this.wrapper.handler.handles(type);
+              var eventFunc = this._handledEvents[type];
+              if (!eventFunc && handled) {
+                this._svg.addEventListener(type, this._eventFunc, false);
+                this._handledEvents[type] = this._eventFunc;
+              } else if (eventFunc && !handled) {
+                this._svg.removeEventListener(type, eventFunc, false);
+                this._handledEvents[type] = null;
+              }
+            }
+          }
+        ]
+      ]
+    })
   },
 
   methods: {
-    init: function(node, content_size, viewport_size, onscroll)
-    {
-      var svg = newNode("svg");
-      svg.setAttribute("version", "1.1");
-      svg.setAttribute("width", content_size.width + "px");
-      svg.setAttribute("height", content_size.height + "px");
-      svg.style.margin = "0";
-      svg.style.padding = "0";
-      svg.style.background = "#CCC";
-      svg.style["-moz-user-select"] = svg.style["-khtml-user-select"] =
-        svg.style["-webkit-user-select"] = svg.style["-ms-user-select"] =
-        svg.style["user-select"] = 'none';
+    init: function(wrapper) {
+      this.wrapper = wrapper;
+      this._refresher = arguments.callee.__class__._refresher;
 
-      var defs = newNode("defs");
-      this._defsManager = new DefsManager(defs);
-      svg.appendChild(defs);
+      var self = this;
+      this._eventFunc = function(domEvt) {
+        if (self._capturingShape)
+          return true;
+        domEvt.stopPropagation();
+        self.wrapper.handler.dispatch(buildMouseEvt(self, domEvt));
+        return false;
+      };
 
-      var root = newNode("g");
-      svg.appendChild(root);
+      var viewport = this._buildViewportElement();
 
-      var viewport = _window.document.createElement("div");
-      viewport.style.padding = '0';
-      viewport.style.width  = viewport_size.width + "px";
-      viewport.style.height = viewport_size.height + "px";
-
-      if (content_size.width <= viewport_size.width &&
-          content_size.height <= viewport_size.height)
-        viewport.style.overflow = "hidden";
-      else
-        viewport.style.overflow = "scroll";
-
+      var svg = this._buildSvgElement();
       viewport.appendChild(svg);
 
-      node.appendChild(viewport);
+      var defs = newElement("defs");
+      svg.appendChild(defs);
+
+      var root = newElement("g");
+      svg.appendChild(root);
+
+      this._defsManager = new DefsManager(defs);
+      this._depthManager = new DepthManager(root);
 
       this._viewport = viewport;
       this._svg      = svg;
       this._vg       = root;
-
-      this._onscroll = onscroll || function() {};
-      var self = this;
-      this._viewport.addEventListener('scroll', function(evt) {
-        self._onscroll({x: this.scrollLeft, y:this.scrollTop});
-      }, false);
-
     },
 
-    zoom: function(ratio)
-    {
-      if (ratio) {
-        this._vg.setAttribute("transform", "scale(" + ratio + ")");
-      }
+    dispose: function() {
+      if (this._viewport && this._viewport.parentNode)
+        this._viewport.parentNode.removeChild(this._viewport);
+      this._viewport = null;
+      this._svg = null;
+      this._vg = null;
+      this._wrapper = null;
+      this._defsManager = null;
+      this._depthManager = null;
     },
 
-    viewportSize: function(size)
-    {
-      if (size) {
-        this._viewport.style.width  = size.width + "px";
-        this._viewport.style.height = size.height + "px";
-      }
+    refresh: function (dirty) {
+      this._refresher.call(this, dirty);
     },
 
-    contentSize: function(size, scrolling)
-    {
-      if (size) {
-        this._svg.setAttribute("width", size.width + "px");
-        this._svg.setAttribute("height", size.height + "px");
-        this._svg.style.width  = size.width + "px";
-        this._svg.style.height = size.height + "px";
-
-        if (scrolling) {
-          this._viewport.style.overflow = 'scroll';
-        } else {
-          this._viewport.style.overflow = 'hidden';
-        }
-
-      }
-    },
-
-    scrollPosition: function(position)
-    {
+    scrollPosition: function(position) {
       if (position) {
-        this._viewport.scrollLeft = position.x+'';
-        this._viewport.scrollTop  = position.y+'';
-        this._onscroll({x: position.x, y: position.y});
+        position = this.wrapper._transform.apply(position);
+        this._viewport.scrollLeft = position.x;
+        this._viewport.scrollTop  = position.y;
+        return position;
       }
+      return this.wrapper._inverse_transform.apply({ x: this._viewport.scrollLeft, y: this._viewport.scrollTop });
     },
 
-    append: function(shape)
-    {
+    append: function(shape) {
       shape.drawable = this;
-      this._vg.appendChild(shape._elem);
     },
 
-    remove: function(shape)
-    {
-      var child = shape._elem;
-      this._vg.removeChild(child);
+    remove: function(shape) {
+      if (shape._elem && this._vg)
+        this._vg.removeChild(shape._elem);
       shape.drawable = null;
     },
 
-    anchor: function()
-    {
+    anchor: function() {
     },
 
-    getOffsetPosition: function()
-    {
+    getViewportOffset: function() {
       return UtilImpl.getDomOffsetPosition(this._viewport);
     },
 
-    captureMouse: function(shape)
-    {
+    captureMouse: function(shape) {
       var self = this;
-      var handler = shape.handler;
 
-      if (this._capturing_shapes.exist_p(shape)) {
+      if (this._capturingShape) {
         throw new AlreadyExists("The shape is already capturing.");
       }
 
-      this._capturing_shapes.put(shape, null);
+      this._captureEventFunc = function (domEvt) {
+        var func = shape._handledEvents[domEvt.type];
+        return func ? func(domEvt): true;
+      };
 
-      var handler_functions = handler.getHandlerFunctionsAll();
+      for (var type in shape._handledEvents)
+        this._viewport.offsetParent.addEventListener(type, this._captureEventFunc, false);
 
-      for (var j in handler_functions) {
-        for (var i=0, l=handler_functions[j].length; i<l; i++) {
-          (function(j, i) {
-            var raw = handler_functions[j][i];
-            var wrapped = function(dom_evt) {
-              if (dom_evt.target !== shape._elem) {
-                var evt = new MouseEvt(dom_evt, shape);
-                return raw.call(shape, evt);
-              }
-            }
-            self._capturing_functions.put(raw, wrapped);
-            self._vg.addEventListener(j, wrapped, false);
-          })(j, i);
-        }
-      }
-
-      var self = this;
-      handler.holdTrigger('drawable-impl', {
-        append: function(type, raw) {
-          var wrapped = function(dom_evt) {
-            if (dom_evt.target !== shape._elem) {
-              var evt = new MouseEvt(dom_evt, shape);
-              return raw.call(shape, evt);
-            }
-          };
-          self._capturing_functions.put(raw, wrapped);
-          self._vg.addEventListener(type, wrapped, false);
-        },
-        remove: function(type, raw) {
-          var wrapped = self._capturing_functions.pop(raw);
-          self._vg.removeEventListener(type, wrapped, false);
-        }
-      });
-
+      this._capturingShape = shape;
     },
 
-    releaseMouse: function(shape)
-    {
+    releaseMouse: function(shape) {
       var handler = shape.handler;
 
-      if (!this._capturing_shapes.exist_p(shape)) {
+      if (this._capturingShape != shape) {
         throw new NotFound("The shape is not capturing.");
       }
 
-      this._capturing_shapes.erace(shape);
+      for (var type in shape._handledEvents)
+        this._viewport.offsetParent.removeEventListener(type, this._captureEventFunc, false);
 
-      var handler_functions = handler.getHandlerFunctionsAll();
-
-      for (var j in handler_functions) {
-        for (var i=0, l=handler_functions[j].length; i<l; i++) {
-          var raw = handler_functions[j][i];
-          var wrapped = this._capturing_functions.pop(raw);
-          this._vg.removeEventListener(j, wrapped, false);
-        }
-      }
-
-      handler.releaseTrigger('drawable-impl');
+      this._capturingShape = null;
     },
 
-    holdEventsHandler: function(handler)
-    {
-      var self = this;
-      if (this.handler === null) {
-        var funcs = new MultipleKeyHash();
-        this.handler = handler;
-        this.handler.holdTrigger('drawable-impl', {
-          add:    function(type, raw) {
-            var wrapped = function(dom_evt){
-              var evt = new MouseEvt(dom_evt, self);
-              return raw.call(self, evt);
-            };
-            funcs.put(raw, wrapped);
-            UtilImpl.DomEvt.addEvt(self._svg, type, wrapped);
-          },
-          remove: function(type, raw) {
-            UtilImpl.DomEvt.remEvt(self._svg, type, funcs.pop(raw));
-          }
-        });
-      } else {
-        throw new AlreadyExists("impl already has a events handler.");
-      }
+    convertToLogicalPoint: function(point) {
+      return _addPoint(this.scrollPosition(), this.wrapper._inverse_transform.apply(point));
     },
 
-    releaseEventsHandler: function ()
-    {
-      if (this.handler !== null) {
-        this.handler.releaseTriger('drawable-impl');
-      } else {
-        throw new NotFound("events handler is not exist yet.");
-      }
+    _updateContentSize: function () {
+      var viewportSize = this.wrapper._viewport_size;
+      var contentSize = this.wrapper._transform.apply(this.wrapper._content_size);
+      this._svg.setAttribute('width', contentSize.x + 'px');
+      this._svg.setAttribute('height', contentSize.y + 'px');
+      this._svg.style.width = contentSize.x + 'px';
+      this._svg.style.height = contentSize.y + 'px';
+      this._viewport.style.overflow =
+         (contentSize.x <= viewportSize.x &&
+          contentSize.y <= viewportSize.y) ? 'hidden': 'scroll';
+    },
+
+    _buildSvgElement: function() {
+      var svg = newElement("svg");
+      svg.setAttribute('version', '1.1');
+      // svg.style.background = "#ccc";
+      svg.setAttribute('style', [
+        'margin: 0',
+        'padding: 0',
+        '-moz-user-select: none',
+        '-khtml-user-select: none',
+        '-webkit-user-select: none',
+        '-ms-user-select: none',
+        'user-select: none'
+      ].join(';'));
+      return svg;
+    },
+
+    _buildViewportElement: function () {
+      var viewport = _window.document.createElement("div");
+      viewport.setAttribute('style', [
+        'margin: 0',
+        'padding: 0'
+      ].join(';'));
+      return viewport;
     }
-
   }
 });
 /*
