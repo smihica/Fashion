@@ -173,7 +173,7 @@ function appendShapes(drawable, svgStyle, nodeList) {
       var pathDataString = n.getAttribute('d');
       if (!pathDataString)
         throw "Pathdata is not provided for the path element";
-      shape = drawable.draw(new Fashion.Path(new Fashion.PathData(pathDataString)));
+      shape = drawable.draw(new Fashion.Path({ points: new Fashion.PathData(pathDataString) }));
       break;
     }
     if (shape !== null) {
@@ -190,25 +190,25 @@ function parseSvg(xml) {
   var size = widthString ?
     heightString ?
       {
-        width: parseFloat(xml.documentElement.getAttribute('width')),
-        height: parseFloat(xml.documentElement.getAttribute('height'))
+        x: parseFloat(xml.documentElement.getAttribute('width')),
+        y: parseFloat(xml.documentElement.getAttribute('height'))
       }
       :
       {
-        width: parseFloat(xml.documentElement.getAttribute('width')),
-        height: parseFloat(xml.documentElement.getAttribute('width'))
+        x: parseFloat(xml.documentElement.getAttribute('width')),
+        y: parseFloat(xml.documentElement.getAttribute('width'))
       }
     :
     heightString ?
       {
-        width: parseFloat(xml.documentElement.getAttribute('height')),
-        height: parseFloat(xml.documentElement.getAttribute('height'))
+        x: parseFloat(xml.documentElement.getAttribute('height')),
+        y: parseFloat(xml.documentElement.getAttribute('height'))
       }
       :
       null
     ;
   var viewportNode = document.createElement("div");
-  var drawable = new Fashion.Drawable(viewportNode, size);
+  var drawable = new Fashion.Drawable(viewportNode, { viewportSize: size });
   appendShapes(
     drawable,
     { fill: false, fillOpacity: false,
