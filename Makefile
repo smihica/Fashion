@@ -26,6 +26,7 @@ MYSRCS	= \
 					\
 	backends/Refresher.js		\
 	backends/VisualObject.js		\
+	backends/TransformStack.js		\
 	backends/DrawableImpl.js	\
 	backends/backend.js		\
 					\

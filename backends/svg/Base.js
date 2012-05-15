@@ -13,7 +13,9 @@ var Base = _class("BaseSVG", {
       mouseout:  null
     },
     _eventFunc: null,
-    _refresher: null
+    _refresher: null,
+    _transformStack: null,
+    _transformUpdated: false
   },
 
   class_props: {
@@ -26,6 +28,10 @@ var Base = _class("BaseSVG", {
           this.drawable._vg.appendChild(this._elem);
         }
       },
+
+      postHandler: function () {
+        this._updateTransform();
+      },
     
       handlers: [
         [
@@ -37,11 +43,11 @@ var Base = _class("BaseSVG", {
         [
           DIRTY_TRANSFORM,
           function () {
-            if (this.wrapper._transform) {
-              this._elem.setAttribute('transform', matrixString(this.wrapper._transform));
-            } else {
-              this._elem.removeAttribute('transform');
-            }
+            if (this.wrapper._transform)
+              this._transformStack.add('last', 'wrapper', this.wrapper._transform);
+            else
+              this._transformStack.remove('wrapper');
+            this._transformUpdated = true;
           }
         ],
         [
@@ -109,6 +115,7 @@ var Base = _class("BaseSVG", {
     init: function (wrapper) {
       this.wrapper = wrapper;
       this._refresher = this.constructor._refresher;
+      this._transformStack = new TransformStack();
       var self = this;
       this._eventFunc = function(domEvt) {
         if (self.drawable._capturingShape &&
@@ -134,6 +141,18 @@ var Base = _class("BaseSVG", {
 
     refresh: function(dirty) {
       this._refresher.call(this, dirty);
+    },
+
+    _updateTransform: function () {
+      if (!this._transformUpdated)
+        return;
+      var transform = this._transformStack.get();
+      if (transform) {
+        this._elem.setAttribute('transform', matrixString(transform));
+      } else {
+        this._elem.removeAttribute('transform');
+      }
+      this._transformUpdated = false;
     }
   }
 });

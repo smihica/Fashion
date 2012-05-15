@@ -1,6 +1,7 @@
 var Backend = (function() {
   include("UtilImpl.js");
   include("Refresher.js");
+  include("TransformStack.js");
   include("VisualObject.js");
   include("DrawableImpl.js");
   include("ShapeImpl.js");
@@ -37,6 +38,8 @@ var Backend = (function() {
   return {
     UtilImpl       : UtilImpl,
     VisualObject   : VisualObject,
+    Refresher      : Refresher,
+    TransformStack : TransformStack,
     DrawableImpl   : DrawableImpl,
     SVG            : SVG,
     VML            : VML,
