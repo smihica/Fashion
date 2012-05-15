@@ -51,6 +51,15 @@ var MouseEventsHandler = _class("MouseEventsHandler", {
       handlers.splice(i, 1);
     },
 
+    removeAll: function (type) {
+      if (type instanceof Array) {
+        for (var i = 0; i < type.length; i++)
+          this.removeAll(type[i]);
+        return;
+      }
+      this._handlersMap[type] = [];
+    },
+
     dispatch: function (evt) {
       var handlers = this._handlersMap[evt.type];
       if (handlers === void(0))
