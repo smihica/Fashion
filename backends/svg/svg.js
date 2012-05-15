@@ -62,7 +62,6 @@ var SVG = (function() {
   }
 
   include("Util.js");
-  include("MouseEvt.js");
   include("Base.js");
   include("Circle.js");
   include("Rect.js");
@@ -73,7 +72,6 @@ var SVG = (function() {
   include("Drawable.js");
 
   return {
-    MouseEvt : MouseEvt,
     Util     : Util,
     Circle   : Circle,
     Rect     : Rect,

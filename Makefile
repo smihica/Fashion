@@ -27,7 +27,6 @@ MYSRCS	= \
 	backends/Refresher.js		\
 	backends/VisualObject.js		\
 	backends/DrawableImpl.js	\
-	backends/MouseEvtImpl.js	\
 	backends/backend.js		\
 					\
 	backends/canvas/canvas.js	\
@@ -36,7 +35,6 @@ MYSRCS	= \
 	backends/svg/Base.js		\
 	backends/svg/Circle.js		\
 	backends/svg/Drawable.js	\
-	backends/svg/MouseEvt.js	\
 	backends/svg/Path.js		\
 	backends/svg/Rect.js		\
 	backends/svg/Text.js		\

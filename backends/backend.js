@@ -1,7 +1,6 @@
 var Backend = (function() {
   include("UtilImpl.js");
   include("Refresher.js");
-  include("MouseEvtImpl.js");
   include("VisualObject.js");
   include("DrawableImpl.js");
   include("ShapeImpl.js");
@@ -37,7 +36,6 @@ var Backend = (function() {
 
   return {
     UtilImpl       : UtilImpl,
-    MouseEvtImpl   : MouseEvtImpl,
     VisualObject   : VisualObject,
     DrawableImpl   : DrawableImpl,
     SVG            : SVG,
