@@ -137,6 +137,7 @@ var Drawable = _class("Drawable", {
 
       if (id && (id in this._elements)) {
         shape.drawable = null;
+        shape._dirty = ~0;
         shape.id = null;
         this.impl.remove(shape.impl);
         delete this._elements[id];
@@ -164,9 +165,15 @@ var Drawable = _class("Drawable", {
     },
 
     removeEvent: function(type, h) {
-      if (this.handler === null)
-        return;
-      this.handler.remove(type, h);
+      if (this.handler === null) return;
+      var arglen = arguments.length;
+      if (arglen === 0) {
+        this.handler.removeAll();
+      } else if (arglen == 1) {
+        this.handler.removeAll.apply(this.handler, type);
+      } else if (arguments.length < 3) {
+        this.handler.remove(type, h);
+      }
       this._dirty |= DIRTY_EVENT_HANDLERS;
       if (this.drawable)
         this.drawable._enqueueForUpdate(this);

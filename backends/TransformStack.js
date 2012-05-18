@@ -48,8 +48,9 @@ var TransformStack = _class("TransformStack", {
     },
 
     remove: function (key) {
-      if (!(key in this.pairs))
-        throw new NotFound("Key not found: " + key);
+
+      if (!(key in this.pairs)) return;
+
       var i = 0;
       for (;;) {
         if (i >= this.stack.length)

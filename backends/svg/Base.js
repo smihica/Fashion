@@ -32,7 +32,7 @@ var Base = _class("BaseSVG", {
       postHandler: function () {
         this._updateTransform();
       },
-    
+
       handlers: [
         [
           DIRTY_ZINDEX,
@@ -94,6 +94,9 @@ var Base = _class("BaseSVG", {
         [
           DIRTY_EVENT_HANDLERS,
           function () {
+
+            if (!this.wrapper.handler) return;
+
             for (var type in this._handledEvents) {
               var handled = this.wrapper.handler.handles(type);
               var eventFunc = this._handledEvents[type];
@@ -119,7 +122,7 @@ var Base = _class("BaseSVG", {
       var self = this;
       this._eventFunc = function(domEvt) {
         if (self.drawable._capturingShape &&
-              self.drawable._capturingShape != self)
+            self.drawable._capturingShape != self)
           return true;
         domEvt.stopPropagation();
         self.wrapper.handler.dispatch(buildMouseEvt(self, domEvt));

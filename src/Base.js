@@ -10,7 +10,8 @@ var Base = _class("Base", {
     _style: { fill: null, stroke: null },
     _zIndex: 0,
     _transform: null,
-    _dirty: DIRTY_POSITION | DIRTY_SIZE | DIRTY_ZINDEX
+    _dirty: DIRTY_POSITION | DIRTY_SIZE | DIRTY_ZINDEX ,
+    _visibility: true
   },
 
   methods: {
@@ -104,9 +105,15 @@ var Base = _class("Base", {
     },
 
     removeEvent: function(type, h) {
-      if (this.handler === null)
-        return;
-      this.handler.remove.apply(this.handler, arguments);
+      if (this.handler === null) return;
+      var arglen = arguments.length;
+      if (arglen === 0) {
+        this.handler.removeAll();
+      } else if (arglen == 1) {
+        this.handler.removeAll.apply(this.handler, type);
+      } else if (arguments.length < 3) {
+        this.handler.remove(type, h);
+      }
       this._dirty |= DIRTY_EVENT_HANDLERS;
       if (this.drawable)
         this.drawable._enqueueForUpdate(this);

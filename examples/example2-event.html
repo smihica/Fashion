@@ -34,7 +34,9 @@
           evt.target.style({ fill: new Fashion.FloodFill(new Fashion.Color(i, 255 - i, i)) });
         };
         var moveB = function(evt) {
-           //console.log("B:",evt.contentPosition.x, evt.contentPosition.y);
+        //console.log("Logical  : ", evt.logicalPosition.x, evt.logicalPosition.y);
+        //console.log("Physical : ", evt.physicalPosition.x, evt.physicalPosition.y);
+        //console.log("Screen   : ", evt.screenPosition.x, evt.screenPosition.y);
         };
         circle.addEvent({
            mousemove: moveA,

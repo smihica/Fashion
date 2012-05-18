@@ -129,8 +129,10 @@ var Drawable = _class("DrawableSVG", {
     },
 
     remove: function(shape) {
-      if (shape._elem && this._vg)
+      if (shape._elem && this._vg) {
         this._vg.removeChild(shape._elem);
+      }
+      shape._elem = null;
       shape.drawable = null;
     },
 
@@ -174,6 +176,10 @@ var Drawable = _class("DrawableSVG", {
 
     convertToLogicalPoint: function(point) {
       return _addPoint(this.scrollPosition(), this.wrapper._inverse_transform.apply(point));
+    },
+
+    convertToPhysicalPoint: function(point) {
+      return _addPoint(this.wrapper._transform.apply(this.scrollPosition()), point);
     },
 
     _updateContentSize: function () {

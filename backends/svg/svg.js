@@ -20,7 +20,7 @@ var SVG = (function() {
   function pathString(pathData) {
     return pathData.join(' ').replace(/,/g, ' ');
   }
-  
+
   function buildMouseEvt(impl, domEvt) {
     var retval = new MouseEvt();
     retval.type = domEvt.type;
@@ -50,12 +50,14 @@ var SVG = (function() {
       physicalPagePosition = { x: domEvt.pageX, y: domEvt.pageY };
     }
     if (impl instanceof Drawable) {
-      retval.physicalPosition = _subtractPoint(physicalPagePosition, impl.getViewportOffset());
-      retval.logicalPosition = impl.convertToLogicalPoint(retval.physicalPosition);
+      retval.screenPosition   = _subtractPoint(physicalPagePosition, impl.getViewportOffset());
+      retval.logicalPosition  = impl.convertToLogicalPoint(retval.screenPosition);
+      retval.physicalPosition = impl.convertToPhysicalPoint(retval.screenPosition);
     } else {
-      retval.physicalPosition = _subtractPoint(physicalPagePosition, impl.drawable.getViewportOffset());
-      retval.logicalPosition = impl.drawable.convertToLogicalPoint(retval.physicalPosition);
-      retval.offsetPosition = _subtractPoint(retval.logicalPosition, impl.wrapper._position);
+      retval.screenPosition   = _subtractPoint(physicalPagePosition, impl.drawable.getViewportOffset());
+      retval.logicalPosition  = impl.drawable.convertToLogicalPoint(retval.screenPosition);
+      retval.physicalPosition = impl.drawable.convertToPhysicalPoint(retval.screenPosition);
+      retval.offsetPosition   = _subtractPoint(retval.logicalPosition, impl.wrapper._position);
     }
 
     return retval;

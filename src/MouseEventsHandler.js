@@ -51,13 +51,15 @@ var MouseEventsHandler = _class("MouseEventsHandler", {
       handlers.splice(i, 1);
     },
 
-    removeAll: function (type) {
-      if (type instanceof Array) {
-        for (var i = 0; i < type.length; i++)
-          this.removeAll(type[i]);
-        return;
+    removeAll: function (types) {
+      var l = arguments.length;
+      if (l == 0) {
+        for (var i in this._handlersMap) this._handlersMap[i] = [];
+      } else {
+        for (var i = 0; i < l; i++) {
+          this._handlersMap[arguments[i]] = [];
+        }
       }
-      this._handlersMap[type] = [];
     },
 
     dispatch: function (evt) {

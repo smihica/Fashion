@@ -43,7 +43,9 @@
         var zoom = 1.0;
         drawable.addEvent({
           mousemove: function(evt) {
-            console.log(JSON.stringify(evt.logicalPosition));
+            console.log("Logical  : ", evt.logicalPosition.x, evt.logicalPosition.y);
+            console.log("Physical : ", evt.physicalPosition.x, evt.physicalPosition.y);
+            console.log("Screen   : ", evt.screenPosition.x, evt.screenPosition.y);
           }
         });
 
