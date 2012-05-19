@@ -69,7 +69,7 @@ var Drawable = _class("DrawableSVG", {
   methods: {
     init: function(wrapper) {
       this.wrapper = wrapper;
-      this._refresher = arguments.callee.__class__._refresher;
+      this._refresher = this.constructor._refresher;
 
       var self = this;
       this._eventFunc = function(domEvt) {
