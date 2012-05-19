@@ -82,6 +82,8 @@ var _escapeXMLSpecialChars = (function () {
   var specials = new RegExp("[<>&'\"]"),
       map = ['', '&lt;', '&gt;', '&amp;', '&apos;', '&quot;', ''];
   return function (str) {
+    if (typeof str != 'string')
+      str = str.toString();
     return str.replace(specials, function(x) { return map[special.source.indexOf(x)] });
   };
 })();
