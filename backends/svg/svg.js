@@ -27,7 +27,7 @@ var SVG = (function() {
     retval.target = impl.wrapper;
     var which = domEvt.which;
     var button = domEvt.button;
-    if (!which && button !== undefined ) {
+    if (!which && button !== void(0)) {
       which = ( button & 1 ? 1 : ( button & 2 ? 3 : ( button & 4 ? 2 : 0 ) ) );
     }
     switch(which) {
