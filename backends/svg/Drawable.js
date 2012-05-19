@@ -129,11 +129,11 @@ var Drawable = _class("DrawableSVG", {
     },
 
     remove: function(shape) {
-      if (shape._elem && this._vg) {
+      if (this._capturingShape == shape)
+        this.releaseMouse(shape);
+      if (this._vg && shape._elem)
         this._vg.removeChild(shape._elem);
-      }
-      shape._elem = null;
-      shape.drawable = null;
+      shape._removed(shape);
     },
 
     anchor: function() {

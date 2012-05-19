@@ -130,13 +130,19 @@ var Base = _class("BaseSVG", {
     },
 
     dispose: function() {
-      if (this.drawable) {
+      if (this.drawable)
         this.drawable.remove(this);
-      }
+      else
+        this._removed();
+    },
+
+    _removed: function () {
       if (this.def) {
         this.def.delRef();
         this.def = null;
       }
+      this._elem = null;
+      this.drawable = null;
     },
 
     newElement: function() { return null; },
