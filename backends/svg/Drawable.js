@@ -156,7 +156,7 @@ var Drawable = _class("DrawableSVG", {
       };
 
       for (var type in shape._handledEvents)
-        this._viewport.offsetParent.addEventListener(type, this._captureEventFunc, false);
+        this._viewport.offsetParent.addEventListener(type, this._captureEventFunc, true);
 
       this._capturingShape = shape;
     },

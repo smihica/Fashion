@@ -124,7 +124,6 @@ var Base = _class("BaseSVG", {
         if (self.drawable._capturingShape &&
             self.drawable._capturingShape != self)
           return true;
-        domEvt.stopPropagation();
         self.wrapper.handler.dispatch(buildMouseEvt(self, domEvt));
         return false;
       };
