@@ -80,6 +80,11 @@ var Drawable = _class("DrawableSVG", {
         return false;
       };
 
+      this._captureEventFunc = function (domEvt) {
+        var func = self._capturingShape._handledEvents[domEvt.type];
+        return func ? func(domEvt): true;
+      };
+
       var viewport = this._buildViewportElement();
 
       var svg = this._buildSvgElement();
@@ -149,11 +154,6 @@ var Drawable = _class("DrawableSVG", {
       if (this._capturingShape) {
         throw new AlreadyExists("The shape is already capturing.");
       }
-
-      this._captureEventFunc = function (domEvt) {
-        var func = shape._handledEvents[domEvt.type];
-        return func ? func(domEvt): true;
-      };
 
       for (var type in shape._handledEvents)
         this._viewport.offsetParent.addEventListener(type, this._captureEventFunc, true);
