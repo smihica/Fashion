@@ -30,8 +30,9 @@
           style: { fill: new Fashion.FloodFill(new Fashion.Color("#000")) }
         });
         var moveA = function(evt) {
-          var i = Math.abs((++count % 512) - 255);
-          evt.target.style({ fill: new Fashion.FloodFill(new Fashion.Color(i, 255 - i, i)) });
+          var i = Math.abs((++count % 511) - 255);
+          var st = this.style();
+          this.style({ stroke: st.stroke, fill: new Fashion.FloodFill(new Fashion.Color(i, 255 - i, i)) });
         };
         var moveB = function(evt) {
         //console.log("Logical  : ", evt.logicalPosition.x, evt.logicalPosition.y);
@@ -39,6 +40,8 @@
         //console.log("Screen   : ", evt.screenPosition.x, evt.screenPosition.y);
         };
         circle.addEvent({
+           mouseover: function() { var st = this.style(); this.style({ fill: st.fill, stroke: new Fashion.Stroke(new Fashion.Color(255,0,0,255), 10) }); },
+           mouseout:  function() { var st = this.style(); this.style({ fill: st.fill, stroke: null }); },
            mousemove: moveA,
            mousedown: function() {
              this.removeEvent('mousemove', moveA);

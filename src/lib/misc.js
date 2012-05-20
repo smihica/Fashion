@@ -88,7 +88,7 @@ var _escapeXMLSpecialChars = (function () {
   };
 })();
 
-function _clip(target, min, max, max_is_origin) {
+function _clip(target, min, max) {
   return Math.min(Math.max(target, min), max);
 }
 

@@ -10,6 +10,7 @@ var Base = _class("BaseSVG", {
       mousedown: null,
       mouseup:   null,
       mousemove: null,
+      mouseover: null,
       mouseout:  null
     },
     _eventFunc: null,

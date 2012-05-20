@@ -99,7 +99,7 @@ var Base = _class("Base", {
       if (this.handler === null)
         this.handler = new MouseEventsHandler(this);
       this.handler.add.apply(this.handler, arguments);
-      this._dirty |= DIRTY_EVENT_HANDLERS; 
+      this._dirty |= DIRTY_EVENT_HANDLERS;
       if (this.drawable)
         this.drawable._enqueueForUpdate(this);
     },

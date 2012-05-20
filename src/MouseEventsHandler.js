@@ -4,6 +4,7 @@ var MouseEventsHandler = _class("MouseEventsHandler", {
       mousedown: [],
       mouseup:   [],
       mousemove: [],
+      mouseover: [],
       mouseout:  []
     },
     _target: null
