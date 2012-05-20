@@ -116,9 +116,9 @@ var Drawable = _class("DrawableSVG", {
 
     scrollPosition: function(position) {
       if (position) {
-        position = this.wrapper._transform.apply(position);
-        this._viewport.scrollLeft = position.x;
-        this._viewport.scrollTop  = position.y;
+        var _position = this.wrapper._transform.apply(position);
+        this._viewport.scrollLeft = _position.x;
+        this._viewport.scrollTop  = _position.y;
         return position;
       }
       return this.wrapper._inverse_transform.apply({ x: this._viewport.scrollLeft, y: this._viewport.scrollTop });
