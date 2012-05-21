@@ -1,5 +1,4 @@
 var Base = _class("Base", {
-
   props: {
     id: null,
     impl: null,
@@ -117,6 +116,11 @@ var Base = _class("Base", {
       this._dirty |= DIRTY_EVENT_HANDLERS;
       if (this.drawable)
         this.drawable._enqueueForUpdate(this);
+    },
+
+    _refresh: function () {
+      this.impl.refresh(this._dirty);
+      this._dirty = 0;
     }
   }
 });

@@ -4,6 +4,8 @@ include("browser.js");
 _lib.detectBrowser = detectBrowser;
 var BROWSER = detectBrowser(typeof window == 'undefined' ? void(0): window);
 
+include("assert.js");
+
 include("misc.js");
 _lib._atomic_p             = _atomic_p;
 _lib._clone                = _clone;

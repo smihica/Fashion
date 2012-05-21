@@ -106,6 +106,14 @@ var Matrix = (function() {
         }
       },
 
+      isUnit: function () {
+        return this.a == 1 && this.b == 0 && this.c == 0 && this.d == 1;
+      },
+
+      isScaling: function() {
+        return this.b == 0 && this.c == 0 && { x: this.a, y: this. d } || null;
+      },
+
       apply: function(p) {
         return { x: (p.x * this.a) + (p.y * this.c) + this.e,
                  y: (p.x * this.b) + (p.y * this.d) + this.f };

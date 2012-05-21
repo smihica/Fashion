@@ -2,7 +2,7 @@
  * Shape interface class.
  */
 var Shape = _class("Shape", {
-  parent: Bindable,
+  parent: VisualObject,
   methods: {
     position:         function(d) {},
     size:             function(d) {},
@@ -10,6 +10,7 @@ var Shape = _class("Shape", {
     displaySize:      function()  {},
     hitTest:          function(d) {},
     transform:        function(d) {},
-    style:            function(d) {}
+    style:            function(d) {},
+    _refresh:         function() {}
   }
 });

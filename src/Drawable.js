@@ -1,6 +1,5 @@
 var Drawable = _class("Drawable", {
-  interfaces: [Bindable],
-
+  interfaces: [Bindable, VisualObject],
   props: {
     impl: null,
     handler: null,
@@ -16,18 +15,31 @@ var Drawable = _class("Drawable", {
     _offset_position:      null,
     _transform: null,
     _inverse_transform: null,
-    _dirty: DIRTY_SIZE | DIRTY_TRANSFORM
+    _dirty: 0
   },
-
   methods: {
     init: function(target, options) {
-      var self = this;
       this.target = target;
-      this._viewport_size = options && options.viewportSize || { x: target.clientWidth, y: target.clientHeight };
-      this._content_size = options && options.contentSize || this._viewport_size;
-
       this.impl = new Fashion.IMPL.Drawable(this);
       this.transform(Util.Matrix.scale(1.));
+      if (options && options.viewportSize) {
+        this.viewportSize(options.viewportSize);
+      } else {
+        var self = this;
+        _bindEvent(_window, 'load', function () {
+          _unbindEvent(_window, 'load', arguments.callee);
+          var size = { x: target.clientWidth, y: target.clientHeight };
+          self.viewportSize(size);
+          if (!options || !options.contentSize)
+            self.contentSize(size);
+        });
+      }
+      if (options) {
+        if (options.contentSize)
+          this.contentSize(options.contentSize);
+        else if (options.viewportSize)
+          this.contentSize(options.viewportSize);
+      }
     },
 
     viewportSize: function(size) {
@@ -115,12 +127,12 @@ var Drawable = _class("Drawable", {
     },
 
     draw: function(shape) {
-      this.impl.append(shape.impl);
-      shape.impl.refresh(shape._dirty);
       var id = this.gensym();
-      this._elements[id] = shape;
       shape.id = id;
+      this.impl.append(shape.impl);
       shape._attachTo(this);
+      shape.impl.refresh(shape._dirty);
+      this._elements[id] = shape;
       this._numElements++;
       return shape;
     },
@@ -179,15 +191,16 @@ var Drawable = _class("Drawable", {
         this.drawable._enqueueForUpdate(this);
     },
 
+    _refresh: function () {
+      this.impl.refresh(this._dirty);
+      this._dirty = 0;
+    },
+
     _enqueueForUpdate: function (shape) {
       if (this.batchUpdater) {
-        this.batchUpdater.schedule(shape, function() {
-          shape.impl.refresh(shape._dirty);
-          shape._dirty = 0;
-        });
+        this.batchUpdater.schedule(shape, shape._refresh);
       } else {
-        shape.impl.refresh(shape._dirty);
-        shape._dirty = 0;
+        shape._refresh();
       }
     }
   }

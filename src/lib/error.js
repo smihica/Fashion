@@ -22,3 +22,4 @@ var NotAttached      = createExceptionClass.call(this, 'NotAttached');
 var NotFound         = createExceptionClass.call(this, 'NotFound');
 var AlreadyExists    = createExceptionClass.call(this, 'AlreadyExists');
 var DeclarationError = createExceptionClass.call(this, 'DeclarationError');
+var AssertionFailure = createExceptionClass.call(this, 'AssertionFailure');

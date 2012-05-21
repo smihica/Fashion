@@ -44,11 +44,9 @@ MYSRCS	= \
 	backends/vml/Base.js		\
 	backends/vml/Circle.js		\
 	backends/vml/Drawable.js	\
-	backends/vml/MouseEvt.js	\
 	backends/vml/Path.js		\
 	backends/vml/Rect.js		\
 	backends/vml/Text.js		\
-	backends/vml/Util.js
 
 
 ROOTSRC = src/main.js

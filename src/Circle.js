@@ -1,11 +1,7 @@
 var Circle = _class("Circle", {
-
   mixins: [Base],
-
-  interfaces: [Shape],
-
+  interfaces: [Bindable, Shape],
   props: {},
-
   methods: {
     init: function (values) {
       Base.prototype.init.apply(this, arguments);

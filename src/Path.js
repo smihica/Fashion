@@ -1,14 +1,10 @@
 var Path = _class("Path", {
-
   mixins: [Base],
-
-  interfaces: [Shape],
-
+  interfaces: [Bindable, Shape],
   props: {
     _points: [],
     _position_matrix: new Util.Matrix()
   },
-
   methods: {
     init: function (values) {
       Base.prototype.init.apply(this, arguments);

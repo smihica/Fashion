@@ -41,7 +41,11 @@ var Refresher = _class("Refresher", {
     },
 
     call: function (target, dirty) {
-      this._preHandler && this._preHandler.call(target, dirty);
+      if (this._preHandler) {
+        var _dirty = this._preHandler.call(target, dirty);
+        if (_dirty !== void(0))
+          dirty = _dirty;
+      }
       if (dirty) {
         for (var i = 0; i < this._handlers.length; i++) {
           var pair = this._handlers[i];

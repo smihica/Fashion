@@ -1,13 +1,11 @@
 var Text = _class("Text", {
-
   mixins: [Base],
-
+  interfaces: [Bindable, Shape],
   props: {
     _text: '',
     _fontFamily: 'Sans',
     _fontSize: 10
   },
-
   methods: {
     init: function (values) {
       Base.prototype.init.apply(this, arguments);

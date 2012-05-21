@@ -30,10 +30,30 @@ function last(items) {
               drawable.draw(
                 new Fashion.Text({
                   fontSize: 12,
+                  fontFamily: 'Sans-Serif',
                   text: "Text",
                   position: { x: 0, y: 12 },
                   style: {
                     fill: new Fashion.FloodFill(new Fashion.Color("#000"))
+                  }
+                })
+              );
+            </script>
+          </td>
+        </tr>
+        <tr>
+          <td>Circle</td>
+          <td>
+            <div class="stage"></div>
+            <script type="text/javascript">
+              var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
+              drawable.draw(
+                new Fashion.Circle({
+                  position: { x: 0, y: 0 },
+                  size: { x: 64, y: 64 },
+                  style: {
+                    fill: new Fashion.FloodFill(new Fashion.Color("#fa0")),
+                    stroke: new Fashion.Stroke(new Fashion.Color("#000"), 1)
                   }
                 })
               );
@@ -48,7 +68,7 @@ function last(items) {
               var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
               drawable.draw(
                 new Fashion.Path({
-                  points: new Fashion.PathData("M 32 0 L 51.72 60.54 0 23.03 63 23.03 12.27 60.54 Z"),
+                  points: new Fashion.PathData("M 32 0 L 24.53 24.47 0 24.47 19.91 39.71 12.44 64 32 49.12 51.55 64 44.08 39.71 64 24.47 39.46 24.47 Z"),
                   style: {
                     stroke: null,
                     fill: new Fashion.FloodFill(new Fashion.Color("#fc0"))
@@ -66,7 +86,7 @@ function last(items) {
               var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
               drawable.draw(
                 new Fashion.Path({
-                  points: new Fashion.PathData("M 32 0 L 51.72 60.54 0 23.03 63 23.03 12.27 60.54 Z"),
+                  points: new Fashion.PathData("M 32 0 L 24.53 24.47 0 24.47 19.91 39.71 12.44 64 32 49.12 51.55 64 44.08 39.71 64 24.47 39.46 24.47 Z"),
                   style: {
                     stroke: null,
                     fill: new Fashion.LinearGradientFill(
@@ -86,7 +106,7 @@ function last(items) {
               var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
               drawable.draw(
                 new Fashion.Path({
-                  points: new Fashion.PathData("M 32 0 L 51.72 60.54 0 23.03 63 23.03 12.27 60.54 Z"),
+                  points: new Fashion.PathData("M 32 0 L 24.53 24.47 0 24.47 19.91 39.71 12.44 64 32 49.12 51.55 64 44.08 39.71 64 24.47 39.46 24.47 Z"),
                   style: {
                     stroke: null,
                     fill: new Fashion.RadialGradientFill(
@@ -107,7 +127,7 @@ function last(items) {
               var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
               drawable.draw(
                 new Fashion.Path({
-                  points: new Fashion.PathData("M 32 0 L 51.72 60.54 0 23.03 63 23.03 12.27 60.54 Z"),
+                  points: new Fashion.PathData("M 32 0 L 24.53 24.47 0 24.47 19.91 39.71 12.44 64 32 49.12 51.55 64 44.08 39.71 64 24.47 39.46 24.47 Z"),
                   style: {
                     stroke: null,
                     fill: new Fashion.ImageTileFill(

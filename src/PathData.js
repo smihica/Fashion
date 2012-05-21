@@ -321,11 +321,12 @@ var PathData = (function() {
   };
 
   return _class('PathData', {
-    parent: Array,
+    props: {
+      length: 0
+    },
 
     methods: {
       init: function PathData_init(points) {
-        Array.call(this);
         if (typeof points === 'string' || points instanceof String) {
           this.initWithString(points);
         } else if (points instanceof Array) {
@@ -402,7 +403,13 @@ var PathData = (function() {
             break;
           }
         }
-      }
+      },
+
+      push: Array.prototype.push,
+
+      join: Array.prototype.join,
+
+      slice: Array.prototype.slice
     }
   });
 })();

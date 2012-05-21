@@ -44,7 +44,12 @@ var Fashion = (function() {
   include("MouseEventsHandler.js");
   Fashion.MouseEventsHandler = MouseEventsHandler;
 
+  include("BatchUpdater.js");
+  Fashion.BatchUpdater = BatchUpdater;
+  Fashion.BasicBatchUpdater = BasicBatchUpdater;
+
   include("Bindable.js");
+  include("VisualObject.js");
   include("Shape.js");
   include("Base.js");
 
@@ -56,7 +61,9 @@ var Fashion = (function() {
   include("Image.js");
 
   Fashion.Bindable = Bindable;
+  Fashion.VisualObject = VisualObject;
   Fashion.Shape    = Shape;
+  Fashion.Base     = Base;
   Fashion.Circle   = Circle;
   Fashion.Rect     = Rect;
   Fashion.Path     = Path;

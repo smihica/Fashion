@@ -228,6 +228,10 @@ var Color = (function() {
       },
 
       toString: function(without_alpha) {
+        return this._toString(without_alpha);
+      },
+
+      _toString: function(without_alpha) {
         return '#' + _lpad(this.r.toString(16), 2, '0')
                    + _lpad(this.g.toString(16), 2, '0')
                    + _lpad(this.b.toString(16), 2, '0')

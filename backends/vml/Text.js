@@ -1,45 +1,69 @@
 var Text = _class("TextVML", {
-  mixins: [Base],
+  parent: Base,
 
-  props : {
-    _elem: null,
-    _str: '',
-    _size: 0,
-    _position: { x: 0, y: 0 }
+  class_props: {
+    _refresher: new Refresher(Base._refresher).setup({
+      moreHandlers: [
+        [
+          DIRTY_POSITION,
+          function () {
+            var position = this.wrapper._position;
+            this._elem.node.style.left = position.x + 'px';
+            this._elem.node.style.top = position.y + 'px';
+          }
+        ],
+        [
+          DIRTY_SIZE,
+          function () {
+            var size = this.wrapper._size;
+            this._elem.node.style.width = size.x + 'px';
+            this._elem.node.style.height = size.y + 'px';
+          }
+        ],
+        [
+          DIRTY_SHAPE,
+          function () {
+            this._elem.textpath.fontSize = this.wrapper._fontSize + 'px'; 
+            this._elem.textpath.fontFamily = this.wrapper._fontFamily;
+            this._elem.textpath.string = this.wrapper._text;
+          }
+        ]
+      ]
+    })
   },
 
   methods: {
-    init: function(str) {
-      this._str = str;
-    },
-
-    attachedTo: function(drawable) {
-      this.drawable = drawable;
+    newElement: function(vg) {
       var vml = [
-        '<', VML_PREFIX, ':line style="position:absolute; width:100px; height:100px; left:0px; top:0px">',
+        '<', VML_PREFIX, ':line',
+        ' __fashion__id="', this.wrapper.id, '"',
+        ' from="0,0" to="1,0"'
+      ];
+      var fillAndStroke = new VMLFillAndStroke();
+      fillAndStroke.setStyle({
+        position: 'absolute',
+        width: '1px',
+        height: '1px',
+        left: this.wrapper._position.x + 'px',
+        top: this.wrapper._position.y + 'px'
+      });
+      this._buildVMLStyle(fillAndStroke);
+      fillAndStroke.appendHTML(vml);
+      vml.push(
         '<', VML_PREFIX, ':path textpathok="t" />',
-        '<', VML_PREFIX, ':textpath string="', _escapeXMLSpecialChars(this._str), '" />',
-        '</', VML_PREFIX, ':line>'
-      ].join('');
-      drawable._vg.insertAdjacentHTML('beforeEnd', vml);
-      this._elem = drawable._vg.lastChild;
-    },
-
-    position: function(x, y, width, height)
-    {
-      this.position = 
-      this._elem.style.left = x;
-      this._elem.style.top = y;
-    },
-
-    size: function(font_size)
-    {
-      if (this._elem)
-        this._elem.firstChild.nextSibling.style.font = "normal normal normal " + font_size + "pt 'Arial'";
-    },
-
-    family: function(font_family)
-    {
+        '<', VML_PREFIX, ':textpath string="', _escapeXMLSpecialChars(this.wrapper._text), '" on="t"',
+        ' style="', 'font-size:', this.wrapper._fontSize, 'px;',
+                    'font-family:', _escapeXMLSpecialChars(this.wrapper._fontFamily), ';',
+                    'v-text-align:left" />',
+        '</', VML_PREFIX, ':line', '>');
+      vg.node.insertAdjacentHTML('beforeEnd', vml.join(''));
+      return {
+        node: vg.node.lastChild,
+        fill: null,
+        stroke: null,
+        skew: null,
+        textpath: vg.node.lastChild.lastChild
+      };
     }
   }
 });
