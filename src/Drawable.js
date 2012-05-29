@@ -26,13 +26,15 @@ var Drawable = _class("Drawable", {
         this.viewportSize(options.viewportSize);
       } else {
         var self = this;
-        _bindEvent(_window, 'load', function () {
-          _unbindEvent(_window, 'load', arguments.callee);
-          var size = { x: target.clientWidth, y: target.clientHeight };
-          self.viewportSize(size);
-          if (!options || !options.contentSize)
-            self.contentSize(size);
-        });
+        if (_window) {
+          _bindEvent(_window, 'load', function () {
+            _unbindEvent(_window, 'load', arguments.callee);
+            var size = { x: target.clientWidth, y: target.clientHeight };
+            self.viewportSize(size);
+            if (!options || !options.contentSize)
+              self.contentSize(size);
+          });
+        }
       }
       if (options) {
         if (options.contentSize)
