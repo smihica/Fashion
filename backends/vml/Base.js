@@ -196,7 +196,7 @@ var Base = (function() {
             function () {
               for (var type in this._handledEvents) {
                 var beingHandled = this._handledEvents[type];
-                var toHandle = this.wrapper.handler.handles(type);
+                var toHandle = this.wrapper.handler && this.wrapper.handler.handles(type);
                 if (!beingHandled && toHandle) {
                   this.drawable._handleEvent(type);
                   this._handledEvents[type] = true;
