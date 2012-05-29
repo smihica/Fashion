@@ -2,6 +2,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <script type="text/javascript" src="../fashion.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../fashion.svg.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../fashion.vml.js" charset="utf-8"></script>
     <style> table.te td { border: 1px solid black; } </style>
   </head>
   <body>
@@ -20,7 +22,7 @@
   var p1 = drawable.draw(
     new Fashion.Path({
       points: new Fashion.PathData('M 0 50 L 0 0 50 0'),
-      transform: Fashion.Util.Matrix.translate({ x: 50, y: 90 })
+      transform: Fashion.Matrix.translate({ x: 50, y: 90 })
                  .rotate(Math.PI * -45 / 180.)
     })
   );
@@ -41,7 +43,7 @@
   drawable.draw(
     new Fashion.Path({
       points: new Fashion.PathData('M 0 50 L 0 0 50 0'),
-      transform: Fashion.Util.Matrix.translate({ x: 50, y: 90 })
+      transform: Fashion.Matrix.translate({ x: 50, y: 90 })
                  .rotate(Math.PI * -45 / 180.)
                  .translate({ x: 130, y: 160 }),
       style: {

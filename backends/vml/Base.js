@@ -143,14 +143,14 @@ var Base = (function() {
             return dirty;
           if (!this._elem) {
             this._elem = this.newElement(this.drawable._vg);
-            return dirty & DIRTY_EVENT_HANDLERS;
+            return dirty & Fashion.DIRTY_EVENT_HANDLERS;
           }
           return dirty;
         },
 
         handlers: [
           [
-            DIRTY_TRANSFORM,
+            Fashion.DIRTY_TRANSFORM,
             function () {
               var transform = this.wrapper._transform;
               if (transform) {
@@ -181,7 +181,7 @@ var Base = (function() {
             }
           ],
           [
-            DIRTY_STYLE,
+            Fashion.DIRTY_STYLE,
             function () {
               var fillAndStroke = new VMLFillAndStroke();
               this._buildVMLStyle(fillAndStroke);
@@ -189,13 +189,13 @@ var Base = (function() {
             }
           ],
           [
-            DIRTY_VISIBILITY,
+            Fashion.DIRTY_VISIBILITY,
             function () {
               this._elem.node.style.display = this.wrapper._visibility ? 'block' : 'none';
             }
           ],
           [
-            DIRTY_EVENT_HANDLERS,
+            Fashion.DIRTY_EVENT_HANDLERS,
             function () {
               for (var type in this._handledEvents) {
                 var beingHandled = this._handledEvents[type];
@@ -270,7 +270,7 @@ var Base = (function() {
 
         var fill = fillAndStroke.fill, stroke = fillAndStroke.stroke;
         if (st.fill) {
-          if (st.fill instanceof FloodFill) {
+          if (st.fill instanceof Fashion.FloodFill) {
             if (st.fill.color.a == 255) {
               fill.setOuterAttribute('fillColor', st.fill.color._toString(true));
             } else {
@@ -278,16 +278,16 @@ var Base = (function() {
               fill.setInnerAttribute('color', st.fill.color._toString(true));
               fill.setInnerAttribute('opacity', st.fill.color.a / 255.);
             }
-          } else if (st.fill instanceof LinearGradientFill) {
+          } else if (st.fill instanceof Fashion.LinearGradientFill) {
             populateWithGradientAttributes(fill);
             fill.setInnerAttribute('type', "gradient");
             fill.setInnerAttribute('method', "sigma");
             fill.setInnerAttribute('angle', (st.fill.angle * 360).toFixed(0));
-          } else if (st.fill instanceof RadialGradientFill) {
+          } else if (st.fill instanceof Fashion.RadialGradientFill) {
             populateWithGradientAttributes(fill);
             fill.setInnerAttribute('type', "gradientRadial");
             fill.setInnerAttribute('focusPosition', st.fill.focus.x + " " + st.fill.focus.y);
-          } else if (st.fill instanceof ImageTileFill) {
+          } else if (st.fill instanceof Fashion.ImageTileFill) {
             fill.setInnerAttribute('type', "tile");
             fill.setInnerAttribute('src', st.fill.imageData.url);
           }

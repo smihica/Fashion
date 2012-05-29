@@ -5,13 +5,13 @@ var Path = _class("PathVML", {
     _refresher: new Refresher(Base._refresher).setup({
       moreHandlers: [
         [
-          DIRTY_SHAPE,
+          Fashion.DIRTY_SHAPE,
           function () {
             this._elem.node.setAttribute('path', pathString(this.wrapper._points));
           }
         ],
         [
-          DIRTY_POSITION,
+          Fashion.DIRTY_POSITION,
           function () {
             var position = this.wrapper._position;
             this._elem.node.style.left = position.x + 'px';

@@ -105,7 +105,7 @@ var DefsManager = (function() {
     ImageTileFill: function(obj) {
       var xml = [
         '<pattern width="0" height="0" patternUnits="userSpaceOnUse">',
-        '<image xlink:href="', _escapeXMLSpecialChars(obj.imageData.url), '" width="0" height="0" />',
+        '<image xlink:href="', Fashion._lib._escapeXMLSpecialChars(obj.imageData.url), '" width="0" height="0" />',
         '</pattern>'
       ].join('');
       return [
@@ -146,7 +146,7 @@ var DefsManager = (function() {
         var className = def.constructor['%%CLASSNAME%%'];
         var serializer = serializers[className];
         if (!serializer)
-          throw new NotSupported(className + " is not supported by SVG backend");
+          throw new Fashion.NotSupported(className + " is not supported by SVG backend");
         var pair = serializer(def);
         var def = this.nodes[pair[0]];
         if (!def) {

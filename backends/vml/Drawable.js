@@ -28,7 +28,7 @@ var Drawable = _class("DrawableVML", {
       },
       handlers: [
         [
-          DIRTY_SIZE,
+          Fashion.DIRTY_SIZE,
           function() {
             var viewportSize = this.wrapper._viewport_size;
             this._viewport.style.width  = viewportSize.x + 'px';
@@ -37,7 +37,7 @@ var Drawable = _class("DrawableVML", {
           }
         ],
         [
-          DIRTY_TRANSFORM,
+          Fashion.DIRTY_TRANSFORM,
           function () {
             var transform = this.wrapper._transform;
             if (transform) {
@@ -68,7 +68,7 @@ var Drawable = _class("DrawableVML", {
           }
         ],
         [
-          DIRTY_EVENT_HANDLERS,
+          Fashion.DIRTY_EVENT_HANDLERS,
           function () {
             for (var type in this._handledEvents) {
               var beingHandled = this._handledEvents[type][0];
@@ -124,7 +124,7 @@ var Drawable = _class("DrawableVML", {
       };
 
       this._viewport = this._buildViewportElement();
-      _bindEvent(this._viewport, 'scroll', this._scrollEventFunc);
+      Fashion._lib._bindEvent(this._viewport, 'scroll', this._scrollEventFunc);
       this._content = this._buildContentElement();
       this._viewport.appendChild(this._content);
       this._vg = this._buildRoot();
@@ -147,14 +147,14 @@ var Drawable = _class("DrawableVML", {
     scrollPosition: function(position) {
       if (position) {
         this._scrollPosition = position;
-        if (_window.readyState == 'complete') {
+        if (window.readyState == 'complete') {
           var _position = this.wrapper._transform.apply(position);
           this._viewport.scrollLeft = _position.x;
           this._viewport.scrollTop  = _position.y;
         } else {
           var self = this;
-          _bindEvent(_window, 'load', function () {
-            _unbindEvent(_window, 'load', arguments.callee);
+          Fashion._lib._bindEvent(window, 'load', function () {
+            Fashion._lib._unbindEvent(window, 'load', arguments.callee);
             var _position = self.wrapper._transform.apply(self._scrollPosition);
             self._viewport.scrollLeft = _position.x;
             self._viewport.scrollTop  = _position.y;
@@ -181,14 +181,14 @@ var Drawable = _class("DrawableVML", {
     },
 
     getViewportOffset: function() {
-      return UtilImpl.getDomOffsetPosition(this._viewport);
+      return Fashion.Backend.getDomOffsetPosition(this._viewport);
     },
 
     captureMouse: function(shape) {
       var self = this;
 
       if (this._capturingShape) {
-        throw new AlreadyExists("The shape is already capturing.");
+        throw new Fashion.AlreadyExists("The shape is already capturing.");
       }
 
       var self = this;
@@ -204,7 +204,7 @@ var Drawable = _class("DrawableVML", {
       var handler = shape.handler;
 
       if (this._capturingShape != shape) {
-        throw new NotFound("The shape is not capturing.");
+        throw new Fashion.NotFound("The shape is not capturing.");
       }
 
       for (var type in shape._handledEvents)
@@ -238,13 +238,13 @@ var Drawable = _class("DrawableVML", {
     },
 
     _buildContentElement: function () {
-      var content = _window.document.createElement("div");
+      var content = window.document.createElement("div");
       content.style.cssText = 'position:absolute;left:0px;top:0px;display:block;margin:0;padding:0;overflow:hidden;';
       return content;
     },
 
     _buildViewportElement: function () {
-      var viewport = _window.document.createElement("div");
+      var viewport = window.document.createElement("div");
       viewport.style.cssText = 'position:absolute;display:block;margin:0;padding:0;overflow:hidden;';
       return viewport;
     },

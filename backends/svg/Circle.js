@@ -5,7 +5,7 @@ var Circle = _class("CircleSVG", {
     _refresher: new Refresher(Base._refresher).setup({
       moreHandlers: [
         [
-          DIRTY_POSITION | DIRTY_SIZE,
+          Fashion.DIRTY_POSITION | Fashion.DIRTY_SIZE,
           function() {
             var position = this.wrapper._position, size = this.wrapper._size;
             this._elem.setAttribute('rx', (size.x / 2) + 'px');

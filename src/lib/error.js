@@ -1,4 +1,4 @@
-var FashionError = this.Error = function(message) {
+var FashionError = function(message) {
   Error.apply(this, arguments);
   if (typeof Error.captureStackTrace !== 'undefined')
     Error.captureStackTrace(this, this.constructor);
@@ -10,16 +10,15 @@ var createExceptionClass = function(exceptionClassName) {
   var exceptionClass = function() { FashionError.apply(this, arguments); };
   exceptionClass.prototype = new FashionError();
   exceptionClass.prototype.name = exceptionClassName;
-  this[exceptionClassName] = exceptionClass;
   return exceptionClass;
 }
-var NotImplemented   = createExceptionClass.call(this, 'NotImplemented');
-var ValueError       = createExceptionClass.call(this, 'ValueError');
-var PropertyError    = createExceptionClass.call(this, 'PropertyError');
-var NotSupported     = createExceptionClass.call(this, 'NotSupported');
-var ArgumentError    = createExceptionClass.call(this, 'ArgumentError');
-var NotAttached      = createExceptionClass.call(this, 'NotAttached');
-var NotFound         = createExceptionClass.call(this, 'NotFound');
-var AlreadyExists    = createExceptionClass.call(this, 'AlreadyExists');
-var DeclarationError = createExceptionClass.call(this, 'DeclarationError');
-var AssertionFailure = createExceptionClass.call(this, 'AssertionFailure');
+var NotImplemented   = createExceptionClass('NotImplemented');
+var ValueError       = createExceptionClass('ValueError');
+var PropertyError    = createExceptionClass('PropertyError');
+var NotSupported     = createExceptionClass('NotSupported');
+var ArgumentError    = createExceptionClass('ArgumentError');
+var NotAttached      = createExceptionClass('NotAttached');
+var NotFound         = createExceptionClass('NotFound');
+var AlreadyExists    = createExceptionClass('AlreadyExists');
+var DeclarationError = createExceptionClass('DeclarationError');
+var AssertionFailure = createExceptionClass('AssertionFailure');

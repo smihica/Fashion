@@ -2,7 +2,6 @@ var DEBUG_MODE = true;
 
 var DEFAULT_PRIORITY = ['svg', 'vml', 'canvas'];
 
-var VML_FLOAT_PRECISION = 1e4;
 var SEPARATOR = /\s|,/;
 
 var DEFAULT_STYLE = {

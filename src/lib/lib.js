@@ -5,6 +5,7 @@ _lib.detectBrowser = detectBrowser;
 var BROWSER = detectBrowser(typeof window == 'undefined' ? void(0): window);
 
 include("assert.js");
+_lib.__assert__            = __assert__;
 
 include("misc.js");
 _lib._atomic_p             = _atomic_p;
@@ -13,6 +14,12 @@ _lib.xparseInt             = xparseInt;
 _lib._repeat               = _repeat;
 _lib._lpad                 = _lpad;
 _lib._clip                 = _clip;
+_lib._clipPoint            = _clipPoint;
+_lib._addPoint             = _addPoint;
+_lib._subtractPoint        = _subtractPoint;
+_lib._escapeXMLSpecialChars = _escapeXMLSpecialChars;
+_lib._bindEvent            = _bindEvent;
+_lib._unbindEvent          = _unbindEvent;
 
 include("error.js");
 _lib.FashionError          = FashionError;
@@ -28,6 +35,3 @@ _lib.AlreadyExists         = AlreadyExists;
 
 include("classify.js");
 _lib._class = _class;
-
-include("MultipleKeyHash.js");
-_lib.MultipleKeyHash = MultipleKeyHash;

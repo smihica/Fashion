@@ -1,67 +1,27 @@
 # macro
 UGLIFY_JS = uglifyjs
-MYSRCS	= \
-	src/Base.js		 	\
-	src/Circle.js	 		\
-	src/Color.js	 		\
-	src/Drawable.js	 		\
-	src/MouseEvt.js 		\
-	src/MouseEventsHandler.js	\
-	src/Path.js			\
-	src/PathData.js			\
-	src/Rect.js			\
-	src/Shape.js	 		\
-	src/Stroke.js	 		\
-	src/Text.js		 	\
-	src/conf.js		 	\
-	src/main.js		 	\
-	src/util/Matrix.js		\
-	src/util/util.js		\
-	src/lib/MultipleKeyHash.js 	\
-	src/lib/browser.js 		\
-	src/lib/classify.js 		\
-	src/lib/error.js	 	\
-	src/lib/misc.js	 		\
-	src/lib/lib.js	 		\
-					\
-	backends/Refresher.js		\
-	backends/VisualObject.js		\
-	backends/TransformStack.js		\
-	backends/DrawableImpl.js	\
-	backends/backend.js		\
-					\
-	backends/canvas/canvas.js	\
-					\
-	backends/svg/svg.js		\
-	backends/svg/Base.js		\
-	backends/svg/Circle.js		\
-	backends/svg/Drawable.js	\
-	backends/svg/Path.js		\
-	backends/svg/Rect.js		\
-	backends/svg/Text.js		\
-					\
-	backends/vml/vml.js		\
-	backends/vml/Base.js		\
-	backends/vml/Circle.js		\
-	backends/vml/Drawable.js	\
-	backends/vml/Path.js		\
-	backends/vml/Rect.js		\
-	backends/vml/Text.js		\
 
-
-ROOTSRC = src/main.js
-
-# proc
-
-all: fashion.js fashion.min.js
+all: fashion.min.js fashion.svg.min.js fashion.vml.min.js
 
 clean:
-	rm -rf fashion.js fashion.min.js
+	rm -rf fashion.js fashion.min.js fashion.svg.js fashion.svg.min.js fashion.vml.js fashion.vml.min.js
 
-fashion.js: $(MYSRCS)
-	REQUEST_METHOD="GET" QUERY_STRING="file=$(ROOTSRC)" ./compile.py -c > fashion.js
+fashion.js: src/*.js src/lib/*.js
+	./compile.py -o fashion.js src/main.js
+
+fashion.svg.js: backends/svg/*.js
+	./compile.py -o fashion.svg.js backends/svg/svg.js
+
+fashion.vml.js: backends/vml/*.js
+	./compile.py -o fashion.vml.js backends/vml/vml.js
 
 fashion.min.js: fashion.js
+	$(UGLIFY_JS) $< > $@	
+
+fashion.svg.min.js: fashion.svg.js
+	$(UGLIFY_JS) $< > $@	
+
+fashion.vml.min.js: fashion.vml.js
 	$(UGLIFY_JS) $< > $@	
 
 check:	$(MYSRCS)

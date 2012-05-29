@@ -4,6 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <title>Fashion example 3</title>
     <script type="text/javascript" src="../fashion.js"></script>
+    <script type="text/javascript" src="../fashion.svg.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../fashion.vml.js" charset="utf-8"></script>
   </head>
   <body>
     <div class="page">
@@ -47,11 +49,11 @@
         });
         var zoom = 1.0;
         zoomin.onclick = function() {
-          drawable.transform(Fashion.Util.Matrix.scale(zoom *= 1.1));
+          drawable.transform(Fashion.Matrix.scale(zoom *= 1.1));
         };
 
         zoomout.onclick = function() {
-          drawable.transform(Fashion.Util.Matrix.scale(zoom /= 1.1));
+          drawable.transform(Fashion.Matrix.scale(zoom /= 1.1));
         };
       </script>
       <pre id="console"></pre>

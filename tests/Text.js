@@ -2,33 +2,22 @@ var Fashion = require('../fashion.js');
 var fs = require('fs');
 
 (function (exports) {
-var IMPL_old = null;
-
 eval(fs.readFileSync(require.resolve('../src/constants.js'), 'utf-8'));
 
+var dummyBackend = {
+  Drawable: function() {
+    this.append = this.remove = this.refresh = function(shape) {
+      // do nothing;
+    };
+  },
+  Text: function() {
+    this.refresh = function(dirty) {
+      this.dirty = dirty;
+    };
+  }
+};
+
 exports.Shape = {
-  setUp: function (callback) {
-    IMPL_old = Fashion.IMPL;
-    Fashion.IMPL = {
-      Drawable: function() {
-        this.append = this.remove = this.refresh = function(shape) {
-          // do nothing;
-        };
-      },
-      Text: function() {
-        this.refresh = function(dirty) {
-          this.dirty = dirty;
-        };
-      }
-    }
-    callback();
-  },
-
-  tearDown: function(callback) {
-    Fashion.IMPL = IMPL_old;
-    callback();
-  },
-
   testInstantiateText: function (test) {
     test.expect(5);
     test.ok(new Fashion.Text());
@@ -42,7 +31,7 @@ exports.Shape = {
       new Fashion.Text({ blah: null });
       test.fail();
     } catch (e) {
-      if (!e instanceof Fashion.ArgumentError)
+      if (!e instanceof Fashion._lib.ArgumentError)
         throw e;
       test.ok(true);
     }
@@ -68,7 +57,7 @@ exports.Shape = {
 
   testBoundText: function (test) {
     test.expect(9);
-    var drawable = new Fashion.Drawable(null, { viewportSize: { x: 100, y: 100 } });
+    var drawable = new Fashion.Drawable(null, { backend: dummyBackend, viewportSize: { x: 100, y: 100 } });
     var shape = new Fashion.Text();
     drawable.draw(shape);
     var initialDirty = shape._dirty;

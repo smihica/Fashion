@@ -1,6 +1,4 @@
 var Drawable = _class("DrawableSVG", {
-  interfaces : [VisualObject, DrawableImpl],
-
   props: {
     prefix: "svg",
     wrapper: null,
@@ -31,7 +29,7 @@ var Drawable = _class("DrawableSVG", {
 
       handlers: [
         [
-          DIRTY_SIZE,
+          Fashion.DIRTY_SIZE,
           function() {
             var viewportSize = this.wrapper._viewport_size;
             this._viewport.style.width  = viewportSize.x + 'px';
@@ -40,14 +38,14 @@ var Drawable = _class("DrawableSVG", {
           }
         ],
         [
-          DIRTY_TRANSFORM,
+          Fashion.DIRTY_TRANSFORM,
           function() {
             this._vg.setAttribute("transform", matrixString(this.wrapper._transform));
             this._updateContentSize();
           }
         ],
         [
-          DIRTY_EVENT_HANDLERS,
+          Fashion.DIRTY_EVENT_HANDLERS,
           function() {
             for (var type in this._handledEvents) {
               var handled = this.wrapper.handler.handles(type);
@@ -145,14 +143,14 @@ var Drawable = _class("DrawableSVG", {
     },
 
     getViewportOffset: function() {
-      return UtilImpl.getDomOffsetPosition(this._viewport);
+      return Fashion.Backend.getDomOffsetPosition(this._viewport);
     },
 
     captureMouse: function(shape) {
       var self = this;
 
       if (this._capturingShape) {
-        throw new AlreadyExists("The shape is already capturing.");
+        throw new Fashion.AlreadyExists("The shape is already capturing.");
       }
 
       for (var type in shape._handledEvents)
@@ -165,7 +163,7 @@ var Drawable = _class("DrawableSVG", {
       var handler = shape.handler;
 
       if (this._capturingShape != shape) {
-        throw new NotFound("The shape is not capturing.");
+        throw new Fashion.NotFound("The shape is not capturing.");
       }
 
       for (var type in shape._handledEvents)
@@ -211,7 +209,7 @@ var Drawable = _class("DrawableSVG", {
     },
 
     _buildViewportElement: function () {
-      var viewport = _window.document.createElement("div");
+      var viewport = window.document.createElement("div");
       viewport.setAttribute('style', [
         'margin: 0',
         'padding: 0'

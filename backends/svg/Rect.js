@@ -5,7 +5,7 @@ var Rect = _class("RectSVG", {
     _refresher: new Refresher(Base._refresher).setup({
       moreHandlers: [
         [
-          DIRTY_POSITION,
+          Fashion.DIRTY_POSITION,
           function () {
             var position = this.wrapper._position;
             this._elem.setAttribute('x', position.x + 'px');
@@ -13,7 +13,7 @@ var Rect = _class("RectSVG", {
           }
         ],
         [
-          DIRTY_SIZE,
+          Fashion.DIRTY_SIZE,
           function () {
             var size = this.wrapper._size;
             this._elem.setAttribute('width', size.x + 'px');

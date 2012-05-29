@@ -5,7 +5,7 @@ var Text = _class("TextSVG", {
     _refresher: new Refresher(Base._refresher).setup({
       moreHandlers: [
         [
-          DIRTY_POSITION,
+          Fashion.DIRTY_POSITION,
           function () {
             var position = this.wrapper._position;
             this._elem.setAttribute('x', position.x + 'px');
@@ -13,7 +13,7 @@ var Text = _class("TextSVG", {
           }
         ],
         [
-          DIRTY_SIZE,
+          Fashion.DIRTY_SIZE,
           function () {
             var size = this.wrapper._size;
             this._elem.setAttribute('width', size.x + 'px');
@@ -21,7 +21,7 @@ var Text = _class("TextSVG", {
           }
         ],
         [
-          DIRTY_SHAPE,
+          Fashion.DIRTY_SHAPE,
           function () {
             this._elem.setAttribute('font-size', this.wrapper._fontSize + 'px'); 
             this._elem.setAttribute('font-family', this.wrapper._fontFamily);

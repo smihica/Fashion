@@ -1,16 +1,25 @@
-var SVG = (function() {
+Fashion.Backend.SVG = (function() {
+  var Fashion = this;
+  var window = Fashion.window;
+  var _class = Fashion._lib._class;
+  var _escapeXMLSpecialChars = Fashion._lib._escapeXMLSpecialChars;
+  var __assert__ = Fashion._lib.__assert__;
+  var _addPoint = Fashion._lib._addPoint;
+  var _subtractPoint = Fashion._lib._subtractPoint;
+  var Refresher = Fashion.Backend.Refresher;
+  var TransformStack = Fashion.Backend.TransformStack;
   // checking browser.
-  if ((BROWSER.identifier === 'ie' && BROWSER.version < 9)) return null;
+  if ((Fashion.browser.identifier === 'ie' && Fashion.browser.version < 9)) return null;
 
   var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
   var XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 
   function newElement(element_name) {
-    return _window.document.createElementNS(SVG_NAMESPACE, element_name);
+    return window.document.createElementNS(SVG_NAMESPACE, element_name);
   }
 
   function newTextNode(text) {
-    return _window.document.createTextNode(text);
+    return window.document.createTextNode(text);
   }
 
   function matrixString(m) {
@@ -22,7 +31,7 @@ var SVG = (function() {
   }
 
   function buildMouseEvt(impl, domEvt) {
-    var retval = new MouseEvt();
+    var retval = new Fashion.MouseEvt();
     retval.type = domEvt.type;
     retval.target = impl.wrapper;
     var which = domEvt.which;
@@ -39,7 +48,7 @@ var SVG = (function() {
 
     var physicalPagePosition;
     if (typeof domEvt.pageX != 'number' && typeof domEvt.clientX == 'number') {
-      var eventDoc = domEvt.target.ownerDocument || _window.document;
+      var eventDoc = domEvt.target.ownerDocument || window.document;
       var doc = eventDoc.documentElement;
       var body = eventDoc.body;
       physicalPagePosition = {
@@ -63,7 +72,6 @@ var SVG = (function() {
     return retval;
   }
 
-  include("Util.js");
   include("Base.js");
   include("Circle.js");
   include("Rect.js");
@@ -74,14 +82,13 @@ var SVG = (function() {
   include("Drawable.js");
 
   return {
-    Util     : Util,
     Circle   : Circle,
     Rect     : Rect,
     Path     : Path,
     Text     : Text,
     Drawable : Drawable
   };
-})();
+}).call(Fashion);
 
 /*
  * vim: sts=2 sw=2 ts=2 et

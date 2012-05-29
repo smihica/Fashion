@@ -13,9 +13,9 @@ var ImageData = _class('ImageData', {
 
       this.callbacks = [];
       var self = this;
-      _bindEvent(this.node, 'load', function () {
+      Fashion._lib._bindEvent(this.node, 'load', function () {
         self._size = { width: self.node.width, height: self.node.height };
-        _unbindEvent(self.node, 'load', arguments.callee);
+        Fashion._lib._unbindEvent(self.node, 'load', arguments.callee);
         for (var i = 0; i < self.callbacks.length; i++)
           self.callbacks[i](self._size);
         self.callbacks = null;

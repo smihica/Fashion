@@ -1,6 +1,6 @@
 var Drawable = _class("Drawable", {
-  interfaces: [Bindable, VisualObject],
   props: {
+    backend: null,
     impl: null,
     handler: null,
     batchUpdater: null,
@@ -19,16 +19,17 @@ var Drawable = _class("Drawable", {
   },
   methods: {
     init: function(target, options) {
+      this.backend = options && options.backend || Fashion.getBackend();
       this.target = target;
-      this.impl = new Fashion.IMPL.Drawable(this);
-      this.transform(Util.Matrix.scale(1.));
+      this.impl = new this.backend.Drawable(this);
+      this.transform(Matrix.scale(1.));
       if (options && options.viewportSize) {
         this.viewportSize(options.viewportSize);
       } else {
         var self = this;
         if (_window) {
-          _bindEvent(_window, 'load', function () {
-            _unbindEvent(_window, 'load', arguments.callee);
+          Fashion._lib._bindEvent(_window, 'load', function () {
+            Fashion._lib._unbindEvent(_window, 'load', arguments.callee);
             var size = { x: target.clientWidth, y: target.clientHeight };
             self.viewportSize(size);
             if (!options || !options.contentSize)
@@ -51,7 +52,7 @@ var Drawable = _class("Drawable", {
     viewportSize: function(size) {
       if (size) {
         this._viewport_size = size;
-        this._dirty |= DIRTY_SIZE;
+        this._dirty |= Fashion.DIRTY_SIZE;
         this._enqueueForUpdate(this);
       }
       return this._viewport_size;
@@ -60,7 +61,7 @@ var Drawable = _class("Drawable", {
     contentSize: function(size) {
       if (size) {
         this._content_size = size;
-        this._dirty |= DIRTY_TRANSFORM;
+        this._dirty |= Fashion.DIRTY_TRANSFORM;
         this._enqueueForUpdate(this);
       }
       return this._content_size;
@@ -77,7 +78,7 @@ var Drawable = _class("Drawable", {
       if (value) {
         this._transform = value;
         this._inverse_transform = value.invert();
-        this._dirty |= DIRTY_TRANSFORM;
+        this._dirty |= Fashion.DIRTY_TRANSFORM;
         this._enqueueForUpdate(this);
       }
       return this._transform;
@@ -135,8 +136,8 @@ var Drawable = _class("Drawable", {
     draw: function(shape) {
       var id = this.gensym();
       shape.id = id;
-      this.impl.append(shape.impl);
       shape._attachTo(this);
+      this.impl.append(shape.impl);
       shape.impl.refresh(shape._dirty);
       this._elements[id] = shape;
       this._numElements++;
@@ -178,7 +179,7 @@ var Drawable = _class("Drawable", {
       if (this.handler === null)
         this.handler = new MouseEventsHandler(this);
       this.handler.add.apply(this.handler, arguments);
-      this._dirty |= DIRTY_EVENT_HANDLERS;
+      this._dirty |= Fashion.DIRTY_EVENT_HANDLERS;
       this._enqueueForUpdate(this);
     },
 
@@ -192,7 +193,7 @@ var Drawable = _class("Drawable", {
       } else if (arguments.length < 3) {
         this.handler.remove(type, h);
       }
-      this._dirty |= DIRTY_EVENT_HANDLERS;
+      this._dirty |= Fashion.DIRTY_EVENT_HANDLERS;
       if (this.drawable)
         this.drawable._enqueueForUpdate(this);
     },

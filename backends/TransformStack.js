@@ -42,7 +42,7 @@ var TransformStack = _class("TransformStack", {
         this.stack.push(pair);
         break;
       default:
-        throw new ArgumentError("Invalid disposition: " + disposition);
+        throw new Fashion.ArgumentError("Invalid disposition: " + disposition);
       }
       return true;
     },
@@ -54,7 +54,7 @@ var TransformStack = _class("TransformStack", {
       var i = 0;
       for (;;) {
         if (i >= this.stack.length)
-          throw new NotFound("???"); // should not happen
+          throw new Fashion.NotFound("???"); // should not happen
         if (this.stack[i][0] == key)
           break;
         i++;

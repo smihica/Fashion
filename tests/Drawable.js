@@ -1,7 +1,6 @@
 var Fashion = require('../fashion.js');
 
 (function(exports) {
-var IMPL_old = null;
 
 var dummyElement = { clientWidth:  0., clientHeight:  0.  };
 
@@ -14,24 +13,17 @@ DummyShape.prototype._attachTo = function(drawable) {
   this.drawable = drawable;
 };
 
-exports.Drawable = {
-  setUp: function(callback) {
-    IMPL_old = Fashion.IMPL;
-    Fashion.IMPL = {
-      Drawable: function() {
-        this.append = this.remove = this.refresh = function(shape) {
-          // do nothing;
-        };
-      }
+Fashion.getBackend = function() {
+  return {
+    Drawable: function() {
+      this.append = this.remove = this.refresh = function(shape) {
+        // do nothing;
+      };
     }
-    callback();
-  },
+  }; 
+};
 
-  tearDown: function(callback) {
-    Fashion.IMPL = IMPL_old;
-    callback();
-  },
-
+exports.Drawable = {
   testInstantiate: function(test) {
     test.expect(1);
     test.ok(new Fashion.Drawable(dummyElement));

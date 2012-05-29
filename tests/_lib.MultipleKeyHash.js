@@ -1,10 +1,13 @@
-var Fashion = require('../fashion.js');
-
+var fs = require('fs');
+eval(fs.readFileSync(require.resolve('../src/lib/misc.js'), 'utf-8'));
+eval(fs.readFileSync(require.resolve('../src/lib/classify.js'), 'utf-8'));
+eval(fs.readFileSync(require.resolve('../src/lib/error.js'), 'utf-8'));
+eval(fs.readFileSync(require.resolve('../src/lib/MultipleKeyHash.js'), 'utf-8'));
 exports._lib_MultipleKeyHash = {
   test_basic: function(test) {
     test.expect(15);
 
-    var hash = new Fashion._lib.MultipleKeyHash();
+    var hash = new MultipleKeyHash();
     var key1 = function(x,y) { return x*y };
     var val1 = function(x,y) { return key1(x, y); };
     var key2 = function(x,y) { return x/y };
@@ -35,7 +38,7 @@ exports._lib_MultipleKeyHash = {
 
     test.throws(function(){
       hash.erace(key2)
-    }, Fashion._lib.NotFound);
+    }, NotFound);
 
     var p = hash.pop(key3);
 
@@ -57,7 +60,7 @@ exports._lib_MultipleKeyHash = {
   test_arbitrary_copare_function: function(test) {
     test.expect(0);
 
-    var hash = new Fashion._lib.MultipleKeyHash(function(k1, k2){
+    var hash = new MultipleKeyHash(function(k1, k2){
       return (k1.a === k2.a && k1.b === k2.b && k1.c === k2.c );
     });
 

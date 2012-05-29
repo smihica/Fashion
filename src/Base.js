@@ -9,7 +9,7 @@ var Base = _class("Base", {
     _style: { fill: null, stroke: null },
     _zIndex: 0,
     _transform: null,
-    _dirty: DIRTY_POSITION | DIRTY_SIZE | DIRTY_ZINDEX ,
+    _dirty: Fashion.DIRTY_POSITION | Fashion.DIRTY_SIZE | Fashion.DIRTY_ZINDEX ,
     _visibility: true
   },
 
@@ -31,7 +31,7 @@ var Base = _class("Base", {
     position: function(value) {
       if (value) {
         this._position = value;
-        this._dirty |= DIRTY_POSITION;
+        this._dirty |= Fashion.DIRTY_POSITION;
         if (this.drawable)
           this.drawable._enqueueForUpdate(this);
       }
@@ -41,7 +41,7 @@ var Base = _class("Base", {
     size: function(value) {
       if (value) {
         this._size = value;
-        this._dirty |= DIRTY_SIZE;
+        this._dirty |= Fashion.DIRTY_SIZE;
         if (this.drawable)
           this.drawable._enqueueForUpdate(this);
       }
@@ -51,7 +51,7 @@ var Base = _class("Base", {
     zIndex: function(value) {
       if (value !== void(0)) {
         this._zIndex = value;
-        this._dirty |= DIRTY_ZINDEX;
+        this._dirty |= Fashion.DIRTY_ZINDEX;
         if (this.drawable)
           this.drawable._enqueueForUpdate(this);
       }
@@ -61,7 +61,7 @@ var Base = _class("Base", {
     transform: function(value) {
       if (value !== void(0)) {
         this._transform = value;
-        this._dirty |= DIRTY_TRANSFORM;
+        this._dirty |= Fashion.DIRTY_TRANSFORM;
         if (this.drawable)
           this.drawable._enqueueForUpdate(this);
       }
@@ -71,7 +71,7 @@ var Base = _class("Base", {
     style: function(value) {
       if (value !== void(0)) {
         this._style = value;
-        this._dirty |= DIRTY_STYLE;
+        this._dirty |= Fashion.DIRTY_STYLE;
         if (this.drawable)
           this.drawable._enqueueForUpdate(this);
       }
@@ -80,6 +80,7 @@ var Base = _class("Base", {
 
     _attachTo: function(drawable) {
       this.drawable = drawable;
+      this.impl = new drawable.backend[this.constructor.impl](this);
     },
 
     captureMouse: function() {
@@ -98,7 +99,7 @@ var Base = _class("Base", {
       if (this.handler === null)
         this.handler = new MouseEventsHandler(this);
       this.handler.add.apply(this.handler, arguments);
-      this._dirty |= DIRTY_EVENT_HANDLERS;
+      this._dirty |= Fashion.DIRTY_EVENT_HANDLERS;
       if (this.drawable)
         this.drawable._enqueueForUpdate(this);
     },
@@ -113,7 +114,7 @@ var Base = _class("Base", {
       } else if (arguments.length < 3) {
         this.handler.remove(type, h);
       }
-      this._dirty |= DIRTY_EVENT_HANDLERS;
+      this._dirty |= Fashion.DIRTY_EVENT_HANDLERS;
       if (this.drawable)
         this.drawable._enqueueForUpdate(this);
     },

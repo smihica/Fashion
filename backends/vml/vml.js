@@ -1,22 +1,29 @@
-var VML = (function() {
-
+Fashion.Backend.VML = (function() {
+  var Fashion = this;
+  var window = Fashion.window;
+  var _class = Fashion._lib._class;
+  var _escapeXMLSpecialChars = Fashion._lib._escapeXMLSpecialChars;
+  var __assert__ = Fashion._lib.__assert__;
+  var _addPoint = Fashion._lib._addPoint;
+  var _subtractPoint = Fashion._lib._subtractPoint;
+  var Refresher = Fashion.Backend.Refresher;
   // checking browser.
-  if ((BROWSER.identifier !== 'ie' || BROWSER.version > 8 )) return null;
+  if ((Fashion.browser.identifier !== 'ie' || Fashion.browser.version > 8 )) return null;
 
-  var _ = {};
   var VML_PREFIX = 'v';
   var VML_NAMESPACE_URL = 'urn:schemas-microsoft-com:vml';
   var VML_BEHAVIOR_URL = '#default#VML';
+  var VML_FLOAT_PRECISION = 1e4;
 
   function setup() {
-    var namespaces = _window.document.namespaces;
+    var namespaces = window.document.namespaces;
     if (!namespaces[VML_PREFIX])
       namespaces.add(VML_PREFIX, VML_NAMESPACE_URL);
-    _window.document.createStyleSheet().addRule(VML_PREFIX + '\\:*', "behavior:url(#default#VML)");
+    window.document.createStyleSheet().addRule(VML_PREFIX + '\\:*', "behavior:url(#default#VML)");
   }
 
   function newElement(type) {
-    var elem = _window.document.createElement(VML_PREFIX + ':' + type);
+    var elem = window.document.createElement(VML_PREFIX + ':' + type);
     return elem;
   }
 
@@ -65,7 +72,7 @@ var VML = (function() {
   }
 
   function buildMouseEvt(impl, msieEvt) {
-    var retval = new MouseEvt();
+    var retval = new Fashion.MouseEvt();
     retval.type = msieEvt.type;
     retval.target = impl.wrapper;
     var which = msieEvt.which;
@@ -82,7 +89,7 @@ var VML = (function() {
 
     var physicalPagePosition;
 
-    var doc = _window.document, body = doc.body;
+    var doc = window.document, body = doc.body;
     physicalPagePosition = {
       x: msieEvt.clientX + body.scrollLeft,
       y: msieEvt.clientY + body.scrollTop
@@ -100,7 +107,6 @@ var VML = (function() {
     return retval;
   }
 
-  include("Util.js");
   include("Base.js");
   include("Circle.js");
   include("Rect.js");
@@ -108,18 +114,16 @@ var VML = (function() {
   include("Text.js");
   include("Drawable.js");
 
-  _.Util       = Util;
-  _.Circle     = Circle;
-  _.Rect       = Rect;
-  _.Path       = Path;
-  _.Text       = Text;
-  _.Drawable   = Drawable;
-
   setup();
 
-  return _;
-
-})();
+  return {
+    Circle: Circle,
+    Rect: Rect,
+    Path: Path,
+    Text: Text,
+    Drawable: Drawable
+  }; 
+}).call(Fashion);
 /*
  * vim: sts=2 sw=2 ts=2 et
  */

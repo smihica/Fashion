@@ -5,7 +5,7 @@ var Circle = _class("CircleVML", {
     _refresher: new Refresher(Base._refresher).setup({
       moreHandlers: [
         [
-          DIRTY_POSITION,
+          Fashion.DIRTY_POSITION,
           function() {
             var position = this.wrapper._position;
             this._elem.node.style.left = position.x + 'px';
@@ -13,7 +13,7 @@ var Circle = _class("CircleVML", {
           }
         ],
         [
-          DIRTY_SIZE,
+          Fashion.DIRTY_SIZE,
           function() {
             var size = this.wrapper._size;
             this._elem.node.style.width = size.x + 'px';

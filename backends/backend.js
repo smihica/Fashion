@@ -1,51 +1,71 @@
 var Backend = (function() {
-  include("UtilImpl.js");
   include("Refresher.js");
   include("TransformStack.js");
-  include("VisualObject.js");
-  include("DrawableImpl.js");
-  include("ShapeImpl.js");
-  include("PathImpl.js");
-  include("TextImpl.js");
 
-  include("svg/svg.js");
-  include("vml/vml.js");
-  include("canvas/canvas.js");
+  var getDomOffsetPosition = (function () {
+    var support_box_model =  (_window && _window.document.compatMode === "CSS1Compat");
 
-  var unsupported = function () {
-    throw new NotSupported('Browser is not supported');
-  }
+    var contains = (function() {
+      if ( _window && _window.document.documentElement.contains ) {
+        return function( a, b ) {
+          return a !== b && (a.contains ? a.contains(b) : true);
+        };
 
-  var Dummy = {
-    Shape    : unsupported,
-    Circle   : unsupported,
-    Rect     : unsupported,
-    Path     : unsupported,
-    Text     : unsupported,
-    Drawable : unsupported
-  };
+      } else if ( _window && _window.document.documentElement.compareDocumentPosition ) {
+        return function( a, b ) {
+          return !!(a.compareDocumentPosition(b) & 16);
+        };
 
-  var determineImplementation = function determineImplementation(priority) {
-    for (var i=0, l=priority.length; i<l; i++) {
-      var target = priority[i].toLowerCase();
-      if (target === 'svg' && (SVG !== null))            return SVG;
-      else if (target === 'vml' && (VML !== null))       return VML;
-      else if (target === 'canvas' && (Canvas !== null)) return Canvas;
+      } else {
+        return function() {
+          return false;
+        };
+      }
+    })();
+
+    if ( _window && "getBoundingClientRect" in _window.document.documentElement ) {
+      return function getDomOffsetPosition_boundingClientRect(elem, doc, docElem, box ) {
+        doc = document; docElem = document.documentElement;
+
+        try {
+          box = elem.getBoundingClientRect();
+        } catch(e) {}
+
+        if ( !box || !contains( docElem, elem ) ) {
+          console.log('here');
+          return box ? { top: box.top, left: box.left } : { top: 0, left: 0 };
+        }
+
+        var body = doc.body,
+        clientTop  = docElem.clientTop  || body.clientTop  || 0,
+        clientLeft = docElem.clientLeft || body.clientLeft || 0,
+        scrollTop  = _window.pageYOffset || support_box_model && docElem.scrollTop  || body.scrollTop,
+        scrollLeft = _window.pageXOffset || support_box_model && docElem.scrollLeft || body.scrollLeft,
+        top  = box.top  + scrollTop  - clientTop,
+        left = box.left + scrollLeft - clientLeft;
+
+        return { x: left, y: top };
+      };
+    } else {
+      return function getDomOffsetPosition(elem) {
+        var curleft = 0, curtop = 0;
+        if (elem.offsetParent) {
+          do {
+            curleft += elem.offsetLeft;
+            curtop += elem.offsetTop;
+
+          } while (elem = elem.offsetParent);
+        }
+        return {x: curleft, y: curtop};
+      };
     }
-    return Dummy;
-  };
+  })();
+
 
   return {
-    UtilImpl       : UtilImpl,
-    VisualObject   : VisualObject,
     Refresher      : Refresher,
     TransformStack : TransformStack,
-    DrawableImpl   : DrawableImpl,
-    SVG            : SVG,
-    VML            : VML,
-    Canvas         : Canvas,
-    Dummy          : Dummy,
-    determineImplementation : determineImplementation
+    getDomOffsetPosition: getDomOffsetPosition
   };
 
 })();

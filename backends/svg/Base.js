@@ -1,6 +1,4 @@
 var Base = _class("BaseSVG", {
-  interfaces: [VisualObject],
-
   props : {
     drawable: null,
     _elem: null,
@@ -36,13 +34,13 @@ var Base = _class("BaseSVG", {
 
       handlers: [
         [
-          DIRTY_ZINDEX,
+          Fashion.DIRTY_ZINDEX,
           function () {
             this.drawable._depthManager.add(this);
           }
         ],
         [
-          DIRTY_TRANSFORM,
+          Fashion.DIRTY_TRANSFORM,
           function () {
             if (this.wrapper._transform)
               this._transformStack.add('last', 'wrapper', this.wrapper._transform);
@@ -52,17 +50,17 @@ var Base = _class("BaseSVG", {
           }
         ],
         [
-          DIRTY_STYLE,
+          Fashion.DIRTY_STYLE,
           function () {
             var elem = this._elem;
             var style = this.wrapper._style;
             if (style.fill) {
-              if (style.fill instanceof FloodFill) {
+              if (style.fill instanceof Fashion.FloodFill) {
                 elem.setAttribute('fill', style.fill.color.toString(true));
                 elem.setAttribute('fill-opacity', style.fill.color.a / 255.0);
-              } else if (style.fill instanceof LinearGradientFill
-                  || style.fill instanceof RadialGradientFill
-                  || style.fill instanceof ImageTileFill) {
+              } else if (style.fill instanceof Fashion.LinearGradientFill
+                  || style.fill instanceof Fashion.RadialGradientFill
+                  || style.fill instanceof Fashion.ImageTileFill) {
                 var def = this.drawable._defsManager.get(style.fill);
                 elem.setAttribute('fill', "url(#" + def.id + ")");
                 if (this.def)
@@ -87,13 +85,13 @@ var Base = _class("BaseSVG", {
           }
         ],
         [
-          DIRTY_VISIBILITY,
+          Fashion.DIRTY_VISIBILITY,
           function () {
             this._elem.style.display = this.wrapper._visibility ? 'block' : 'none'
           }
         ],
         [
-          DIRTY_EVENT_HANDLERS,
+          Fashion.DIRTY_EVENT_HANDLERS,
           function () {
 
             if (!this.wrapper.handler) return;

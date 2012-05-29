@@ -5,7 +5,7 @@ var Text = _class("TextVML", {
     _refresher: new Refresher(Base._refresher).setup({
       moreHandlers: [
         [
-          DIRTY_POSITION,
+          Fashion.DIRTY_POSITION,
           function () {
             var position = this.wrapper._position;
             this._elem.node.style.left = position.x + 'px';
@@ -13,7 +13,7 @@ var Text = _class("TextVML", {
           }
         ],
         [
-          DIRTY_SIZE,
+          Fashion.DIRTY_SIZE,
           function () {
             var size = this.wrapper._size;
             this._elem.node.style.width = size.x + 'px';
@@ -21,7 +21,7 @@ var Text = _class("TextVML", {
           }
         ],
         [
-          DIRTY_SHAPE,
+          Fashion.DIRTY_SHAPE,
           function () {
             this._elem.textpath.fontSize = this.wrapper._fontSize + 'px'; 
             this._elem.textpath.fontFamily = this.wrapper._fontFamily;

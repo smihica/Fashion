@@ -9,48 +9,70 @@ var Fashion = (function() {
   var _window = typeof window == 'undefined' ? void(0): window;
   var _Image = _window && typeof _window.Image !== 'undefined' ? _window.Image: null;
 
-  BROWSER = detectBrowser(_window);
-  Fashion.browser = BROWSER;
+  this.browser = detectBrowser(_window);
+  this.window = _window;
 
-  include("util/util.js");
-  Fashion.Util = Util;
+  var determineImplementation = function determineImplementation(priority) {
+    for (var i = 0, l = priority.length; i < l; i++) {
+      var target = priority[i].toLowerCase();
+      if (target === 'svg' && Fashion.Backend.SVG)
+        return Fashion.Backend.SVG;
+      else if (target === 'vml' && Fashion.Backend.VML)
+        return Fashion.Backend.VML;
+      else if (target === 'canvas' && Fashion.Backend.Canvas)
+        return Fashion.Backend.Canvas;
+    }
+    
+    function unsupported() {
+      throw new NotSupported('Browser is not supported');
+    }
+    
+    return {
+      Shape    : unsupported,
+      Circle   : unsupported,
+      Rect     : unsupported,
+      Path     : unsupported,
+      Text     : unsupported,
+      Drawable : unsupported
+    };
+  };
+
+  include("Matrix.js");
+  this.Matrix = Matrix;
 
   include("../backends/backend.js");
-  Fashion.Backend = Backend;
+  this.Backend = Backend;
 
   include("Color.js");
-  Fashion.Color = Color;
+  this.Color = Color;
 
   include("Stroke.js");
-  Fashion.Stroke = Stroke;
+  this.Stroke = Stroke;
 
   include("Fill.js");
-  Fashion.Fill = Fill;
-  Fashion.FloodFill = FloodFill;
-  Fashion.GradientFill = GradientFill;
-  Fashion.LinearGradientFill = LinearGradientFill;
-  Fashion.RadialGradientFill = RadialGradientFill;
-  Fashion.ImageTileFill = ImageTileFill;
+  this.Fill = Fill;
+  this.FloodFill = FloodFill;
+  this.GradientFill = GradientFill;
+  this.LinearGradientFill = LinearGradientFill;
+  this.RadialGradientFill = RadialGradientFill;
+  this.ImageTileFill = ImageTileFill;
 
   include("ImageData.js");
-  Fashion.ImageData = ImageData;
+  this.ImageData = ImageData;
 
   include("PathData.js");
-  Fashion.PathData = PathData;
+  this.PathData = PathData;
 
   include("MouseEvt.js");
-  Fashion.MouseEvt = MouseEvt;
+  this.MouseEvt = MouseEvt;
 
   include("MouseEventsHandler.js");
-  Fashion.MouseEventsHandler = MouseEventsHandler;
+  this.MouseEventsHandler = MouseEventsHandler;
 
   include("BatchUpdater.js");
-  Fashion.BatchUpdater = BatchUpdater;
-  Fashion.BasicBatchUpdater = BasicBatchUpdater;
+  this.BatchUpdater = BatchUpdater;
+  this.BasicBatchUpdater = BasicBatchUpdater;
 
-  include("Bindable.js");
-  include("VisualObject.js");
-  include("Shape.js");
   include("Base.js");
 
   include("Circle.js");
@@ -60,20 +82,19 @@ var Fashion = (function() {
   include("Text.js");
   include("Image.js");
 
-  Fashion.Bindable = Bindable;
-  Fashion.VisualObject = VisualObject;
-  Fashion.Shape    = Shape;
-  Fashion.Base     = Base;
-  Fashion.Circle   = Circle;
-  Fashion.Rect     = Rect;
-  Fashion.Path     = Path;
-  Fashion.Text     = Text;
-  Fashion.Image    = Image;
-  Fashion.Drawable = Drawable;
+  this.Base     = Base;
+  this.Circle   = Circle;
+  this.Rect     = Rect;
+  this.Path     = Path;
+  this.Text     = Text;
+  this.Image    = Image;
+  this.Drawable = Drawable;
 
   include("conf.js");
 
-  Fashion.IMPL = Backend.determineImplementation(DEFAULT_PRIORITY);
+  Fashion.getBackend = function getBackend() {
+    return determineImplementation(DEFAULT_PRIORITY);
+  };
 
   return this;
 }).call(typeof exports !== 'undefined' ? exports: {});
