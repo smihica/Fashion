@@ -172,8 +172,10 @@ var Base = (function() {
                   this._elem.skew.on = true;
                 }
               } else {
-                this._elem.node.removeChild(this._elem.skew);
-                this._elem.skew = null;
+                if (this._elem.skew) {
+                  this._elem.node.removeChild(this._elem.skew);
+                  this._elem.skew = null;
+                }
               }
             }
           ],
