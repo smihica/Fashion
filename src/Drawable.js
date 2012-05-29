@@ -42,6 +42,10 @@ var Drawable = _class("Drawable", {
       }
     },
 
+    dispose: function () {
+      this.impl.dispose();
+    },
+
     viewportSize: function(size) {
       if (size) {
         this._viewport_size = size;
