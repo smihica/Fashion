@@ -8,6 +8,7 @@ var Drawable = _class("DrawableVML", {
       mousedown: [ false, 0, null ],
       mouseup: [ false, 0, null ],
       mousemove: [ false, 0, null ],
+      mouseover: [ false, 0, null ],
       mouseout: [ false, 0, null ]
     },
     _scrollPosition: { x: 0, y: 0 },

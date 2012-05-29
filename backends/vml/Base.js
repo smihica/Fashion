@@ -131,6 +131,7 @@ var Base = (function() {
         mousedown: false,
         mouseup: false,
         mousemove: false,
+        mouseover: false,
         mouseout: false
       }
     },
