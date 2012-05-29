@@ -190,7 +190,7 @@ var Base = (function() {
           [
             DIRTY_VISIBILITY,
             function () {
-              this._elem.node.style.display = st.visibility ? 'block' : 'none';
+              this._elem.node.style.display = this.wrapper._visibility ? 'block' : 'none';
             }
           ],
           [
