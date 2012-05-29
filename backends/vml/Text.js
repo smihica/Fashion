@@ -36,6 +36,7 @@ var Text = _class("TextVML", {
     newElement: function(vg) {
       var vml = [
         '<', VML_PREFIX, ':line',
+        ' unselectable="on"',
         ' __fashion__id="', this.wrapper.id, '"',
         ' from="0,0" to="1,0"'
       ];

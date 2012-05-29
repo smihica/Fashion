@@ -27,6 +27,7 @@ var Path = _class("PathVML", {
       var position = this.wrapper._position;
       var vml = [
         '<', VML_PREFIX, ':shape',
+        ' unselectable="on"',
         ' __fashion__id="', this.wrapper.id, '"',
         ' coordsize="',
             VML_FLOAT_PRECISION, ',',

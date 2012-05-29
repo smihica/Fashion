@@ -30,6 +30,7 @@ var Rect = _class("RectVML", {
       var size = this.wrapper._size;
       var vml = [
         '<', VML_PREFIX, ':rect',
+        ' unselectable="on"',
         ' __fashion__id="', this.wrapper.id, '"'
       ];
       var fillAndStroke = new VMLFillAndStroke();

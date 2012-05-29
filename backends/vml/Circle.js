@@ -30,6 +30,7 @@ var Circle = _class("CircleVML", {
       var size = this.wrapper._size;
       var vml = [
         '<', VML_PREFIX, ':oval',
+        ' unselectable="on"',
         ' __fashion__id="', this.wrapper.id, '"'
       ];
       var fillAndStroke = new VMLFillAndStroke();
