@@ -245,7 +245,7 @@ var Drawable = _class("DrawableVML", {
 
     _buildViewportElement: function () {
       var viewport = window.document.createElement("div");
-      viewport.style.cssText = 'position:absolute;display:block;margin:0;padding:0;overflow:hidden;';
+      viewport.style.cssText = 'position:relative;display:block;margin:0;padding:0;overflow:hidden;';
       return viewport;
     },
 
