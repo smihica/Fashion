@@ -43,8 +43,8 @@ function loadXml(url, success, error) {
   xhr.send();
 }
 
-var parseCSSRules = (function () {
-  var regexp_for_rules = /\s*(-?(?:[_a-z\u00a0-\u10ffff]|\\[^\n\r\f#])(?:[\-_A-Za-z\u00a0-\u10ffff]|\\[^\n\r\f])*)\s*:\s*((?:(?:(?:[^;\\ \n\r\t\f"']|\\[0-9A-Fa-f]{1,6}(?:\r\n|[ \n\r\t\f])?|\\[^\n\r\f0-9A-Fa-f])+|"(?:[^\n\r\f\\"]|\\(?:\n|\r\n|\r|\f)|\\[^\n\r\f])*"|'(?:[^\n\r\f\\']|\\(?:\n|\r\n|\r|\f)|\\[^\n\r\f])*')(?:\s+|(?=;|$)))+)(?:;|$)/g;
+var parseCSSStyleText = (function () {
+  var regexp_for_styles = /\s*(-?(?:[_a-z\u00a0-\u10ffff]|\\[^\n\r\f#])(?:[\-_A-Za-z\u00a0-\u10ffff]|\\[^\n\r\f])*)\s*:\s*((?:(?:(?:[^;\\ \n\r\t\f"']|\\[0-9A-Fa-f]{1,6}(?:\r\n|[ \n\r\t\f])?|\\[^\n\r\f0-9A-Fa-f])+|"(?:[^\n\r\f\\"]|\\(?:\n|\r\n|\r|\f)|\\[^\n\r\f])*"|'(?:[^\n\r\f\\']|\\(?:\n|\r\n|\r|\f)|\\[^\n\r\f])*')(?:\s+|(?=;|$)))+)(?:;|$)/g;
 
   var regexp_for_values = /(?:((?:[^;\\ \n\r\t\f"']|\\[0-9A-Fa-f]{1,6}(?:\r\n|[ \n\r\t\f])?|\\[^\n\r\f0-9A-Fa-f])+)|"((?:[^\n\r\f\\"]|\\(?:\n|\r\n|\r|\f)|\\[^\n\r\f])*)"|'((?:[^\n\r\f\\']|\\(?:\n|\r\n|\r|\f)|\\[^\n\r\f])*)')(?:\s+|$)/g;
 
@@ -63,9 +63,9 @@ var parseCSSRules = (function () {
     });
   }
 
-  return function parseCSSRules(str) {
+  return function parseCSSStyleText(str) {
     var retval = {};
-    var r = str.replace(regexp_for_rules, function (_, k, v) {
+    var r = str.replace(regexp_for_styles, function (_, k, v) {
       var values = [];
       var r = v.replace(regexp_for_values, function (_, a, b, c) {
         if (a !== void(0)) {
@@ -89,17 +89,17 @@ var parseCSSRules = (function () {
 })();
 
 function parseCSSAsSvgStyle(str) {
-  var rules = parseCSSRules(str);
+  var styles = parseCSSStyleText(str);
   var fill = null;
-  var fillString = rules['fill'];
+  var fillString = styles['fill'];
   var fillOpacity = null;
-  var fillOpacityString = rules['fill-opacity'];
+  var fillOpacityString = styles['fill-opacity'];
   var stroke = null;
-  var strokeString = rules['stroke'];
+  var strokeString = styles['stroke'];
   var strokeWidth = null;
-  var strokeWidthString = rules['stroke-width'];
+  var strokeWidthString = styles['stroke-width'];
   var strokeOpacity = null;
-  var strokeOpacityString = rules['stroke-opacity'];
+  var strokeOpacityString = styles['stroke-opacity'];
   if (fillString) {
     if (fillString[0] == 'none')
       fill = false;
