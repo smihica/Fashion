@@ -20,7 +20,7 @@ var Matrix = (function() {
 
     class_methods: {
       translate: function (offset) {
-        return new this(0, 0, 0, 0, offset.x, offset.y)
+        return new this(1, 0, 0, 1, offset.x, offset.y)
       },
 
       scale: function (degree, anchor) {
