@@ -88,7 +88,89 @@ var parseCSSStyleText = (function () {
   };
 })();
 
-function parseCSSAsSvgStyle(str) {
+function parseDefs(node, defset) {
+  function parseStops(def) {
+    var ref = typeof def.getAttributeNS == 'function' ?
+      def.getAttributeNS('http://www.w3.org/1999/xlink', 'href'):
+      def.getAttribute("xlink:href");
+    if (ref) {
+      if (typeof def.ownerDocument.getElementById == 'function')
+        def = def.ownerDocument.getElementById(ref.substring(1));
+      else
+        def = def.ownerDocument.selectSingleNode("*//*[@id='" + ref.substring(1) + "']");
+    }
+    var stops = def.childNodes;
+    var colors = [];
+    for (var i = 0; i < stops.length; i++) {
+      var node = stops[i];
+      if (node.nodeType != 1)
+        continue;
+      if (node.nodeName == 'stop') {
+        var styles = parseCSSStyleText(node.getAttribute('style'));
+        colors.push([
+          parseFloat(node.getAttribute('offset')),
+          new Fashion.Color(styles['stop-color'][0])]);
+      }
+    }
+    return colors;
+  }
+
+  var defs = node.childNodes;
+  for (var i = 0; i < defs.length; i++) {
+    var def = defs[i];
+    if (def.nodeType != 1)
+      continue;
+    var id = def.getAttribute('id');
+    switch (def.nodeName) {
+    case 'linearGradient':
+      var x1 = parseFloat(def.getAttribute("x1")), y1 = parseFloat(def.getAttribute("y1")),
+          x2 = parseFloat(def.getAttribute("x2")), y2 = parseFloat(def.getAttribute("y2"));
+      var r = Math.acos((x2 - x1) / Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))) + (y2 - y1 < 0 ? Math.PI: 0);
+      defset[id] = new Fashion.LinearGradientFill(parseStops(def), r / (Math.PI * 2));
+      break;
+    case 'radialGradient':
+      defset[id] = new Fashion.RadialGradientFill(parseStops(def),
+        { x: def.getAttribute('fx') || '50%', y: def.getAttribute('fy') || '50%' });
+      break;
+    }
+  }
+}
+
+function parseTransform(str) {
+  var rex = /\s*([A-Za-z_-][0-9A-Za-z_-]*)\s*\(([^)]*)\)(?:\s+|\s*,|$)/g;
+  var retval = null;
+  var g = rex.exec(str);
+  if (!g)
+    throw new Error("Invalid transform string: " + str);
+  do {
+    var matrix = null;
+    switch (g[1]) {
+    case 'matrix':
+      matrix = new Fashion.Matrix();
+      var elems = g[2].split(/\s*,\s*/);
+      matrix.a = elems[0];
+      matrix.b = elems[1];
+      matrix.c = elems[2];
+      matrix.d = elems[3];
+      matrix.e = elems[4];
+      matrix.f = elems[5];
+      break;
+    case 'scale':
+      matrix = Fashion.Matrix.scale.apply(null, g[2].split(/\s*,\s*/));
+      break;
+    case 'translate':
+      matrix = Fashion.Matrix.translate.apply(null, g[2].split(/\s*,\s*/));
+      break;
+    }
+    if (retval == null)
+      retval = matrix;
+    else
+      retval = retval.multiply(matrix);
+  } while (g = rex.exec(str));
+  return retval;
+}
+
+function parseCSSAsSvgStyle(str, defs) {
   var styles = parseCSSStyleText(str);
   var fill = null;
   var fillString = styles['fill'];
@@ -101,10 +183,18 @@ function parseCSSAsSvgStyle(str) {
   var strokeOpacity = null;
   var strokeOpacityString = styles['stroke-opacity'];
   if (fillString) {
-    if (fillString[0] == 'none')
+    if (fillString[0] == 'none') {
       fill = false;
-    else
-      fill = new Fashion.Color(fillString[0]);
+    } else {
+      var g = /url\(#([^)]*)\)/.exec(fillString[0]);
+      if (g) {
+        fill = defs[g[1]];
+        if (!fill)
+          throw new Error();
+      } else {
+        fill = new Fashion.Color(fillString[0]);
+      }
+    }
   }
   if (fillOpacityString) {
     fillOpacity = parseFloat(fillOpacityString[0]);
@@ -144,10 +234,12 @@ function buildStyleFromSvgStyle(svgStyle) {
   return {
     fill:
       svgStyle.fill ? 
-        new Fashion.FloodFill(
-          svgStyle.fill.replace(
-            null, null, null,
-            svgStyle.fillOpacity ? svgStyle.fillOpacity * 255: 255)):
+        (svgStyle.fill instanceof Fashion.Color ?
+          new Fashion.FloodFill(
+            svgStyle.fill.replace(
+              null, null, null,
+              svgStyle.fillOpacity ? svgStyle.fillOpacity * 255: 255)):
+          svgStyle.fill):
         null,
     stroke: 
       svgStyle.stroke ? new Fashion.Stroke(
@@ -161,36 +253,44 @@ function buildStyleFromSvgStyle(svgStyle) {
   };
 }
 
-function appendShapes(drawable, svgStyle, nodeList) {
+function appendShapes(drawable, svgStyle, defs, nodeList) {
   for (var i = 0; i < nodeList.length; i++) {
     var n = nodeList[i];
     if (n.nodeType != 1) continue;
     var styleString = n.getAttribute('style');
     var currentSvgStyle =
       styleString ?
-        mergeSvgStyle(svgStyle, parseCSSAsSvgStyle(styleString)):
+        mergeSvgStyle(svgStyle, parseCSSAsSvgStyle(styleString, defs)):
         svgStyle;
     var shape = null;
     switch (n.nodeName) {
+    case 'defs':
+      parseDefs(n, defs);
+      break;
     case 'g':
-      appendShapes(drawable, currentSvgStyle, n.childNodes);
+      appendShapes(drawable, currentSvgStyle, defs, n.childNodes);
       break;
     case 'path':
       var pathDataString = n.getAttribute('d');
       if (!pathDataString)
-        throw "Pathdata is not provided for the path element";
+        throw new Error("Pathdata is not provided for the path element");
       shape = drawable.draw(new Fashion.Path({ points: new Fashion.PathData(pathDataString) }));
       break;
     }
     if (shape !== null) {
       var x = parseFloat(n.getAttribute('x')),
           y = parseFloat(n.getAttribute('y'));
+      if (!isNaN(x) && !isNaN(y))
+        shape.position({ x: x, y: y });
+      var transformString = n.getAttribute("transform");
+      if (transformString)
+        shape.transform(parseTransform(transformString));
       shape.style(buildStyleFromSvgStyle(currentSvgStyle));
     }
   }
 }
 
-function parseSvg(xml) {
+function parseSvg(xml, viewportNode) {
   var widthString = xml.documentElement.getAttribute('width');
   var heightString = xml.documentElement.getAttribute('height');
   var size = widthString ?
@@ -213,29 +313,35 @@ function parseSvg(xml) {
       :
       null
     ;
-  var viewportNode = document.createElement("div");
   var drawable = new Fashion.Drawable(viewportNode, { viewportSize: size });
   appendShapes(
     drawable,
     { fill: false, fillOpacity: false,
       stroke: false, strokeOpacity: false },
+    {},
     xml.documentElement.childNodes);
-  return viewportNode;
 }
 
-window.onload = function() {
-  var canvasElement = document.getElementById("canvas");
-  var svgStyle = {
-    'fill': new Fashion.Color(0, 0, 0), 'fill-opacity': 1.,
-    'stroke': null, 'stroke-opacity': 1.,
-    'stroke-width': 1
-  };
-  loadXml("molumen_GAZ_21_.svg",
+var svgStyle = {
+  'fill': new Fashion.Color(0, 0, 0), 'fill-opacity': 1.,
+  'stroke': null, 'stroke-opacity': 1.,
+  'stroke-width': 1
+};
+
+
+</script>
+</head>
+<body>
+  <div id="canvas1"><div class="message">Loading...</div></div>
+  <script type="text/javascript">
+(function() {
+  var canvasElement = document.getElementById("canvas1");
+  loadXml(
+    "molumen_GAZ_21_.svg",
     function(xml) {
       try {
-        var viewportNode = parseSvg(xml);
+        parseSvg(xml, canvasElement);
         canvasElement.removeChild(canvasElement.firstChild);
-        canvasElement.appendChild(viewportNode);
       } catch (e) {
         canvasElement.firstChild.innerHTML = e.message;
       }
@@ -243,11 +349,26 @@ window.onload = function() {
       canvasElement.firstChild.innerHTML = "Loading failed";
     }
   );
-};
-
+})();
 </script>
-</head>
-<body>
-  <div id="canvas"><div class="message">Loading...</div></div>
+  <div id="canvas2"><div class="message">Loading...</div></div>
+  <script type="text/javascript">
+(function() {
+  var canvasElement = document.getElementById("canvas2");
+  loadXml(
+    "stuuf_grapes.svg",
+    function(xml) {
+      //try {
+        parseSvg(xml, canvasElement);
+        canvasElement.removeChild(canvasElement.firstChild);
+      //} catch (e) {
+      //  canvasElement.firstChild.innerHTML = e.message;
+      //}
+    }, function() {
+      canvasElement.firstChild.innerHTML = "Loading failed";
+    }
+  );
+})();
+</script>
 </body>
 </html>
