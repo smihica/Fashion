@@ -8,7 +8,7 @@ Fashion.Backend.VML = (function() {
   var _subtractPoint = Fashion._lib._subtractPoint;
   var Refresher = Fashion.Backend.Refresher;
   // checking browser.
-  if ((Fashion.browser.identifier !== 'ie' || Fashion.browser.version > 8 )) return null;
+  if (Fashion.browser.identifier !== 'ie') return null;
 
   var VML_PREFIX = 'v';
   var VML_NAMESPACE_URL = 'urn:schemas-microsoft-com:vml';

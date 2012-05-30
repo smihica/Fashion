@@ -8,8 +8,6 @@ Fashion.Backend.SVG = (function() {
   var _subtractPoint = Fashion._lib._subtractPoint;
   var Refresher = Fashion.Backend.Refresher;
   var TransformStack = Fashion.Backend.TransformStack;
-  // checking browser.
-  if ((Fashion.browser.identifier === 'ie' && Fashion.browser.version < 9)) return null;
 
   var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
   var XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
