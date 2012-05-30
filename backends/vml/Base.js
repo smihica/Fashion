@@ -167,7 +167,7 @@ var Base = (function() {
                     this._elem.skew = newElement('skew');
                     this._elem.node.appendChild(this._elem.skew);
                   }
-                  this._elem.node.coordOrigin = null;
+                  this._elem.node.coordOrigin = "";
                   this._elem.node.coordSize = VML_FLOAT_PRECISION + ',' + VML_FLOAT_PRECISION;
                   this._elem.skew.matrix = matrixString(transform);
                   this._elem.skew.on = true;
