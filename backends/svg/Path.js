@@ -13,7 +13,7 @@ var Path = _class("PathSVG", {
         [
           Fashion.DIRTY_POSITION,
           function () {
-            this._transformStack.add('first', 'path-position', Fashion.Matrix.translate(this.wrapper.position));
+            this._transformStack.add('first', 'path-position', Fashion.Matrix.translate(this.wrapper._position));
             this._transformUpdated = true;
           }
         ]
