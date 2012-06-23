@@ -58,13 +58,14 @@ var Text = _class("TextVML", {
                     'v-text-align:left" />',
         '</', VML_PREFIX, ':line', '>');
       vg.node.insertAdjacentHTML('beforeEnd', vml.join(''));
-      return {
-        node: vg.node.lastChild,
+      var n = vg.node.lastChild;
+      return populateWithChildElements({
+        node: n,
         fill: null,
         stroke: null,
         skew: null,
-        textpath: vg.node.lastChild.lastChild
-      };
+        textpath: n.lastChild
+      });
     }
   }
 });

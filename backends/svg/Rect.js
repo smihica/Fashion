@@ -19,6 +19,14 @@ var Rect = _class("RectSVG", {
             this._elem.setAttribute('width', size.x + 'px');
             this._elem.setAttribute('height', size.y + 'px');
           }
+        ],
+        [
+          Fashion.DIRTY_SHAPE,
+          function () {
+            var corner = this.wrapper._corner, size = this.wrapper._size;
+            this._elem.setAttribute('rx', corner ? corner.x: 0);
+            this._elem.setAttribute('ry', corner ? corner.y: 0);
+          }
         ]
       ]
     })

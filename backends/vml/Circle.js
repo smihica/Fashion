@@ -28,32 +28,16 @@ var Circle = _class("CircleVML", {
     newElement: function(vg) {
       var position = this.wrapper._position;
       var size = this.wrapper._size;
-      var vml = [
-        '<', VML_PREFIX, ':oval',
-        ' unselectable="on"',
-        ' __fashion__id="', this.wrapper.id, '"'
-      ];
-      var fillAndStroke = new VMLFillAndStroke();
-      this._buildVMLStyle(fillAndStroke);
-      fillAndStroke.setStyle({
-        position: 'absolute',
-        display: 'block',
-        margin: 0,
-        padding: 0,
-        width: size.x + 'px',
-        height: size.y + 'px',
-        left: position.x + 'px',
-        top: position.y + 'px'
-      });
-      fillAndStroke.appendHTML(vml);
-      vml.push('</', VML_PREFIX, ':oval', '>');
+      var vml = appendPrologue([], this.wrapper.id, 'oval');
+      appendStyles(vml, this);
+      appendEpilogue(vml, 'oval');
       vg.node.insertAdjacentHTML('beforeEnd', vml.join(''));
-      return {
+      return populateWithChildElements({
         node: vg.node.lastChild,
         fill: null,
         stroke: null,
         skew: null
-      };
+      });
     }
   }
 });

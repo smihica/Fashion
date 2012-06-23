@@ -49,12 +49,12 @@ var Path = _class("PathVML", {
       fillAndStroke.appendHTML(vml);
       vml.push('</', VML_PREFIX, ':shape', '>');
       vg.node.insertAdjacentHTML('beforeEnd', vml.join(''));
-      return {
+      return populateWithChildElements({
         node: vg.node.lastChild,
         fill: null,
         stroke: null,
         skew: null
-      };
+      });
     }
   }
 });

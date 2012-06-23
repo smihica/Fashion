@@ -71,6 +71,54 @@ Fashion.Backend.VML = (function() {
     return pattern.join(' ');
   }
 
+  function appendPrologue(vml, id, tagName) {
+    vml.push(
+        '<', VML_PREFIX, ':', tagName,
+        ' unselectable="on"',
+        ' __fashion__id="', id, '"');
+    return vml;
+  }
+
+  function appendEpilogue(vml, tagName) {
+    vml.push('</', VML_PREFIX, ':', tagName, '>');
+    return vml;
+  }
+
+  function appendStyles(vml, shape) {
+    var position = shape.wrapper._position;
+    var size = shape.wrapper._size;
+    var fillAndStroke = new VMLFillAndStroke();
+    shape._buildVMLStyle(fillAndStroke);
+    fillAndStroke.setStyle({
+      position: 'absolute',
+      display: 'block',
+      margin: 0,
+      padding: 0,
+      width: size.x + 'px',
+      height: size.y + 'px',
+      left: position.x + 'px',
+      top: position.y + 'px'
+    });
+    fillAndStroke.appendHTML(vml);
+    return vml;
+  }
+
+  function populateWithChildElements(elem) {
+    var childNodes = elem.node.childNodes;
+    for (var i = childNodes.length; --i >= 0;) {
+      var node = childNodes[i];
+      switch (node.tagName.toLowerCase()) {
+      case 'fill':
+        elem.fill = node;
+        break;
+      case 'stroke':
+        elem.stroke = node;
+        break;
+      }
+    }
+    return elem;
+  }
+
   function buildMouseEvt(impl, msieEvt) {
     var retval = new Fashion.MouseEvt();
     retval.type = msieEvt.type;

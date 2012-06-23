@@ -66,6 +66,35 @@ function last(items) {
             </script>
           </td>
         </tr>
+        <t>
+          <td>Rectangle</td>
+          <td>
+            <div class="stage"></div>
+            <script type="text/javascript">
+              var drawable = new Fashion.Drawable(last(document.getElementsByTagName('div')));
+              drawable.draw(
+                new Fashion.Rect({
+                  position: { x: 0, y: 0 },
+                  size: { x: 32, y: 32 },
+                  style: {
+                    fill: new Fashion.FloodFill(new Fashion.Color("#fa0")),
+                    stroke: new Fashion.Stroke(new Fashion.Color("#000"), 1)
+                  }
+                })
+              );
+              drawable.draw(
+                new Fashion.Rect({
+                  position: { x: 32, y: 32 },
+                  size: { x: 32, y: 32 },
+                  corner: { x: 10, y: 20 },
+                  style: {
+                    fill: new Fashion.FloodFill(new Fashion.Color("#fa0")),
+                    stroke: new Fashion.Stroke(new Fashion.Color("#000"), 1)
+                  }
+                })
+              );
+            </script>
+          </td>
         <tr>
           <td>Path - FloodFill</td>
           <td>
