@@ -7,6 +7,7 @@ var Drawable = _class("DrawableSVG", {
     _svg:         null,
     _vg:          null,
     _viewport:    null,
+    _viewportInnerSize: null,
     _capturingShape: null,
     _handledEvents: {
       mousedown: null,
@@ -119,6 +120,13 @@ var Drawable = _class("DrawableSVG", {
 
     scrollPosition: function(position) {
       if (position) {
+        position = _clipPoint(
+          position,
+          { x: 0, y: 0 },
+          _subtractPoint(
+            this.wrapper._content_size,
+            this.wrapper._inverse_transform.apply(
+              this._viewportInnerSize)));
         var _position = this.wrapper._transform.apply(position);
         this._viewport.scrollLeft = _position.x;
         this._viewport.scrollTop  = _position.y;
@@ -188,6 +196,10 @@ var Drawable = _class("DrawableSVG", {
       this._viewport.style.overflow =
          (contentSize.x <= viewportSize.x &&
           contentSize.y <= viewportSize.y) ? 'hidden': 'scroll';
+      this._viewportInnerSize = {
+        x: this._viewport.clientWidth,
+        y: this._viewport.clientHeight,
+      };
     },
 
     _buildSvgElement: function() {

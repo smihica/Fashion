@@ -3,6 +3,7 @@ var Drawable = _class("DrawableVML", {
     _vg: null,
     _content: null,
     _viewport: null,
+    _viewportInnerSize: { x: 0, y: 0 },
     _capturingShape: null,
     _handledEvents: {
       mousedown: [ false, 0, null ],
@@ -146,6 +147,13 @@ var Drawable = _class("DrawableVML", {
 
     scrollPosition: function(position) {
       if (position) {
+        position = clipPoint(
+            position,
+            { x: 0, y: 0 },
+            _subtractPoint(
+              this.wrapper._content_size,
+              this.wrapper._inverse_transform.apply(
+                this._viewportInnerSize)));
         this._scrollPosition = position;
         if (window.readyState == 'complete') {
           var _position = this.wrapper._transform.apply(position);
@@ -228,6 +236,10 @@ var Drawable = _class("DrawableVML", {
       this._viewport.style.overflow =
          (contentSize.x <= viewportSize.x &&
           contentSize.y <= viewportSize.y) ? 'hidden': 'scroll';
+      this._viewportInnerSize = {
+        x: this._viewport.clientWidth,
+        y: this._viewport.clientHeight,
+      };
     },
 
     _buildRoot: function () {

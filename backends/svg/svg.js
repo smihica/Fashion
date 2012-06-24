@@ -6,6 +6,7 @@ Fashion.Backend.SVG = (function() {
   var __assert__ = Fashion._lib.__assert__;
   var _addPoint = Fashion._lib.addPoint;
   var _subtractPoint = Fashion._lib.subtractPoint;
+  var _clipPoint = Fashion._lib.clipPoint;
   var Refresher = Fashion.Backend.Refresher;
   var TransformStack = Fashion.Backend.TransformStack;
 
