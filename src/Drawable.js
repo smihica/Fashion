@@ -59,7 +59,7 @@ var Drawable = _class("Drawable", {
     },
 
     viewportInnerSize: function () {
-      return tihs.impl._viewportInnerSize;
+      return this.impl._viewportInnerSize;
     },
 
     contentSize: function(size) {
