@@ -167,12 +167,12 @@ var Drawable = _class("Drawable", {
       return shape;
     },
 
-    captureMouse: function(shape) {
-      this.impl.captureMouse(shape.impl);
+    captureMouse: function() {
+      this.impl.captureMouse(this.impl);
     },
 
-    releaseMouse: function(shape) {
-      this.impl.releaseMouse(shape.impl);
+    releaseMouse: function() {
+      this.impl.releaseMouse(this.impl);
     },
 
     addEvent: function(type, h) {

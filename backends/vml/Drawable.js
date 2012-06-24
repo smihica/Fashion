@@ -94,7 +94,7 @@ var Drawable = _class("DrawableVML", {
 
       var self = this;
       this._eventFunc = function(msieEvt) {
-        if (self._capturingShape)
+        if (self._capturingShape && self._capturingShape !== self)
           return false;
         var target = msieEvt.srcElement;
         var fashionId = target.__fashion__id;

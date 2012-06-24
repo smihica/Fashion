@@ -71,7 +71,7 @@ var Drawable = _class("DrawableSVG", {
 
       var self = this;
       this._eventFunc = function(domEvt) {
-        if (self._capturingShape)
+        if (self._capturingShape && self._capturingShape !== self)
           return true;
         domEvt.stopPropagation();
         self.wrapper.handler.dispatch(buildMouseEvt(self, domEvt));
@@ -160,8 +160,6 @@ var Drawable = _class("DrawableSVG", {
     },
 
     releaseMouse: function(shape) {
-      var handler = shape.handler;
-
       if (this._capturingShape != shape) {
         throw new Fashion.NotFound("The shape is not capturing.");
       }

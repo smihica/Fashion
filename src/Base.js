@@ -86,13 +86,13 @@ var Base = _class("Base", {
     captureMouse: function() {
       if (!this.drawable)
         throw new NotAttached("This Shape is not attached any Drawable yet.");
-      this.drawable.captureMouse(this);
+      this.drawable.impl.captureMouse(this.impl);
     },
 
     releaseMouse: function() {
       if (!this.drawable)
         throw new NotAttached("This Shape is not attached any Drawable yet.");
-      this.drawable.releaseMouse(this);
+      this.drawable.impl.releaseMouse(this.impl);
     },
 
     addEvent: function(type, h) {
