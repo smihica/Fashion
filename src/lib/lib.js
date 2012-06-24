@@ -14,10 +14,10 @@ _lib.xparseInt             = xparseInt;
 _lib._repeat               = _repeat;
 _lib._lpad                 = _lpad;
 _lib._clip                 = _clip;
-_lib._clipPoint            = _clipPoint;
-_lib._addPoint             = _addPoint;
-_lib._subtractPoint        = _subtractPoint;
-_lib._escapeXMLSpecialChars = _escapeXMLSpecialChars;
+_lib.clipPoint             = _clipPoint;
+_lib.addPoint              = _addPoint;
+_lib.subtractPoint         = _subtractPoint;
+_lib.escapeXMLSpecialChars = _escapeXMLSpecialChars;
 _lib._bindEvent            = _bindEvent;
 _lib._unbindEvent          = _unbindEvent;
 

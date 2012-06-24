@@ -105,7 +105,7 @@ var DefsManager = (function() {
     ImageTileFill: function(obj) {
       var xml = [
         '<pattern width="0" height="0" patternUnits="userSpaceOnUse">',
-        '<image xlink:href="', Fashion._lib._escapeXMLSpecialChars(obj.imageData.url), '" width="0" height="0" />',
+        '<image xlink:href="', _escapeXMLSpecialChars(obj.imageData.url), '" width="0" height="0" />',
         '</pattern>'
       ].join('');
       return [

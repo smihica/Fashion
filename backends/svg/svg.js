@@ -2,10 +2,10 @@ Fashion.Backend.SVG = (function() {
   var Fashion = this;
   var window = Fashion.window;
   var _class = Fashion._lib._class;
-  var _escapeXMLSpecialChars = Fashion._lib._escapeXMLSpecialChars;
+  var _escapeXMLSpecialChars = Fashion._lib.escapeXMLSpecialChars;
   var __assert__ = Fashion._lib.__assert__;
-  var _addPoint = Fashion._lib._addPoint;
-  var _subtractPoint = Fashion._lib._subtractPoint;
+  var _addPoint = Fashion._lib.addPoint;
+  var _subtractPoint = Fashion._lib.subtractPoint;
   var Refresher = Fashion.Backend.Refresher;
   var TransformStack = Fashion.Backend.TransformStack;
 
