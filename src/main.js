@@ -37,6 +37,25 @@ var Fashion = (function() {
     };
   };
 
+  var onceOnLoad = (function () {
+    var pending = [];
+    var loaded = false;
+
+    _bindEvent(_window, 'load', function () {
+      loaded = true;
+      _unbindEvent(_window, 'load', arguments.callee);
+      while (pending.length)
+        (pending.shift())();
+    });
+  
+    return function onceOnLoad(f) {
+      if (loaded)
+        f();
+      else
+        pending.push(f);
+    };
+  })();
+
   include("Matrix.js");
   this.Matrix = Matrix;
 

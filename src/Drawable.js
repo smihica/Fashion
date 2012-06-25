@@ -28,8 +28,7 @@ var Drawable = _class("Drawable", {
       } else {
         var self = this;
         if (_window) {
-          Fashion._lib._bindEvent(_window, 'load', function () {
-            Fashion._lib._unbindEvent(_window, 'load', arguments.callee);
+          onceOnLoad(function () {
             var size = { x: target.clientWidth, y: target.clientHeight };
             self.viewportSize(size);
             if (!options || !options.contentSize)

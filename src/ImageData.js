@@ -13,12 +13,10 @@ var ImageData = _class('ImageData', {
 
       this.callbacks = [];
       var self = this;
-      Fashion._lib._bindEvent(this.node, 'load', function () {
+      onceOnLoad(function () {
         self._size = { width: self.node.width, height: self.node.height };
-        Fashion._lib._unbindEvent(self.node, 'load', arguments.callee);
-        for (var i = 0; i < self.callbacks.length; i++)
-          self.callbacks[i](self._size);
-        self.callbacks = null;
+        while (self.callbacks.length)
+          (self.callbacks.shift())(self._size);
       });
 
       this.node.src = url;
