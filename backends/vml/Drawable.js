@@ -238,7 +238,7 @@ var Drawable = _class("DrawableVML", {
           contentSize.y <= viewportSize.y) ? 'hidden': 'scroll';
       this._viewportInnerSize = {
         x: this._viewport.clientWidth,
-        y: this._viewport.clientHeight,
+        y: this._viewport.clientHeight
       };
     },
 
