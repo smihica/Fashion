@@ -125,9 +125,9 @@ var _class = (function() {
     __class__['%%INIT_INSTANCE_ORIGN_PROPS'] =
       function(inst) {
         for (var p in props) {
-          if (props.hasOwnProperty(p)) {
+          // if (props.hasOwnProperty(p)) {
             inst[p] = _clone(props[p]);
-          }
+          // }
         }
       };
 

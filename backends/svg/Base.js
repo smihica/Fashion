@@ -54,17 +54,18 @@ var Base = _class("BaseSVG", {
           function () {
             var elem = this._elem;
             var style = this.wrapper._style;
-            if (style.fill) {
-              if (style.fill instanceof Fashion.FloodFill) {
-                elem.setAttribute('fill', style.fill.color.toString(true));
-                elem.setAttribute('fill-opacity', style.fill.color.a / 255.0);
-              } else if (style.fill instanceof Fashion.LinearGradientFill
-                  || style.fill instanceof Fashion.RadialGradientFill
-                  || style.fill instanceof Fashion.ImageTileFill) {
-                var def = this.drawable._defsManager.get(style.fill);
+            var fill, stroke;
+
+            if (fill = style.fill) {
+              if (fill instanceof Fashion.FloodFill) {
+                elem.setAttribute('fill', fill.color.toString(true));
+                elem.setAttribute('fill-opacity', fill.color.a / 255.0);
+              } else if (fill instanceof Fashion.LinearGradientFill
+                         || fill instanceof Fashion.RadialGradientFill
+                         || fill instanceof Fashion.ImageTileFill) {
+                var def = this.drawable._defsManager.get(fill);
                 elem.setAttribute('fill', "url(#" + def.id + ")");
-                if (this.def)
-                  this.def.delRef();
+                if (this.def) this.def.delRef();
                 this.def = def;
                 def.addRef();
               }
@@ -72,15 +73,16 @@ var Base = _class("BaseSVG", {
               elem.setAttribute('fill', 'none');
             }
 
-            if (style.stroke) {
-              elem.setAttribute('stroke', style.stroke.color.toString(true));
-              elem.setAttribute('stroke-opacity', style.stroke.color.a / 255.0);
-              elem.setAttribute('stroke-width', style.stroke.width);
-              if (style.stroke.pattern && style.stroke.pattern.length > 1)
-                elem.setAttribute('stroke-dasharray', style.stroke.pattern.join(' '));
+            if (stroke = style.stroke) {
+              elem.setAttribute('stroke', stroke.color.toString(true));
+              elem.setAttribute('stroke-opacity', stroke.color.a / 255.0);
+              elem.setAttribute('stroke-width', stroke.width);
+              if (stroke.pattern && stroke.pattern.length > 1)
+                elem.setAttribute('stroke-dasharray', stroke.pattern.join(' '));
             } else {
               elem.setAttribute('stroke', 'none');
             }
+
             elem.style.cursor = style.cursor;
           }
         ],

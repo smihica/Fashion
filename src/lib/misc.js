@@ -1,11 +1,14 @@
 // detect atomic or not
 function _atomic_p(obj) {
-  var t = typeof obj;
-  return ( !(obj instanceof Date) &&
-           ( obj === null || obj === void(0) ||
-             t === 'boolean' || t === 'number' || t === 'string' ||
-             obj.valueOf !== Object.prototype.valueOf));
+  var t;
+  return ( obj === null || obj === void(0) ||
+           (t = typeof obj) === 'number' ||
+           t === 'string' ||
+           t === 'boolean' ||
+           ((obj.valueOf !== Object.prototype.valueOf) &&
+            !(obj instanceof Date)));
 };
+
 
 // make deep clone of the object
 function _clone(obj, target) {
