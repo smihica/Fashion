@@ -179,8 +179,13 @@ var Drawable = _class("Drawable", {
     },
 
     addEvent: function(type, h) {
-      if (this.handler === null)
-        this.handler = new MouseEventsHandler(this);
+      if (this.handler === null) {
+        this.handler = new MouseEventsHandler(
+          this,
+          ['mousedown', 'mouseup', 'mousemove', 'mouseover', 'mouseout',
+           'scroll', 'visualchange']
+        );
+      }
       this.handler.add.apply(this.handler, arguments);
       this._dirty |= Fashion.DIRTY_EVENT_HANDLERS;
       this._enqueueForUpdate(this);

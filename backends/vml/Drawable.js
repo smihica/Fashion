@@ -10,7 +10,9 @@ var Drawable = _class("DrawableVML", {
       mouseup: [ false, 0, null ],
       mousemove: [ false, 0, null ],
       mouseover: [ false, 0, null ],
-      mouseout: [ false, 0, null ]
+      mouseout: [ false, 0, null ],
+      scroll: [ false, 0, null ],
+      visualchange: [ false, 0, null ]
     },
     _scrollPosition: { x: 0, y: 0 },
     _currentEvent: null,
@@ -26,6 +28,13 @@ var Drawable = _class("DrawableVML", {
         if (!this._viewport.parentNode != this.wrapper.target) {
           this.wrapper.target.appendChild(this._viewport);
         }
+      },
+      postHandler: function (_, originalDirty) {
+        var evt = new Fashion.VisualChangeEvt();
+        evt.target = this.wrapper;
+        evt.dirty = originalDirty;
+        if (this.wrapper.handler)
+          this.wrapper.handler.dispatch(evt);
       },
       handlers: [
         [
@@ -75,10 +84,12 @@ var Drawable = _class("DrawableVML", {
               var beingHandled = this._handledEvents[type][0];
               var toHandle = this.wrapper.handler.handles(type);
               if (!beingHandled && toHandle) {
-                this._handleEvent(type);
+                if (type != 'scroll' && type.indexOf('visualchange') != 0)
+                  this._handleEvent(type);
                 this._handledEvents[type][0] = true;
               } else if (beingHandled && !toHandle) {
-                this._unhandleEvent(type);
+                if (type != 'scroll' && type.indexOf('visualchange') != 0)
+                  this._unhandleEvent(type);
                 this._handledEvents[type][0] = false;
               }
             }
@@ -121,7 +132,15 @@ var Drawable = _class("DrawableVML", {
       };
 
       this._scrollEventFunc = function (msieEvt) {
-        self._scrollPosition = self.wrapper._inverse_transform.apply({ x: parseInt(self._viewport.scrollLeft), y: parseInt(self._viewport.scrollTop) });
+        var physicalPosition = { x: parseInt(self._viewport.scrollLeft), y: parseInt(self._viewport.scrollTop) };
+        self._scrollPosition = self.wrapper._inverse_transform.apply(physicalPosition);
+        if (self._handledEvents.scroll[0]) {
+          var evt = new Fashion.ScrollEvt();
+          evt.target = self.wrapper;
+          evt.physicalPosition = physicalPosition;
+          evt.logicalPosition = self._scrollPosition;
+          self.wrapper.handler.dispatch(evt);
+        }
       };
 
       this._viewport = this._buildViewportElement();
@@ -147,7 +166,7 @@ var Drawable = _class("DrawableVML", {
 
     scrollPosition: function(position) {
       if (position) {
-        position = clipPoint(
+        position = _clipPoint(
             position,
             { x: 0, y: 0 },
             _subtractPoint(
@@ -221,6 +240,10 @@ var Drawable = _class("DrawableVML", {
       this._capturingShape = null;
     },
 
+    capturingShape: function () {
+      return this._capturingShape;
+    },
+
     convertToLogicalPoint: function(point) {
       return _addPoint(this.scrollPosition(), this.wrapper._inverse_transform.apply(point));
     },
@@ -240,6 +263,7 @@ var Drawable = _class("DrawableVML", {
         x: this._viewport.clientWidth,
         y: this._viewport.clientHeight
       };
+      this._scrollEventFunc();
     },
 
     _buildRoot: function () {

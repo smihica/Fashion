@@ -123,7 +123,7 @@ var Base = _class("BaseSVG", {
       var self = this;
       this._eventFunc = function(domEvt) {
         if (self.drawable._capturingShape &&
-            self.drawable._capturingShape != self)
+            self.drawable._capturingShape !== self)
           return true;
         self.wrapper.handler.dispatch(buildMouseEvt(self, domEvt));
         return false;

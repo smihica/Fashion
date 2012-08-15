@@ -41,19 +41,25 @@ var Fashion = (function() {
     var pending = [];
     var loaded = false;
 
-    _bindEvent(_window, 'load', function () {
-      loaded = true;
-      _unbindEvent(_window, 'load', arguments.callee);
-      while (pending.length)
-        (pending.shift())();
-    });
-  
-    return function onceOnLoad(f) {
-      if (loaded)
+    if (_window) {
+      _bindEvent(_window, 'load', function () {
+        loaded = true;
+        _unbindEvent(_window, 'load', arguments.callee);
+        while (pending.length)
+          (pending.shift())();
+      });
+    
+      return function onceOnLoad(f) {
+        if (loaded)
+          f();
+        else
+          pending.push(f);
+      };
+    } else {
+      return function onceOnLoad(f) {
         f();
-      else
-        pending.push(f);
-    };
+      }
+    }
   })();
 
   include("Matrix.js");
@@ -84,6 +90,12 @@ var Fashion = (function() {
 
   include("MouseEvt.js");
   this.MouseEvt = MouseEvt;
+
+  include("VisualChangeEvt.js");
+  this.VisualChangeEvt = VisualChangeEvt;
+
+  include("ScrollEvt.js");
+  this.ScrollEvt = ScrollEvt;
 
   include("MouseEventsHandler.js");
   this.MouseEventsHandler = MouseEventsHandler;

@@ -43,11 +43,18 @@
 
         drawable.addEvent({
           mousemove: function(evt) {
-            var _console = document.getElementById('console');
+            var _console = document.getElementById('console1');
             _console.innerText = [
               "Logical: " + evt.logicalPosition.x + ", " + evt.logicalPosition.y,
               "Physical: " + evt.physicalPosition.x + ", " + evt.physicalPosition.y,
               "Screen: " + evt.screenPosition.x + ", " + evt.screenPosition.y
+            ].join("\n");
+          },
+          scroll: function(evt) {
+            var _console = document.getElementById('console2');
+            _console.innerText = [
+              "Logical: " + evt.logicalPosition.x + ", " + evt.logicalPosition.y,
+              "Physical: " + evt.physicalPosition.x + ", " + evt.physicalPosition.y
             ].join("\n");
           }
         });
@@ -60,7 +67,10 @@
           drawable.transform(Fashion.Matrix.scale(zoom /= 1.1));
         };
       </script>
-      <pre id="console"></pre>
+      <p>Mouse Position:</p>
+      <pre id="console1"></pre>
+      <p>Scroll Position:</p>
+      <pre id="console2"></pre>
     </div>
   </body>
 </html>

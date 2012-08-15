@@ -41,6 +41,7 @@ var Refresher = _class("Refresher", {
     },
 
     call: function (target, dirty) {
+      var originalDirty = dirty;
       if (this._preHandler) {
         var _dirty = this._preHandler.call(target, dirty);
         if (_dirty !== void(0))
@@ -53,7 +54,7 @@ var Refresher = _class("Refresher", {
             pair[1].call(target, dirty);
         }
       }
-      this._postHandler && this._postHandler.call(target, dirty);
+      this._postHandler && this._postHandler.call(target, dirty, originalDirty);
     }
   }
 });

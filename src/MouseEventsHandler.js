@@ -1,22 +1,14 @@
 var MouseEventsHandler = _class("MouseEventsHandler", {
   props : {
-    _handlersMap: {
-      mousedown: [],
-      mouseup:   [],
-      mousemove: [],
-      mouseover: [],
-      mouseout:  []
-    },
+    _handlersMap: {},
     _target: null
   },
 
   methods: {
-    init: function(target, h) {
+    init: function(target, events) {
       this._target = target;
-
-      if (h) {
-        this.add(h);
-      }
+      for (var i in events)
+        this._handlersMap[events[i]] = [];
     },
 
     getHandlerFunctionsFor: function(type) {

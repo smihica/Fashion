@@ -96,8 +96,12 @@ var Base = _class("Base", {
     },
 
     addEvent: function(type, h) {
-      if (this.handler === null)
-        this.handler = new MouseEventsHandler(this);
+      if (this.handler === null) {
+        this.handler = new MouseEventsHandler(
+          this,
+          ['mousedown', 'mouseup', 'mousemove', 'mouseover', 'mouseout']
+        );
+      }
       this.handler.add.apply(this.handler, arguments);
       this._dirty |= Fashion.DIRTY_EVENT_HANDLERS;
       if (this.drawable)
