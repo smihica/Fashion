@@ -32,7 +32,6 @@ var Backend = (function() {
         } catch(e) {}
 
         if ( !box || !contains( docElem, elem ) ) {
-          console.log('here');
           return box ? { top: box.top, left: box.left } : { top: 0, left: 0 };
         }
 
