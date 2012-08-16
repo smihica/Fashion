@@ -139,7 +139,7 @@ var PathData = (function() {
     case 'm':
       if (l == 0 || l % 2 != 0)
         throw new ValueError("moveToRel takes 2 * n arguments, " + l + " given: " + arr.join(" "));
-      var x = this.parseNumber(arr[i]), y = this.parseNumber(arr[i + 1]);
+      var x = this.parseNumber(arr[i]) + this.last.x, y = this.parseNumber(arr[i + 1]) + this.last.y;
       this.data.push(['M', x, y]);
       for (var j = i + 2, n = i + l; j < n ; j += 2) {
         x += this.parseNumber(arr[j]), y += this.parseNumber(arr[j + 1]);
