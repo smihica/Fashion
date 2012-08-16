@@ -12,10 +12,10 @@ var _class = (function() {
     _class.prototype = new f();
     _class.prototype.__super__ = __super__;
 
-    var iiop = _class['%%INIT_INSTANCE_ORIGN_PROPS'];
+    var iiop = _class['%%INIT_INSTANCE_ORIGIN_PROPS'];
 
-    _class['%%INIT_INSTANCE_ORIGN_PROPS'] = function(inst) {
-      var parent_iiop = parent['%%INIT_INSTANCE_ORIGN_PROPS'];
+    _class['%%INIT_INSTANCE_ORIGIN_PROPS'] = function(inst) {
+      var parent_iiop = parent['%%INIT_INSTANCE_ORIGIN_PROPS'];
       if (parent_iiop) parent_iiop(inst);
       iiop(inst);
     };
@@ -47,9 +47,9 @@ var _class = (function() {
       }
     }
 
-    var iiop = _class['%%INIT_INSTANCE_ORIGN_PROPS'];
-    _class['%%INIT_INSTANCE_ORIGN_PROPS'] = function(inst) {
-      var include_iiop = include['%%INIT_INSTANCE_ORIGN_PROPS'];
+    var iiop = _class['%%INIT_INSTANCE_ORIGIN_PROPS'];
+    _class['%%INIT_INSTANCE_ORIGIN_PROPS'] = function(inst) {
+      var include_iiop = include['%%INIT_INSTANCE_ORIGIN_PROPS'];
       if (include_iiop) include_iiop(inst);
       iiop(inst);
     };
@@ -114,20 +114,16 @@ var _class = (function() {
       }
     }
 
-    __class__ = function(arg) {
-      __class__['%%INIT_INSTANCE_ORIGN_PROPS'](this);
-      if (this.init)
-        this.init.apply(this, arguments);
-      else
-        _clone(arg, this); 
+    __class__ = function __Class__(arg) {
+      __class__['%%INIT_INSTANCE_ORIGIN_PROPS'](this);
+      if (this.init) this.init.apply(this, arguments);
+      else           _clone(arg, this);
     };
 
-    __class__['%%INIT_INSTANCE_ORIGN_PROPS'] =
+    __class__['%%INIT_INSTANCE_ORIGIN_PROPS'] =
       function(inst) {
         for (var p in props) {
-          // if (props.hasOwnProperty(p)) {
-            inst[p] = _clone(props[p]);
-          // }
+          inst[p] = _clone(props[p]);
         }
       };
 
