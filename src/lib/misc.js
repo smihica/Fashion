@@ -17,7 +17,7 @@ function _clone(obj, target) {
   // if target is given. clone obj properties into it.
   var clone, p;
   if (obj instanceof Date) {
-    clone = new Date((typeof obj.getTime === 'function') ? obj.getTime() : obj);
+    clone = new Date(obj.getTime());
     if (target instanceof Date) {
       for (p in target) if (target.hasOwnProperty(p)) clone[p] = _clone(target[p], clone[p]);
     }
@@ -28,8 +28,7 @@ function _clone(obj, target) {
     }
   } else {
     clone = (!_atomic_p(target) && typeof target !== 'function') ?
-      target :
-      new obj.constructor()
+      target : new obj.constructor();
   }
 
   for (p in obj)
