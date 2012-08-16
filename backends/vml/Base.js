@@ -311,7 +311,7 @@ var Base = (function() {
         } else {
           stroke.setOuterAttribute('stroked', false);
         }
-        fillAndStroke.setStyle('cursor', st.cursor ? st.cursor: 'normal');
+        fillAndStroke.setStyle('cursor', st.cursor ? st.cursor: 'default');
       }
     }
   });
