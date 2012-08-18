@@ -84,6 +84,8 @@ var Matrix = (function() {
       },
 
       translate: function (offset) {
+        if (offset ===  void(0))
+          return { x: this.e, y: this.f };
         return this.multiplyI(1, 0, 0, 1, offset.x, offset.y);
       },
 

@@ -168,7 +168,7 @@ var Drawable = _class("DrawableVML", {
       if (position) {
         position = _clipPoint(
             position,
-            { x: 0, y: 0 },
+            this.wrapper._inverse_transform.translate(),
             _subtractPoint(
               this.wrapper._content_size,
               this.wrapper._inverse_transform.apply(
