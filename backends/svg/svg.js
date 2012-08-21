@@ -57,14 +57,17 @@ Fashion.Backend.SVG = (function() {
     } else {
       physicalPagePosition = { x: domEvt.pageX, y: domEvt.pageY };
     }
+
     if (impl instanceof Drawable) {
       retval.screenPosition   = _subtractPoint(physicalPagePosition, impl.getViewportOffset());
-      retval.logicalPosition  = impl.convertToLogicalPoint(retval.screenPosition);
-      retval.physicalPosition = impl.convertToPhysicalPoint(retval.screenPosition);
+      var physicalPosition    = _addPoint(impl.convertToPhysicalPoint(impl.scrollPosition()), retval.screenPosition);
+      retval.logicalPosition  = impl.convertToLogicalPoint(physicalPosition);
+      retval.physicalPosition = physicalPosition;
     } else {
       retval.screenPosition   = _subtractPoint(physicalPagePosition, impl.drawable.getViewportOffset());
-      retval.logicalPosition  = impl.drawable.convertToLogicalPoint(retval.screenPosition);
-      retval.physicalPosition = impl.drawable.convertToPhysicalPoint(retval.screenPosition);
+      var physicalPosition    = _addPoint(impl.drawable.convertToPhysicalPoint(impl.drawable.scrollPosition()), retval.screenPosition);
+      retval.logicalPosition  = impl.drawable.convertToLogicalPoint(physicalPosition);
+      retval.physicalPosition = physicalPosition;
       retval.offsetPosition   = _subtractPoint(retval.logicalPosition, impl.wrapper._position);
     }
 

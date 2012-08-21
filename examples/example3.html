@@ -56,6 +56,9 @@
               "Logical: " + evt.logicalPosition.x + ", " + evt.logicalPosition.y,
               "Physical: " + evt.physicalPosition.x + ", " + evt.physicalPosition.y
             ].join("\n");
+          },
+          mousedown: function(evt) {
+            this.transform(Fashion.Matrix.scale(zoom *= 1.1, evt.logicalPosition));
           }
         });
         var zoom = 1.0;
