@@ -245,7 +245,11 @@ var Drawable = _class("DrawableVML", {
     },
 
     convertToLogicalPoint: function(point) {
-      return _addPoint(this.scrollPosition(), this.wrapper._inverse_transform.apply(point));
+      return this.wrapper._inverse_transform.apply(point);
+    },
+
+    convertToPhysicalPoint: function(point) {
+      return this.wrapper._transform.apply(point);
     },
 
     _updateContentSize: function () {
