@@ -1,8 +1,11 @@
 var Rect = (function () {
+
+  var prec = VML_FLOAT_PRECISION;
+  var coordsize = 'coordorigin="0 0" coordsize="'+ prec +' '+ prec +'"';
+
   function appendPath(vml, size, corner) {
-    var prec = VML_FLOAT_PRECISION,
-        rx = (corner.x || 0) * prec / size.x;
-        ry = (corner.y || 0) * prec / size.y;
+    var rx = Math.round((corner.x || 0) * prec / size.x);
+        ry = Math.round((corner.y || 0) * prec / size.y);
     vml.push('at0,0,', rx * 2, ',', ry * 2, ',', rx, ',0,0,', ry);
     vml.push('l0,', prec - ry);
     vml.push('at0,', prec - ry * 2, ',', rx * 2, ',', prec, ',0,', prec - ry, ',', rx, ',', prec);
@@ -48,6 +51,7 @@ var Rect = (function () {
         vml.push(' path="');
         appendPath(vml, this.wrapper._size, this.wrapper._corner);
         vml.push('"');
+        vml.push(coordsize);
         appendStyles(vml, this);
         appendEpilogue(vml, 'shape');
         return vml;
@@ -111,7 +115,7 @@ var Rect = (function () {
       determineImpl: function() {
         var size = this.wrapper._size;
         var corner = this.wrapper._corner;
-        if (corner.x == corner.y && size.x == size.y) {
+        if (corner.x == corner.y) {
           if (corner.x == 0)
             return handlers.rect;
           else

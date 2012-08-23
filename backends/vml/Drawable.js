@@ -59,7 +59,7 @@ var Drawable = _class("DrawableVML", {
                 }
                 var contentSize = this.wrapper._transform.apply(this.wrapper._content_size);
                 this._vg.node.coordOrigin = (-transform.e * VML_FLOAT_PRECISION) + ',' + (-transform.f * VML_FLOAT_PRECISION);
-                this._vg.node.coordSize = (VML_FLOAT_PRECISION / scale.x) + ',' + (VML_FLOAT_PRECISION / scale.y);
+                this._vg.node.coordSize = Math.round(VML_FLOAT_PRECISION / scale.x) + ',' + Math.round(VML_FLOAT_PRECISION / scale.y);
               } else {
                 if (!this._vg.skew) {
                   this._vg.skew = newElement('skew');
@@ -274,6 +274,7 @@ var Drawable = _class("DrawableVML", {
     _buildRoot: function () {
       var vg = newElement('group');
       vg.style.cssText = 'position:absolute;display:block;margin:0;padding:0;width:' + VML_FLOAT_PRECISION + 'px;height:' + VML_FLOAT_PRECISION + 'px';
+      vg.coordOrigin = '0,0';
       vg.coordSize = VML_FLOAT_PRECISION + ',' + VML_FLOAT_PRECISION;
       return { node: vg, skew: null };
     },
