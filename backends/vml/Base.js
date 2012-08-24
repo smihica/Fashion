@@ -143,7 +143,7 @@ var Base = (function() {
             return dirty;
           if (!this._elem) {
             this._elem = this.newElement(this.drawable._vg);
-            return dirty & Fashion.DIRTY_EVENT_HANDLERS;
+            return dirty & (Fashion.DIRTY_EVENT_HANDLERS | Fashion.DIRTY_TRANSFORM);
           }
           return dirty;
         },
@@ -170,6 +170,7 @@ var Base = (function() {
                   this._elem.node.coordOrigin = "";
                   this._elem.node.coordSize = VML_FLOAT_PRECISION + ',' + VML_FLOAT_PRECISION;
                   this._elem.skew.matrix = matrixString(transform);
+                  this._elem.skew.offset = transform.e + "," + transform.f;
                   this._elem.skew.on = true;
                 }
               } else {
