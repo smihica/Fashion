@@ -134,6 +134,7 @@ var Drawable = _class("DrawableSVG", {
     },
 
     dispose: function() {
+      this._capturingShape = true;
       if (this._viewport && this._viewport.parentNode)
         this._viewport.parentNode.removeChild(this._viewport);
       this._viewport = null;
