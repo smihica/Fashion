@@ -293,7 +293,7 @@ var PathData = (function() {
         throw new ValueError("arc takes 7 * n arguments, " + l + " given: " + arr.join(" "));
       var x = 0., y = 0.;
       for (var j = i, n = i + l; j <n ; j += 7) {
-        var rx = this.parseNumber(arr[j]), ry = y + this.parseNumber(arr[j + 1]);
+        var rx = this.parseNumber(arr[j]), ry = this.parseNumber(arr[j + 1]);
         var x_axis_rotation = this.parseNumber(arr[j + 2]);
         var large_arc_flag = this.parseNumber(arr[j + 3]);
         var sweep_flag = this.parseNumber(arr[j + 4]);
@@ -308,7 +308,7 @@ var PathData = (function() {
         throw new ValueError("arcRel takes 7 * n arguments, " + l + " given: " + arr.join(" "));
       var x = this.last.x, y = this.last.y;
       for (var j = i, n = i + l; j <n ; j += 7) {
-        var rx = x + this.parseNumber(arr[j]), ry = y + this.parseNumber(arr[j + 1]);
+        var rx = this.parseNumber(arr[j]), ry = this.parseNumber(arr[j + 1]);
         var x_axis_rotation = this.parseNumber(arr[j + 2]);
         var large_arc_flag = this.parseNumber(arr[j + 3]);
         var sweep_flag = this.parseNumber(arr[j + 4]);
