@@ -21,6 +21,10 @@ Fashion.Backend.VML = (function() {
     if (Fashion.browser.version >= 8) {
       if (!namespaces[VML_PREFIX])
         namespaces.add(VML_PREFIX, VML_NAMESPACE_URL, VML_BEHAVIOR_URL);
+      window.document.createStyleSheet().addRule(VML_PREFIX + '\\:line', "behavior:url(#default#VML)");
+      window.document.createStyleSheet().addRule(VML_PREFIX + '\\:rect', "behavior:url(#default#VML)");
+      window.document.createStyleSheet().addRule(VML_PREFIX + '\\:roundrect', "behavior:url(#default#VML)");
+      window.document.createStyleSheet().addRule(VML_PREFIX + '\\:oval', "behavior:url(#default#VML)");
     } else {
       if (!namespaces[VML_PREFIX])
         namespaces.add(VML_PREFIX, VML_NAMESPACE_URL);
