@@ -39,6 +39,33 @@ function last(items) {
                   fontFamily: 'Sans-Serif',
                   text: "Text",
                   position: { x: 0, y: 12 },
+                  size: { x: 64, y: 12 },
+                  style: {
+                    fill: new Fashion.FloodFill(new Fashion.Color("#000"))
+                  }
+                })
+              );
+              drawable.draw(
+                new Fashion.Text({
+                  fontSize: 12,
+                  fontFamily: 'Sans-Serif',
+                  text: "Text",
+                  anchor: 'center',
+                  position: { x: 32, y: 24 },
+                  size: { x: 64, y: 12 },
+                  style: {
+                    fill: new Fashion.FloodFill(new Fashion.Color("#000"))
+                  }
+                })
+              );
+              drawable.draw(
+                new Fashion.Text({
+                  fontSize: 12,
+                  fontFamily: 'Sans-Serif',
+                  text: "Text",
+                  position: { x: 64, y: 36 },
+                  size: { x: 64, y: 12 },
+                  anchor: 'right',
                   style: {
                     fill: new Fashion.FloodFill(new Fashion.Color("#000"))
                   }

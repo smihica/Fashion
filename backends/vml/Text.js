@@ -55,7 +55,7 @@ var Text = _class("TextVML", {
         '<', VML_PREFIX, ':textpath string="', _escapeXMLSpecialChars(this.wrapper._text), '" on="t"',
         ' style="', 'font-size:', this.wrapper._fontSize, 'px;',
                     'font-family:', _escapeXMLSpecialChars(this.wrapper._fontFamily), ';',
-                    'v-text-align:left" />',
+                    'v-text-align:', _escapeXMLSpecialChars(this.wrapper._anchor), '" />',
         '</', VML_PREFIX, ':line', '>');
       vg.node.insertAdjacentHTML('beforeEnd', vml.join(''));
       var n = vg.node.lastChild;
