@@ -81,8 +81,8 @@ exports.PathData = {
     test.equal(pathData[0][1], 1.);
     test.equal(pathData[0][2], 2.);
     test.equal(pathData[1][0], 'M');
-    test.equal(pathData[1][1], 0.);
-    test.equal(pathData[1][2], 0.);
+    test.equal(pathData[1][1], 1.);
+    test.equal(pathData[1][2], 2.);
     test.done();
   },
 
@@ -97,8 +97,8 @@ exports.PathData = {
     test.equal(pathData[1][1], 4.);
     test.equal(pathData[1][2], 6.);
     test.equal(pathData[2][0], 'M');
-    test.equal(pathData[2][1], 0.);
-    test.equal(pathData[2][2], 0.);
+    test.equal(pathData[2][1], 4.);
+    test.equal(pathData[2][2], 6.);
     test.done();
   },
 
@@ -110,8 +110,8 @@ exports.PathData = {
     test.equal(pathData[0][1], 1.);
     test.equal(pathData[0][2], 2.);
     test.equal(pathData[1][0], 'M');
-    test.equal(pathData[1][1], 0.);
-    test.equal(pathData[1][2], 0.);
+    test.equal(pathData[1][1], 1.);
+    test.equal(pathData[1][2], 2.);
     test.done();
   },
 
@@ -126,8 +126,8 @@ exports.PathData = {
     test.equal(pathData[1][1], 4.);
     test.equal(pathData[1][2], 6.);
     test.equal(pathData[2][0], 'M');
-    test.equal(pathData[2][1], 0.);
-    test.equal(pathData[2][2], 0.);
+    test.equal(pathData[2][1], 4.);
+    test.equal(pathData[2][2], 6.);
     test.done();
   },
 
@@ -139,8 +139,8 @@ exports.PathData = {
     test.equal(pathData[0][1], 1.);
     test.equal(pathData[0][2], 2.);
     test.equal(pathData[1][0], 'M');
-    test.equal(pathData[1][1], 0.);
-    test.equal(pathData[1][2], 0.);
+    test.equal(pathData[1][1], 1.);
+    test.equal(pathData[1][2], 2.);
     test.done();
   },
 
@@ -155,8 +155,8 @@ exports.PathData = {
     test.equal(pathData[1][1], 4.);
     test.equal(pathData[1][2], 6.);
     test.equal(pathData[2][0], 'M');
-    test.equal(pathData[2][1], 0.);
-    test.equal(pathData[2][2], 0.);
+    test.equal(pathData[2][1], 4.);
+    test.equal(pathData[2][2], 6.);
     test.done();
   },
 
@@ -170,8 +170,8 @@ exports.PathData = {
     test.equal(pathData[0][3], 3.);
     test.equal(pathData[0][4], 4.);
     test.equal(pathData[1][0], 'M');
-    test.equal(pathData[1][1], 0.);
-    test.equal(pathData[1][2], 0.);
+    test.equal(pathData[1][1], 3.);
+    test.equal(pathData[1][2], 4.);
     test.done();
   },
 
@@ -188,8 +188,8 @@ exports.PathData = {
     test.equal(pathData[1][3], 6.);
     test.equal(pathData[1][4], 8.);
     test.equal(pathData[2][0], 'M');
-    test.equal(pathData[2][1], 0.);
-    test.equal(pathData[2][2], 0.);
+    test.equal(pathData[2][1], 6.);
+    test.equal(pathData[2][2], 8.);
     test.done();
   },
 
@@ -203,8 +203,8 @@ exports.PathData = {
     test.equal(pathData[0][3], 3.);
     test.equal(pathData[0][4], 4.);
     test.equal(pathData[1][0], 'M');
-    test.equal(pathData[1][1], 0.);
-    test.equal(pathData[1][2], 0.);
+    test.equal(pathData[1][1], 3.);
+    test.equal(pathData[1][2], 4.);
     test.done();
   },
 
@@ -221,8 +221,8 @@ exports.PathData = {
     test.equal(pathData[1][3], 6.);
     test.equal(pathData[1][4], 8.);
     test.equal(pathData[2][0], 'M');
-    test.equal(pathData[2][1], 0.);
-    test.equal(pathData[2][2], 0.);
+    test.equal(pathData[2][1], 6.);
+    test.equal(pathData[2][2], 8.);
     test.done();
   },
 
@@ -238,8 +238,8 @@ exports.PathData = {
     test.equal(pathData[0][5], 5.);
     test.equal(pathData[0][6], 6.);
     test.equal(pathData[1][0], 'M');
-    test.equal(pathData[1][1], 0.);
-    test.equal(pathData[1][2], 0.);
+    test.equal(pathData[1][1], 5.);
+    test.equal(pathData[1][2], 6.);
     test.done();
   },
 
@@ -258,8 +258,8 @@ exports.PathData = {
     test.equal(pathData[1][5], 8.);
     test.equal(pathData[1][6], 10.);
     test.equal(pathData[2][0], 'M');
-    test.equal(pathData[2][1], 0.);
-    test.equal(pathData[2][2], 0.);
+    test.equal(pathData[2][1], 8.);
+    test.equal(pathData[2][2], 10.);
     test.done();
   },
 
@@ -276,8 +276,8 @@ exports.PathData = {
     test.equal(pathData[0][6], 6.);
     test.equal(pathData[0][7], 7.);
     test.equal(pathData[1][0], 'M');
-    test.equal(pathData[1][1], 0.);
-    test.equal(pathData[1][2], 0.);
+    test.equal(pathData[1][1], 6.);
+    test.equal(pathData[1][2], 7.);
     test.done();
   },
 
@@ -289,16 +289,16 @@ exports.PathData = {
     test.equal(pathData[0][1], 1.);
     test.equal(pathData[0][2], 2.);
     test.equal(pathData[1][0], 'A');
-    test.equal(pathData[1][1], 4.);
-    test.equal(pathData[1][2], 6.);
+    test.equal(pathData[1][1], 3.);
+    test.equal(pathData[1][2], 4.);
     test.equal(pathData[1][3], 5.);
     test.equal(pathData[1][4], 6.);
     test.equal(pathData[1][5], 7.);
     test.equal(pathData[1][6], 9.);
     test.equal(pathData[1][7], 11.);
     test.equal(pathData[2][0], 'M');
-    test.equal(pathData[2][1], 0.);
-    test.equal(pathData[2][2], 0.);
+    test.equal(pathData[2][1], 9.);
+    test.equal(pathData[2][2], 11.);
     test.done();
   },
 
