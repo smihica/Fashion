@@ -107,6 +107,11 @@ function _subtractPoint(lhs, rhs) {
   return { x: lhs.x - rhs.x, y: lhs.y - rhs.y };
 }
 
+function _pointEquals(lhs, rhs) {
+  return (lhs == null && rhs == null)
+         || (lhs != null && rhs != null && lhs.x == rhs.x && lhs.y == rhs.y);
+}
+
 function _indexOf(array, elem, fromIndex) {
   if (array instanceof Array && 'indexOf' in Array.prototype) {
     return array.indexOf(elem, fromIndex);

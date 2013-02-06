@@ -53,6 +53,12 @@ var Matrix = (function() {
         }
       },
 
+      equals: function (that) {
+        return that != null &&
+               this.a == that.a && this.b == that.b && this.c == that.c &&
+               this.d == that.d && this.e == that.e && this.f == that.f;
+      },
+
       multiplyI: function (a2, b2, c2, d2, e2, f2) {
         return new this.constructor(
           this.a * a2 + this.c * b2,

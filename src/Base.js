@@ -30,40 +30,49 @@ var Base = _class("Base", {
 
     position: function(value) {
       if (value) {
-        this._position = value;
-        this._dirty |= Fashion.DIRTY_POSITION;
-        if (this.drawable)
-          this.drawable._enqueueForUpdate(this);
+        if (!_lib.pointEquals(this._position, value)) {
+          this._position = value;
+          this._dirty |= Fashion.DIRTY_POSITION;
+          if (this.drawable)
+            this.drawable._enqueueForUpdate(this);
+        }
       }
       return this._position;
     },
 
     size: function(value) {
       if (value) {
-        this._size = value;
-        this._dirty |= Fashion.DIRTY_SIZE;
-        if (this.drawable)
-          this.drawable._enqueueForUpdate(this);
+        if (!_lib.pointEquals(this._size, value)) {
+          this._size = value;
+          this._dirty |= Fashion.DIRTY_SIZE;
+          if (this.drawable)
+            this.drawable._enqueueForUpdate(this);
+        }
       }
       return this._size;
     },
 
     zIndex: function(value) {
       if (value !== void(0)) {
-        this._zIndex = value;
-        this._dirty |= Fashion.DIRTY_ZINDEX;
-        if (this.drawable)
-          this.drawable._enqueueForUpdate(this);
+        if (this._zIndex != value) {
+          this._zIndex = value;
+          this._dirty |= Fashion.DIRTY_ZINDEX;
+          if (this.drawable)
+            this.drawable._enqueueForUpdate(this);
+        }
       }
       return this._zIndex;
     },
 
     transform: function(value) {
       if (value !== void(0)) {
-        this._transform = value;
-        this._dirty |= Fashion.DIRTY_TRANSFORM;
-        if (this.drawable)
-          this.drawable._enqueueForUpdate(this);
+        if ((this._transform == null && value != null)
+            || (this._transform != null && !this._transform.equals(value))) {
+          this._transform = value;
+          this._dirty |= Fashion.DIRTY_TRANSFORM;
+          if (this.drawable)
+            this.drawable._enqueueForUpdate(this);
+        }
       }
       return this._transform;
     },
@@ -74,6 +83,18 @@ var Base = _class("Base", {
         this._dirty |= Fashion.DIRTY_STYLE;
         if (this.drawable)
           this.drawable._enqueueForUpdate(this);
+      }
+      return this._style;
+    },
+
+    visibility: function(value) {
+      if (value !== void(0)) {
+        if (this._visibility != value) {
+          this._visibility = value;
+          this._dirty |= Fashion.DIRTY_VISIBILITY;
+          if (this.drawable)
+            this.drawable._enqueueForUpdate(this);
+        }
       }
       return this._style;
     },

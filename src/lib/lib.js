@@ -17,6 +17,7 @@ _lib._clip                 = _clip;
 _lib.clipPoint             = _clipPoint;
 _lib.addPoint              = _addPoint;
 _lib.subtractPoint         = _subtractPoint;
+_lib.pointEquals           = _pointEquals
 _lib.escapeXMLSpecialChars = _escapeXMLSpecialChars;
 _lib._bindEvent            = _bindEvent;
 _lib._unbindEvent          = _unbindEvent;
