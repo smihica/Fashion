@@ -89,9 +89,11 @@ var Drawable = _class("DrawableSVG", {
 
       var self = this;
       this._eventFunc = function(domEvt) {
-        if (self._capturingShape && self._capturingShape !== self)
-          return true;
-        domEvt.stopPropagation();
+        if (self._capturingShape) {
+          if (self._capturingShape !== self)
+            return true;
+          domEvt.stopPropagation();
+        }
         self.wrapper.handler.dispatch(buildMouseEvt(self, domEvt));
         return false;
       };
@@ -171,7 +173,7 @@ var Drawable = _class("DrawableSVG", {
     },
 
     remove: function(shape) {
-      if (this._capturingShape == shape)
+      if (this._capturingShape === shape)
         this.releaseMouse(shape);
       if (this._vg && shape._elem)
         this._vg.removeChild(shape._elem);
