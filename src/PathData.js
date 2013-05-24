@@ -397,7 +397,7 @@ var PathData = (function() {
           var op;
           if (!(op = OPERATORS[seg[0]]))
             throw new ValueError('Unexpected operator "' + arr[i] + '"');
-          builder.addSegments(arr, 1, seg.length, op);
+          builder.addSegments(seg, 1, seg.length - 1, op);
         }
       },
 
