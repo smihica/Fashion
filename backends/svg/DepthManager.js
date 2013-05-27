@@ -28,7 +28,8 @@ var DepthManager = _class("DepthManager", {
           if (layer[i].wrapper.id == id) {
             layer.splice(i, 1);
             if (layer.length == 0) {
-              this.layers.splice(last_nth, 1);
+              this.layers.splice(last_nth, 1, void(0));
+              delete this.layers[last_nth];
               if (layer.next) layer.next.prev = layer.prev;
               if (layer.prev) layer.prev.next = layer.next;
               this.depth.splice(this.depth.indexOf(last_nth), 1);
