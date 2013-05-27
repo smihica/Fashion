@@ -98,9 +98,11 @@ var Drawable = _class("DrawableSVG", {
         return false;
       };
 
-      this._captureEventFunc = function (domEvt) {
+      this._captureEventFunc = function(domEvt) {
         var func = self._capturingShape._handledEvents[domEvt.type];
-        return func ? func(domEvt): true;
+        var rt = func ? func(domEvt): true;
+        domEvt.stopPropagation();
+        return rt;
       };
 
       this._scrollEventFunc = function () {

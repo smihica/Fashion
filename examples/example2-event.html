@@ -88,9 +88,10 @@
             circle2.style(circle2_styles[0]);
           }
         });
-        var moveA2 = function(evt) { this.style(circle2_styles[1]); };
         circle2.addEvent({
-          mousemove: moveA2,
+          mousemove: function(evt) {
+            this.style(circle2_styles[1]);
+          },
           mousedown: function(evt) {
             this.captureMouse();
           },
