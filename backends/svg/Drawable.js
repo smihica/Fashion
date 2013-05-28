@@ -225,6 +225,14 @@ var Drawable = _class("DrawableSVG", {
       return this.wrapper._transform.apply(point);
     },
 
+    getMaxDepth: function() {
+      return this._depthManager.getMaxDepth();
+    },
+
+    getMinDepth: function() {
+      return this._depthManager.getMinDepth();
+    },
+
     _updateContentSize: function () {
       var viewportSize = this.wrapper._viewport_size;
       var contentSize = this.wrapper._transform.apply(this.wrapper._content_size);

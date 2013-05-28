@@ -206,6 +206,14 @@ var Drawable = _class("Drawable", {
         this.drawable._enqueueForUpdate(this);
     },
 
+    getMaxDepth: function() {
+      return this.impl.getMaxDepth();
+    },
+
+    getMinDepth: function() {
+      return this.impl.getMinDepth();
+    },
+
     _refresh: function () {
       this.impl.refresh(this._dirty);
       this._dirty = 0;

@@ -11,6 +11,14 @@ var DepthManager = _class("DepthManager", {
       this.root = root;
     },
 
+    getMaxDepth: function() {
+      return this.depth[this.depth.length-1];
+    },
+
+    getMinDepth: function() {
+      return this.depth[0];
+    },
+
     add: function(shape) {
       var nth = shape.wrapper._zIndex;
       var id = shape.wrapper.id;
