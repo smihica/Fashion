@@ -122,6 +122,7 @@ var Base = _class("BaseSVG", {
       this._transformStack = new TransformStack();
       var self = this;
       this._eventFunc = function(domEvt) {
+        if (!self.drawable) { delete self._eventFunc; return true; }
         if (self.drawable._capturingShape &&
             self.drawable._capturingShape !== self)
           return true;
