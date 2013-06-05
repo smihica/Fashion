@@ -17,7 +17,7 @@ var ImageData = _class('ImageData', {
         self._size = { width: self.node.width, height: self.node.height };
         while (self.callbacks.length)
           (self.callbacks.shift())(self._size);
-      });
+      }, this.node);
 
       this.node.src = url;
     },

@@ -48,12 +48,13 @@ var Fashion = (function() {
         while (pending.length)
           (pending.shift())();
       });
-    
-      return function onceOnLoad(f) {
-        if (loaded)
-          f();
-        else
+      return function onceOnLoad(f, item) {
+        if (loaded) {
+          if (item) _bindEvent(item, 'load', f);
+          else f();
+        } else {
           pending.push(f);
+        }
       };
     } else {
       return function onceOnLoad(f) {
