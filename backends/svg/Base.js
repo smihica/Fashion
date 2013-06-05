@@ -89,7 +89,7 @@ var Base = _class("BaseSVG", {
         [
           Fashion.DIRTY_VISIBILITY,
           function () {
-            this._elem.style.display = this.wrapper._visibility ? 'block' : 'none'
+            this._elem.style.display = this.wrapper._visibility ? 'block' : 'none';
           }
         ],
         [
