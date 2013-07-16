@@ -206,6 +206,14 @@ var Drawable = _class("Drawable", {
         this.drawable._enqueueForUpdate(this);
     },
 
+    convertToLogicalPoint: function(point) {
+      return this.impl.convertToLogicalPoint(point);
+    },
+
+    convertToPhysicalPoint: function(point) {
+      return this.impl.convertToPhysicalPoint(point);
+    },
+
     getMaxDepth: function() {
       return this.impl.getMaxDepth();
     },
