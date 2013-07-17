@@ -13,6 +13,8 @@ Fashion.Backend.SVG = (function() {
   var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
   var XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 
+  var isGecko = window.navigator.userAgent.indexOf("Gecko/") >= 0;
+
   function newElement(element_name) {
     return window.document.createElementNS(SVG_NAMESPACE, element_name);
   }

@@ -183,7 +183,7 @@ var Drawable = _class("Drawable", {
         this.handler = new MouseEventsHandler(
           this,
           ['mousedown', 'mouseup', 'mousemove', 'mouseover', 'mouseout',
-           'scroll', 'visualchange']
+           'mousewheel', 'scroll', 'visualchange']
         );
       }
       this.handler.add.apply(this.handler, arguments);
