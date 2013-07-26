@@ -105,6 +105,17 @@
         });
         drawable2.draw(circle2);
       </script>
+      <h1>MouseWheel</h1>
+      <div class="stage" style="overflow: scroll"></div>
+      <script type="text/javascript">
+        var drawable3 = new Fashion.Drawable(last(document.getElementsByTagName('div')));
+        drawable3.addEvent({
+          mousewheel: function(evt) {
+            console.log(evt.delta); 
+            return false;
+          }
+        });
+      </script>
     </div>
   </body>
 </html>
