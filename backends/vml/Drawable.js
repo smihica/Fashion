@@ -12,13 +12,15 @@ var Drawable = _class("DrawableVML", {
       mouseover: [ false, 0, null ],
       mouseout: [ false, 0, null ],
       scroll: [ false, 0, null ],
-      visualchange: [ false, 0, null ]
+      visualchange: [ false, 0, null ],
+      mousewheel: [ false, 0, null ]
     },
     _scrollPosition: { x: 0, y: 0 },
     _currentEvent: null,
     _eventFunc: null,
     _captureEventFunc: null,
     _scrollEventFunc: null,
+    _mouseWheelEventFunc: null,
     _refresher: null
   },
 
@@ -83,14 +85,26 @@ var Drawable = _class("DrawableVML", {
             for (var type in this._handledEvents) {
               var beingHandled = this._handledEvents[type][0];
               var toHandle = this.wrapper.handler.handles(type);
-              if (!beingHandled && toHandle) {
-                if (type != 'scroll' && type.indexOf('visualchange') != 0)
-                  this._handleEvent(type);
-                this._handledEvents[type][0] = true;
-              } else if (beingHandled && !toHandle) {
-                if (type != 'scroll' && type.indexOf('visualchange') != 0)
+              switch (type) {
+              case 'scroll':
+              case 'visualchange':
+                break;
+              case 'mousewheel':
+                if (!beingHandled && toHandle) {
+                  this._handleEvent(type, this._mouseWheelEventFunc);
+                  this._handledEvents[type][0] = true;
+                } else if (beingHandled && !toHandle) {
                   this._unhandleEvent(type);
-                this._handledEvents[type][0] = false;
+                  this._handledEvents[type][0] = false;
+                }
+              default:
+                if (!beingHandled && toHandle) {
+                  this._handleEvent(type, this._eventFunc);
+                  this._handledEvents[type][0] = true;
+                } else if (beingHandled && !toHandle) {
+                  this._unhandleEvent(type);
+                  this._handledEvents[type][0] = false;
+                }
               }
             }
           }
@@ -139,6 +153,15 @@ var Drawable = _class("DrawableVML", {
           evt.target = self.wrapper;
           evt.physicalPosition = physicalPosition;
           evt.logicalPosition = self._scrollPosition;
+          self.wrapper.handler.dispatch(evt);
+        }
+      };
+
+      this._mouseWheelEventFunc = function (msieEvt) {
+        if (self._handledEvents.mousewheel) {
+          var evt = new Fashion.MouseWheelEvt();
+          evt.target = self.wrapper;
+          evt.delta = -(msieEvt.wheelDelta / 120);
           self.wrapper.handler.dispatch(evt);
         }
       };
@@ -291,11 +314,11 @@ var Drawable = _class("DrawableVML", {
       return viewport;
     },
 
-    _handleEvent: function (type) {
+    _handleEvent: function (type, eventFunc) {
       var triple = this._handledEvents[type];
       __assert__(triple);
       if (triple[1]++ == 0)
-        this._content.attachEvent('on' + type, triple[2] = this._eventFunc);
+        this._content.attachEvent('on' + type, triple[2] = eventFunc);
     },
 
     _unhandleEvent: function (type) {

@@ -92,6 +92,9 @@ var Fashion = (function() {
   include("MouseEvt.js");
   this.MouseEvt = MouseEvt;
 
+  include("MouseWheelEvt.js");
+  this.MouseWheelEvt = MouseWheelEvt;
+
   include("VisualChangeEvt.js");
   this.VisualChangeEvt = VisualChangeEvt;
 
