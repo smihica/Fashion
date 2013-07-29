@@ -7,6 +7,7 @@ var MouseEvt = _class("MouseEvt", {
     physicalPosition:  { x: 0, y: 0 },
     screenPosition:    { x: 0, y: 0 },
     offsetPosition:    { x: 0, y: 0 },
+    modifierKeys:    0,
     left:            false,
     middle:          false,
     right:           false

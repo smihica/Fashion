@@ -132,6 +132,11 @@ var Drawable = _class("DrawableSVG", {
           } else if (domEvt.detail) {
             evt.delta = domEvt.detail;
           }
+          evt.modifierKeys =
+               (domEvt.shiftKey ? Fashion.SHIFT_KEY: 0) |
+               (domEvt.ctrlKey ? Fashion.CTRL_KEY: 0) |
+               (domEvt.altKey ? Fashion.ALT_KEY: 0) |
+               (domEvt.metaKey ? Fashion.META_KEY: 0);
           self.wrapper.handler.dispatch(evt);
         }
       };

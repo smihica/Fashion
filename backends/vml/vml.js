@@ -145,6 +145,12 @@ Fashion.Backend.VML = (function() {
     case 3: retval.right = true; break;
     }
 
+    retval.modifierKeys =
+         (msieEvt.shiftKey ? Fashion.SHIFT_KEY: 0) |
+         (msieEvt.ctrlKey ? Fashion.CTRL_KEY: 0) |
+         (msieEvt.altKey ? Fashion.ALT_KEY: 0) |
+         (msieEvt.metaKey ? Fashion.META_KEY: 0);
+
     var physicalPagePosition;
 
     var doc = window.document, body = doc.body;

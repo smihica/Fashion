@@ -4,6 +4,7 @@ var MouseWheelEvt = _class("MouseWheelEvt", {
     type: 'mousewheel',
     target: null,
     delta: 0,
+    modifierKeys: 0,
     _preventDefault: null
   },
 

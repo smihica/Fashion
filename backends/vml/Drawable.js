@@ -163,6 +163,11 @@ var Drawable = _class("DrawableVML", {
           var evt = new Fashion.MouseWheelEvt(function () { preventDefault = true; });
           evt.target = self.wrapper;
           evt.delta = -(msieEvt.wheelDelta / 120);
+          evt.modifierKeys =
+               (msieEvt.shiftKey ? Fashion.SHIFT_KEY: 0) |
+               (msieEvt.ctrlKey ? Fashion.CTRL_KEY: 0) |
+               (msieEvt.altKey ? Fashion.ALT_KEY: 0) |
+               (msieEvt.metaKey ? Fashion.META_KEY: 0);
           self.wrapper.handler.dispatch(evt);
           return !preventDefault;
         }

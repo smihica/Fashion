@@ -81,7 +81,7 @@
           style: circle2_styles[0]
         });
         drawable2.addEvent({
-          mousemove: function () {
+          mousemove: function (evt) {
             circle2.style(circle2_styles[2]);
           },
           mouseout: function () {
@@ -112,7 +112,7 @@
         drawable3.addEvent({
           mousewheel: function(evt) {
             evt.preventDefault();
-            console.log(evt.delta);
+            console.log(evt.delta, evt.modifierKeys);
           }
         });
       </script>

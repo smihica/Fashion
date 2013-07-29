@@ -47,6 +47,12 @@ Fashion.Backend.SVG = (function() {
     case 3: retval.right = true; break;
     }
 
+    retval.modifierKeys =
+         (domEvt.shiftKey ? Fashion.SHIFT_KEY: 0) |
+         (domEvt.ctrlKey ? Fashion.CTRL_KEY: 0) |
+         (domEvt.altKey ? Fashion.ALT_KEY: 0) |
+         (domEvt.metaKey ? Fashion.META_KEY: 0);
+
     var physicalPagePosition;
     if (typeof domEvt.pageX != 'number' && typeof domEvt.clientX == 'number') {
       var eventDoc = domEvt.target.ownerDocument || window.document;
