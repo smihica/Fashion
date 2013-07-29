@@ -202,7 +202,7 @@ var Base = (function() {
                 var beingHandled = this._handledEvents[type];
                 var toHandle = this.wrapper.handler && this.wrapper.handler.handles(type);
                 if (!beingHandled && toHandle) {
-                  this.drawable._handleEvent(type);
+                  this.drawable._handleEvent(type, this.drawable._eventFunc);
                   this._handledEvents[type] = true;
                 } else if (beingHandled && !toHandle) {
                   this.drawable._unhandleEvent(type);
