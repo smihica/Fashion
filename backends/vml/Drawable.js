@@ -159,10 +159,12 @@ var Drawable = _class("DrawableVML", {
 
       this._mouseWheelEventFunc = function (msieEvt) {
         if (self._handledEvents.mousewheel) {
-          var evt = new Fashion.MouseWheelEvt();
+          var preventDefault = false;
+          var evt = new Fashion.MouseWheelEvt(function () { preventDefault = true; });
           evt.target = self.wrapper;
           evt.delta = -(msieEvt.wheelDelta / 120);
           self.wrapper.handler.dispatch(evt);
+          return !preventDefault;
         }
       };
 

@@ -125,7 +125,7 @@ var Drawable = _class("DrawableSVG", {
 
       this._mouseWheelEventFunc = function (domEvt) {
         if (self._handledEvents.mousewheel) {
-          var evt = new Fashion.MouseWheelEvt();
+          var evt = new Fashion.MouseWheelEvt(function () { domEvt.preventDefault(); });
           evt.target = self.wrapper;
           if (domEvt.wheelDelta) {
             evt.delta = -(domEvt.wheelDelta / 120);
