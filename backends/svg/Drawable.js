@@ -28,7 +28,7 @@ var Drawable = _class("DrawableSVG", {
   class_props: {
     _refresher: new Refresher().setup({
       preHandler: function() {
-        if (!this._viewport.parentNode != this.wrapper.target) {
+        if (this._viewport.parentNode != this.wrapper.target) {
           this.wrapper.target.appendChild(this._viewport);
         }
       },
