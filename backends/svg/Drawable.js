@@ -22,7 +22,8 @@ var Drawable = _class("DrawableSVG", {
     _captureEventFunc: null,
     _scrollEventFunc: null,
     _mouseWheelEventFunc: null,
-    _refresher: null
+    _refresher: null,
+    _captureTarget: null
   },
 
   class_props: {
@@ -161,15 +162,17 @@ var Drawable = _class("DrawableSVG", {
     },
 
     dispose: function() {
-      this._capturingShape = true;
+      if (this._capturingShape)
+        this.releaseMouse(this._capturingShape);
+      this._capturingShape = false;
       if (this._viewport && this._viewport.parentNode)
         this._viewport.parentNode.removeChild(this._viewport);
       this._viewport = null;
       this._svg = null;
       this._vg = null;
-      this._wrapper = null;
       this._defsManager = null;
       this._depthManager = null;
+      this.wrapper = null;
     },
 
     refresh: function (dirty) {
@@ -219,8 +222,10 @@ var Drawable = _class("DrawableSVG", {
         throw new Fashion.AlreadyExists("The shape is already capturing.");
       }
 
+      this._captureTarget = this.wrapper.captureTarget() || this._viewport.offsetParent;
+
       for (var type in shape._handledEvents)
-        this._viewport.offsetParent.addEventListener(type, this._captureEventFunc, true);
+        this._captureTarget.addEventListener(type, this._captureEventFunc, true);
 
       this._capturingShape = shape;
     },
@@ -231,9 +236,10 @@ var Drawable = _class("DrawableSVG", {
       }
 
       for (var type in shape._handledEvents)
-        this._viewport.offsetParent.removeEventListener(type, this._captureEventFunc, true);
+        this._captureTarget.removeEventListener(type, this._captureEventFunc, true);
 
       this._capturingShape = null;
+      this._captureTarget = null;
     },
 
     capturingShape: function () {

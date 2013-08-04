@@ -1,5 +1,6 @@
 var Drawable = _class("DrawableVML", {
   props: {
+    wrapper: null,
     _vg: null,
     _content: null,
     _viewport: null,
@@ -21,7 +22,8 @@ var Drawable = _class("DrawableVML", {
     _captureEventFunc: null,
     _scrollEventFunc: null,
     _mouseWheelEventFunc: null,
-    _refresher: null
+    _refresher: null,
+    _captureTarget: null
   },
 
   class_props: {
@@ -182,12 +184,15 @@ var Drawable = _class("DrawableVML", {
     },
 
     dispose: function() {
+      if (this._capturingShape)
+        this.releaseMouse(this._capturingShape);
+      this._capturingShape = false;
       if (this._viewport && this._viewport.parentNode)
         this._viewport.parentNode.removeChild(this._viewport);
       this._viewport = null;
       this._content = null;
       this._vg = null;
-      this._wrapper = null;
+      this.wrapper = null;
     },
 
     refresh: function (dirty) {
@@ -249,11 +254,10 @@ var Drawable = _class("DrawableVML", {
         throw new Fashion.AlreadyExists("The shape is already capturing.");
       }
 
-      var self = this;
-
-      self._currentEvent.cancelBubble = true;
+      this._currentEvent.cancelBubble = true;
+      this._captureTarget = this.wrapper.captureTarget() || this._viewport.offsetParent;
       for (var type in shape._handledEvents)
-        this._viewport.offsetParent.attachEvent('on' + type, this._captureEventFunc);
+        this._captureTarget.attachEvent('on' + type, this._captureEventFunc);
 
       this._capturingShape = shape;
     },
@@ -266,9 +270,10 @@ var Drawable = _class("DrawableVML", {
       }
 
       for (var type in shape._handledEvents)
-        this._viewport.offsetParent.detachEvent('on' + type, this._captureEventFunc);
+        this._captureTarget.detachEvent('on' + type, this._captureEventFunc);
 
       this._capturingShape = null;
+      this._captureTarget = null;
     },
 
     capturingShape: function () {
