@@ -175,7 +175,7 @@ var Color = (function() {
       initWithColorCode: function Color_initWithColorCode(str) {
         var rt;
         if (!(rt = color_code_table[str])) {
-          var g = /^\s*(?:#(?:([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])|([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})?)|rgb\(([^)]*)\)|rgba\(([^)]*)\))\s*$/.exec(str);
+          var g = /^\s*(?:#(?:([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])|([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})?)|rgb\(\s*([^)]*)\s*\)|rgba\(\s*([^)]*)\s*\))\s*$/.exec(str);
           if (!g)
             throw new ValueError("Invalid color specifier: " + str);
 
